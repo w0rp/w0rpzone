@@ -18,7 +18,7 @@ class Article(dj_model.Model):
     An article on the blog.
     """
     author = dj_model.ForeignKey(User)
-    creation_date = dj_model.DateField(auto_now_add=True)
+    creation_date = dj_model.DateTimeField(auto_now_add=True)
     slug = dj_model.SlugField(max_length=255, unique=True)
     title = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
@@ -76,7 +76,7 @@ class ArticleComment(dj_model.Model):
     A comment on an article.
     """
     article = dj_model.ForeignKey(Article)
-    creation_date = dj_model.DateField(auto_now_add=True)
+    creation_date = dj_model.DateTimeField(auto_now_add=True)
     poster_name = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
 

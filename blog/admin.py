@@ -3,7 +3,7 @@ from django.contrib import admin as dj_admin
 from . import models
 
 class BlogAuthorAdmin(dj_admin.ModelAdmin):
-    list_display = ("author")
+    list_display = ("author", )
 
 class ArticleTagInline(dj_admin.StackedInline):
     model = models.ArticleTag
@@ -27,3 +27,4 @@ dj_admin.site.register(models.Article, ArticleAdmin)
 dj_admin.site.register(models.ArticleTag, ArticleTagAdmin)
 dj_admin.site.register(models.ArticleFile)
 dj_admin.site.register(models.ArticleComment)
+

@@ -17,8 +17,8 @@ def blog_main_page(request):
     return {
     }
 
-@blog_template("main")
-def blog_article_page(article_slug):
+@blog_template("article")
+def blog_article_page(request, article_slug):
     import sys
 
     article = get_object_or_404(models.Article, slug= article_slug)
