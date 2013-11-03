@@ -12,6 +12,9 @@ class Blog(dj_model.Model):
     title = dj_model.CharField(max_length=255)
     description = dj_model.TextField()
 
+    def __str__(self):
+        return self.slug
+
 class BlogAuthor(dj_model.Model):
     """
     A blog author.
@@ -22,6 +25,9 @@ class BlogAuthor(dj_model.Model):
     class Meta:
         unique_together = ("blog", "author")
 
+    def __str__(self):
+        return "{}/{}".format(self.blog.slug, self.author)
+
 class Article(dj_model.Model):
     """
     An article on a blog.
@@ -29,9 +35,15 @@ class Article(dj_model.Model):
     blog = dj_model.ForeignKey(Blog)
     author = dj_model.ForeignKey(User)
     creation_date = dj_model.DateField(auto_now_add=True)
-    slug = dj_model.SlugField(max_length=255, unique=True)
+    slug = dj_model.SlugField(max_length=255)
     title = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
+
+    class Meta:
+        unique_together = ("blog", "slug")
+
+    def __str__(self):
+        return "{}/{}".format(self.blog.slug, self.slug)
 
 class ArticleTag(dj_model.Model):
     """
@@ -83,3 +95,4 @@ class ArticleComment(dj_model.Model):
     creation_date = dj_model.DateField(auto_now_add=True)
     poster_name = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
+
