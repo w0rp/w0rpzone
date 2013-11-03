@@ -4,46 +4,27 @@ import time
 from django.db import models as dj_model
 from django.contrib.auth.models import User
 
-class Blog(dj_model.Model):
-    """
-    A blog, which contains articles, etc.
-    """
-    slug = dj_model.SlugField(max_length=255, unique=True)
-    title = dj_model.CharField(max_length=255)
-    description = dj_model.TextField()
-
-    def __str__(self):
-        return self.slug
-
 class BlogAuthor(dj_model.Model):
     """
-    A blog author.
+    Users which can edit the blog posts.
     """
-    blog = dj_model.ForeignKey(Blog)
-    author = dj_model.ForeignKey(User)
-
-    class Meta:
-        unique_together = ("blog", "author")
+    author = dj_model.ForeignKey(User, unique=True)
 
     def __str__(self):
-        return "{}/{}".format(self.blog.slug, self.author)
+        return str(self.author)
 
 class Article(dj_model.Model):
     """
-    An article on a blog.
+    An article on the blog.
     """
-    blog = dj_model.ForeignKey(Blog)
     author = dj_model.ForeignKey(User)
     creation_date = dj_model.DateField(auto_now_add=True)
-    slug = dj_model.SlugField(max_length=255)
+    slug = dj_model.SlugField(max_length=255, unique=True)
     title = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
 
-    class Meta:
-        unique_together = ("blog", "slug")
-
     def __str__(self):
-        return "{}/{}".format(self.blog.slug, self.slug)
+        return str(self.slug)
 
 class ArticleTag(dj_model.Model):
     """
@@ -55,6 +36,9 @@ class ArticleTag(dj_model.Model):
 
     class Meta:
         unique_together = ("article", "tag")
+
+    def __str__(self):
+        return "{} - {}".format(self.tag, self.article)
 
 def file_extension(filename):
     """
