@@ -15,6 +15,12 @@ MANAGERS = ADMINS
 ALLOWED_HOSTS = [
 ]
 
+# Being in INTERNAL_IPS enables the debug flag for templates.
+# This turns non-minified JS on, etc.
+INTERNAL_IPS = (
+    "127.0.0.1",
+)
+
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = 'UTC'
 

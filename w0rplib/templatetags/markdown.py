@@ -11,13 +11,23 @@ register = template.Library()
 def markdown(value):
     return mark_safe(markdown2.markdown(
         text= value,
+        extras= ["fenced-code-blocks", "code-friendly"],
         safe_mode= True,
-        enable_attributes= False
+        enable_attributes= False,
     ))
 
 # Not really safe, but Django needs to think it is.
 @register.filter(is_safe=True)
 @stringfilter
 def unsafe_markdown(value):
-    return mark_safe(markdown2.markdown(value))
+    return mark_safe(markdown2.markdown(
+        text= value,
+        extras= [
+            "fenced-code-blocks",
+            "code-friendly"
+            # Website authors using full markdown have more power.
+            "footnotes",
+            "wiki-tables",
+        ],
+    ))
 

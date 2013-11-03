@@ -16,6 +16,16 @@ a {
     color: white;
 }
 
+pre {
+    white-space: pre-wrap;
+}
+
+code {
+    font-size: 12pt;
+    font-family: "Inconsolata", monospace;
+    font-weight: normal;
+}
+
 body > header {
 
 }
@@ -99,16 +109,6 @@ body > footer > .license a.license_image_link {
 #content > article strong {
     font-weight: bold;
     color: #fff;
-}
-
-#content > article pre {
-    white-space: pre-wrap;
-}
-
-#content > article code {
-    font-size: 12pt;
-    font-family: "Inconsolata", monospace;
-    font-weight: normal;
 }
 
 #content > article > header > ul.post_metadata {
