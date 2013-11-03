@@ -37,7 +37,7 @@ class ArticleTag(dj_model.Model):
     """
     A tag for a blog article.
     """
-    article = dj_model.ForeignKey(Aritcle)
+    article = dj_model.ForeignKey(Article)
     # The tag is indexed for fast lookup.
     tag = dj_model.CharField(max_length=255, db_index=True)
 
@@ -68,18 +68,18 @@ def article_file_path(article, filename):
         file_extension(filename)
     )
 
-class AritcleFile(dj_model.Model):
+class ArticleFile(dj_model.Model):
     """
     A file uploaded for an article.
     """
-    article = dj_model.ForeignKey(Aritcle)
+    article = dj_model.ForeignKey(Article)
     file = dj_model.FileField(upload_to=article_file_path)
 
 class ArticleComment(dj_model.Model):
     """
     A comment on an article.
     """
-    article = dj_model.ForeignKey(Aritcle)
+    article = dj_model.ForeignKey(Article)
     creation_date = dj_model.DateField(auto_now_add=True)
     poster_name = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
