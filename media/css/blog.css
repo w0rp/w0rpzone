@@ -1,2 +1,141 @@
+/* Reset absolute everything to border-box, which makes more sense */
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
 body {
+    background-color: #333;
+    color: white;
+
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    color: white;
+}
+
+body > header {
+
+}
+
+body > header > .blog_title {
+    margin: 1em 0;
+
+    text-align: center;
+}
+
+body > header,
+#main,
+body > footer {
+    width: 1024px;
+
+    margin: 0 auto;
+}
+
+#main {
+}
+
+#content {
+    float: left;
+
+    width: 800px;
+}
+
+#main > nav {
+    float: right;
+
+    padding: 20px;
+}
+
+/* Blog footer */
+
+body > footer {
+    clear: both;
+
+    position: relative;
+
+    top: 2em;
+
+    padding: 1em;
+
+    background-color: #2b2b2b;
+    color: white;
+
+    font-size: 10pt;
+}
+
+body > footer > .license * {
+    vertical-align: middle;
+}
+
+body > footer > .license a.license_image_link {
+    text-decoration: none;
+
+    margin-right: 1em;
+}
+
+/* Articles */
+
+#content > article {
+    padding: 1em;
+
+    font-size: 14pt;
+
+    background-color: #222;
+    color: #eee;
+
+    word-wrap: break-word;
+}
+
+#content > article h2,
+#content > article h3,
+#content > article h4,
+#content > article h5 {
+    margin: 0.5em 0;
+}
+
+#content > article strong {
+    font-weight: bold;
+    color: #fff;
+}
+
+#content > article pre {
+    white-space: pre-wrap;
+}
+
+#content > article code {
+    font-size: 12pt;
+    font-family: "Inconsolata", monospace;
+    font-weight: normal;
+}
+
+#content > article > header > ul.post_metadata {
+    margin: 0;
+    padding: 0;
+}
+
+#content > article > header > ul.post_metadata > li {
+    display: inline-block;
+    margin: 0;
+
+    font-size: 12pt;
+}
+
+#content > article > header > ul.post_metadata > li.author {
+    font-style: italic;
+}
+
+#content > article > header > ul.post_metadata > li.author > .name {
+    font-style: normal;
+}
+
+#content > article > header > ul.post_metadata > li.creation_date {
+    font-family: monospace;
+}
+
+#content > article > header > ul.post_metadata > li.creation_date:before {
+    content: "on";
+    font-style: italic;
 }

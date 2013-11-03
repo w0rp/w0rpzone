@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
 
+    <link rel="stylesheet" href="/media/css/inconsolata.css" />
     <link rel="stylesheet" href="/media/css/blog.css" />
 
     {% block head %}{% endblock %}
@@ -11,11 +12,22 @@
     <header>
       <h1 class="blog_title">The w0rpzone</h1>
     </header>
-    <div id="content">
-      {% block content %}{% endblock %}
+    <div id="main">
+      <div id="content">{% block content %}{% endblock %}</div>
+      <nav>
+        <ul>
+          <li>Article 1</li>
+          <li>Article 2</li>
+          <li>Article 3</li>
+        </ul>
+      </nav>
     </div>
     <footer>
-
+      <div class="license">
+        <a class="license_image_link" rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+        All blog content is licensed to respective authors under a
+        <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+      </div>
     </footer>
   </body>
 </html>
