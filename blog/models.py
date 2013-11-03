@@ -8,7 +8,7 @@ class Blog(dj_model.Model):
     """
     A blog, which contains articles, etc.
     """
-    slug = dj_model.SlugField(max_length=255)
+    slug = dj_model.SlugField(max_length=255, unique=True)
     title = dj_model.CharField(max_length=255)
     description = dj_model.TextField()
 
@@ -29,7 +29,7 @@ class Article(dj_model.Model):
     blog = dj_model.ForeignKey(Blog)
     author = dj_model.ForeignKey(User)
     creation_date = dj_model.DateField(auto_now_add=True)
-    slug = dj_model.SlugField(max_length=255)
+    slug = dj_model.SlugField(max_length=255, unique=True)
     title = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
 
@@ -83,4 +83,3 @@ class ArticleComment(dj_model.Model):
     creation_date = dj_model.DateField(auto_now_add=True)
     poster_name = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
-
