@@ -1,28 +1,9 @@
 {% extends "blog/base.dj.htm" %}
 
-{% load tz %}
-{% load markdown %}
-
 {% block head %}
   <title>{{ article.title }} - w0rpzone</title>
 {% endblock %}
 
 {% block content %}
-<article>
-  <header>
-    <h2>{{ article.title }}</h2>
-    <ul class="post_metadata">
-      <li class="author">By <a class="name">{{ article.author }}</a></li>
-      <li class="creation_date">
-      {% localtime on %}
-        <span class="date">{{ article.creation_date | date:"d F, Y" }}</span>
-        <span class="time">{{ article.creation_date | date:"H:i" }}</span>
-      {% endlocaltime %}
-      </li>
-    </dl>
-  </header>
-  <div class="post">
-    {{ article.content | unsafe_markdown }}
-  </div>
-</article>
+{% include "blog/include/article.dj.htm" %}
 {% endblock %}

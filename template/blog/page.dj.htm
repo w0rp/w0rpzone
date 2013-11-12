@@ -1,0 +1,13 @@
+{% extends "blog/base.dj.htm" %}
+
+{% block head %}
+  <title>w0rpzone</title>
+{% endblock %}
+
+{% block content %}
+
+{% for article in article_list %}
+  {% include "blog/include/article.dj.htm" with show_link=True %}
+{% endfor %}
+
+{% endblock %}

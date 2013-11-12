@@ -3,6 +3,7 @@ import time
 
 from django.db import models as dj_model
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse as url_reverse
 
 class BlogAuthor(dj_model.Model):
     """
@@ -18,13 +19,23 @@ class Article(dj_model.Model):
     An article on the blog.
     """
     author = dj_model.ForeignKey(User)
-    creation_date = dj_model.DateTimeField(auto_now_add=True)
+    creation_date = dj_model.DateTimeField()
     slug = dj_model.SlugField(max_length=255, unique=True)
     title = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
 
+    class Meta:
+        ordering = ["-creation_date"]
+
     def __str__(self):
         return str(self.slug)
+
+    @property
+    def url(self):
+        """
+        The URL path for this article.
+        """
+        return url_reverse("article-detail", args=(self.slug,))
 
 class ArticleTag(dj_model.Model):
     """

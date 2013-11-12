@@ -2,20 +2,28 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
+
+def templ(regex, template):
+    return (regex, TemplateView.as_view(template_name= template + ".dj.htm"))
 
 admin.autodiscover()
 
 urlpatterns = patterns("",
-    url(settings.ADMIN_REGEX, include(admin.site.urls)),
+    (settings.ADMIN_REGEX, include(admin.site.urls)),
     # Include all of the blog app urls.
-    url(r"^blog/", include("blog.urls")),
+    (r"^blog/", include("blog.urls")),
+)
+
+urlpatterns += patterns("",
+    templ(r"^$", "index"),
 )
 
 if settings.DEBUG:
     # Serve media files via Django in DEBUG mode.
-    urlpatterns += patterns('',
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-            'document_root': settings.MEDIA_ROOT
+    urlpatterns += patterns("",
+        url(r"^media/(?P<path>.*)$", "django.views.static.serve", {
+            "document_root": settings.MEDIA_ROOT
         }),
     )
 

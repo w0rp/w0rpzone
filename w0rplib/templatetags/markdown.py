@@ -28,6 +28,7 @@ def unsafe_markdown(value):
             # Website authors using full markdown have more power.
             "footnotes",
             "wiki-tables",
+            "header-ids",
         ],
     ))
 

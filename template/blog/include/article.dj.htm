@@ -1,0 +1,24 @@
+{% load tz %}
+{% load markdown %}
+
+<article>
+  <header>
+    {% if show_link %}
+      <a class="article_link" href="{{ article.url }}"><h2>{{ article.title }}</h2></a>
+    {% else %}
+      <h2>{{ article.title }}</h2>
+    {% endif %}
+    <ul class="post_metadata">
+      <li class="author"><a class="name">{{ article.author }}</a></li>
+      <li class="creation_date">
+      {% localtime on %}
+        <span class="date">{{ article.creation_date | date:"d F, Y" }}</span>
+        <span class="time">{{ article.creation_date | date:"H:i" }}</span>
+      {% endlocaltime %}
+      </li>
+    </ul>
+  </header>
+  <div class="post">
+    {{ article.content | unsafe_markdown }}
+  </div>
+</article>

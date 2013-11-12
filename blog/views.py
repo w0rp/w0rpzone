@@ -1,29 +1,16 @@
-import datetime
-
-from django.shortcuts import (
-    render,
-    get_object_or_404
-)
-
-from w0rplib.view import using_template
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 
 from . import models
 
-def blog_template(base_name):
-    return using_template("blog/" + base_name + ".dj.htm")
+class ArticlePageView (ListView):
+    model = models.Article
+    context_object_name = "article_list"
+    template_name = "blog/page.dj.htm"
+    paginate_by = 3
 
-@blog_template("main")
-def blog_main_page(request):
-    return {
-    }
-
-@blog_template("article")
-def blog_article_page(request, article_slug):
-    import sys
-
-    article = get_object_or_404(models.Article, slug= article_slug)
-
-    return {
-        "article" : article,
-    }
+class ArticleDetailView (DetailView):
+    model = models.Article
+    context_object_name = "article"
+    template_name = "blog/article.dj.htm"
 
