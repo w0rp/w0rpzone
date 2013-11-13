@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
 
@@ -24,16 +24,20 @@
   </head>
   <body>
     <header>
-      <a class="blog_link" href="/blog"><h1 class="blog_title">The w0rpzone</h1></a>
+      <h1 class="blog_title"><a class="blog_link" href="/blog">The w0rpzone</a></h1>
     </header>
     <div id="main">
       <div id="content">{% block content %}{% endblock %}</div>
       <nav>
-        <ul>
-          <li>Article 1</li>
-          <li>Article 2</li>
-          <li>Article 3</li>
-        </ul>
+        <aside class="article_archive">
+          <header>Archive</header>
+          <ol>
+            {% for month in article_months %}
+              {% url "article-archive" year=month|date:"Y" month=month|date:"m" as article_url %}
+              <li><a href="{{article_url}}">{{ month | date:"F Y" }}</a></li>
+            {% endfor %}
+          </ol>
+        </aside>
       </nav>
     </div>
     <footer>

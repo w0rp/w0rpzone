@@ -10,10 +10,14 @@ body {
 
     padding: 0;
     margin: 0;
+
+    font-family: "Droid Sans", sans-serif;
 }
 
 a {
-    color: white;
+    /* Reset link colors to inherit, so they don't differ. */
+    color: inherit;
+    cursor: pointer;
 }
 
 pre {
@@ -32,12 +36,6 @@ body > header {
 
 body > header .blog_link {
     text-decoration: none;
-
-    cursor: pointer;
-}
-
-body > header .blog_link:hover {
-    text-decoration: underline;
 }
 
 body > header .blog_title {
@@ -68,8 +66,40 @@ body > footer {
 #main > nav {
     float: right;
 
-    padding: 20px;
-    margin-bottom: 2em;
+    width: 200px;
+
+    padding: 10px;
+    margin: 0 5px 2em 0;
+
+    box-shadow: 5px 5px 10px 0 black;
+
+    border-radius: 5px 20px 5px 5px;
+
+    background-color: #2a2a34;
+    color: white;
+}
+
+#main > nav > aside {
+
+}
+
+#main > nav > aside > header {
+    text-align: center;
+    font-size: 14pt;
+}
+
+#main > nav > aside > ol {
+    font-size: 10pt;
+    padding: 0;
+
+    list-style-type: none;
+}
+
+#main > nav > aside > ol > li:not(:first-child) {
+    margin-top: 0.25em;
+}
+
+#main > nav > aside.article_archive {
 }
 
 /* Blog footer */
@@ -99,7 +129,7 @@ body > footer > .license a.license_image_link {
 /* Articles */
 
 #content > article {
-    padding: 1em;
+    padding: 1em 1em 0.5em 1em;
 
     font-size: 14pt;
 
@@ -108,13 +138,13 @@ body > footer > .license a.license_image_link {
 
     word-wrap: break-word;
 
-    box-shadow: 5px 5px 10px 2px black;
+    box-shadow: 5px 5px 10px 0 black;
 
-    border-radius: 20px 0 0 20px;
+    border-radius: 20px 5px 5px 5px;
 }
 
 #content > article:not(:first-child) {
-    margin-top: 4em;
+    margin-top: 2em;
 }
 
 #content > article h2,
@@ -129,9 +159,12 @@ body > footer > .license a.license_image_link {
     color: #fff;
 }
 
+#content > article > header {
+    margin-bottom: 0.25em;
+}
+
 #content > article > header .article_link {
     text-decoration: none;
-    cursor: pointer;
 }
 
 #content > article > header .article_link:hover {
@@ -140,7 +173,10 @@ body > footer > .license a.license_image_link {
 
 #content > article > header > ul.post_metadata {
     margin: 0;
-    padding: 0;
+    padding: 0.125em 0.25em;
+
+    background-color: #262626;
+    color: #4C8E79;
 }
 
 #content > article > header > ul.post_metadata > li {
@@ -155,11 +191,15 @@ body > footer > .license a.license_image_link {
 }
 
 #content > article > header > ul.post_metadata > li.author > .name:before {
-    content: "By ";
+    content: "By";
+    margin-right: 0.5em;
+
     font-style: italic;
 }
 
 #content > article > header > ul.post_metadata > li.creation_date {
+    margin-left: 0.25em;
+
     font-family: monospace;
 }
 

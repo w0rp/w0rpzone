@@ -11,6 +11,10 @@ class BlogAuthor(dj_model.Model):
     """
     author = dj_model.ForeignKey(User, unique=True)
 
+    class Meta:
+        # Tables are named explicitly to make direct SQL more predictable.
+        db_table = "blog_blogauthor"
+
     def __str__(self):
         return str(self.author)
 
@@ -25,17 +29,11 @@ class Article(dj_model.Model):
     content = dj_model.TextField()
 
     class Meta:
+        db_table = "blog_article"
         ordering = ["-creation_date"]
 
     def __str__(self):
         return str(self.slug)
-
-    @property
-    def url(self):
-        """
-        The URL path for this article.
-        """
-        return url_reverse("article-detail", args=(self.slug,))
 
 class ArticleTag(dj_model.Model):
     """
@@ -46,6 +44,7 @@ class ArticleTag(dj_model.Model):
     tag = dj_model.CharField(max_length=255, db_index=True)
 
     class Meta:
+        db_table = "blog_articletag"
         unique_together = ("article", "tag")
 
     def __str__(self):
@@ -82,6 +81,9 @@ class ArticleFile(dj_model.Model):
     article = dj_model.ForeignKey(Article)
     file = dj_model.FileField(upload_to=article_file_path)
 
+    class Meta:
+        db_table = "blog_articlefile"
+
 class ArticleComment(dj_model.Model):
     """
     A comment on an article.
@@ -90,4 +92,7 @@ class ArticleComment(dj_model.Model):
     creation_date = dj_model.DateTimeField(auto_now_add=True)
     poster_name = dj_model.CharField(max_length=255)
     content = dj_model.TextField()
+
+    class Meta:
+        db_table = "blog_articlecomment"
 

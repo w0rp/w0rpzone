@@ -2,12 +2,14 @@
 
 {% block head %}
   <title>w0rpzone</title>
+
+  {# TODO: Add canonical URL here. #}
 {% endblock %}
 
 {% block content %}
 
 {% for article in article_list %}
-  {% include "blog/include/article.dj.htm" with show_link=True show_post=True %}
+  {% include "blog/include/article.dj.htm" with show_link=True %}
 {% endfor %}
 
 {% endblock %}

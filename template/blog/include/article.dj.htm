@@ -4,7 +4,8 @@
 <article>
   <header>
     {% if show_link %}
-      <a class="article_link" href="{{ article.url }}"><h2>{{ article.title }}</h2></a>
+      {% url "article-detail" slug=article.slug as article_url %}
+      <h2><a class="article_link" href="{{ article_url }}">{{article.title}}</a></h2>
     {% else %}
       <h2>{{ article.title }}</h2>
     {% endif %}
@@ -12,13 +13,15 @@
       <li class="author"><a class="name">{{ article.author }}</a></li>
       <li class="creation_date">
       {% localtime on %}
-        <span class="date">{{ article.creation_date | date:"d F, Y" }}</span>
+        <span class="date">{{ article.creation_date | date:"d F Y" }}</span>
         <span class="time">{{ article.creation_date | date:"H:i" }}</span>
       {% endlocaltime %}
       </li>
     </ul>
   </header>
-  <div class="post">
-    {{ article.content | unsafe_markdown }}
-  </div>
+  {% if show_post %}
+    <div class="post">
+      {{ article.content | unsafe_markdown }}
+    </div>
+  {% endif %}
 </article>
