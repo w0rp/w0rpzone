@@ -3,7 +3,7 @@
 
 <article>
   <header>
-    {% if show_link %}
+    {% if not full_article %}
       {% url "article-detail" slug=article.slug as article_url %}
       <h2><a class="article_link" href="{{ article_url }}">{{article.title}}</a></h2>
     {% else %}
@@ -19,7 +19,7 @@
       </li>
     </ul>
   </header>
-  {% if show_post %}
+  {% if full_article %}
     <div class="post">
       {{ article.content | unsafe_markdown }}
     </div>

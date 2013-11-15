@@ -2,11 +2,13 @@ from django.conf.urls import patterns, include, url
 
 from w0rplib.url import redir
 
-from blog.views import (
+from .views import (
     ArticlePageView,
     ArticleDetailView,
     ArticleMonthArchiveView,
 )
+
+from .feed import LatestArticleFeed
 
 urlpatterns = patterns("blog.views",
     # Loading the main site gets you page 1.
@@ -28,5 +30,6 @@ urlpatterns = patterns("blog.views",
         ArticleMonthArchiveView.as_view(month_format="%m"),
         name= "article-archive"
     ),
+    (r"^latest/feed/$", LatestArticleFeed())
 )
 

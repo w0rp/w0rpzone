@@ -147,6 +147,16 @@ body > footer > .license a.license_image_link {
     margin-top: 2em;
 }
 
+#content > article > .post a {
+    color: #84D284;
+    text-decoration: none;
+}
+
+#content > article > .post a:before {
+    /* Right arrow, space */
+    content: "\2192\a0";
+}
+
 #content > article h2,
 #content > article h3,
 #content > article h4,
@@ -213,4 +223,54 @@ body > footer > .license a.license_image_link {
 > .time:before {
     content: "at ";
     font-style: italic;
+}
+
+/* Page navigation */
+
+#content > .page_navigation {
+    margin-bottom: 3em;
+}
+
+#content > .page_navigation a {
+    text-decoration: none;
+}
+
+#content > .page_navigation > ul {
+    position: relative;
+
+    padding: 0;
+
+    list-style-type: none;
+}
+#content > .page_navigation > ul > li {
+    position: absolute;
+
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#content > .page_navigation > ul > li > a {
+    display: block;
+
+    background-color: #2a2a34;
+    color: white;
+}
+
+#content > .page_navigation > ul > .next_page_link {
+    left: 0.25em;
+}
+
+#content > .page_navigation > ul > .next_page_link > a {
+    border-radius: 2em 0 0 2em;
+    padding: 0.5em 0.5em 0.5em 0.75em;
+}
+
+#content > .page_navigation > ul > .prev_page_link {
+    right: 0.25em;
+}
+
+#content > .page_navigation > ul > .prev_page_link > a {
+    border-radius: 0 2em 2em 0;
+    padding: 0.5em 0.75em 0.5em 0.5em;
 }

@@ -35,6 +35,9 @@ class Article(dj_model.Model):
     def __str__(self):
         return str(self.slug)
 
+    def get_absolute_url(self):
+        return url_reverse("article-detail", args=(self.slug,))
+
 class ArticleTag(dj_model.Model):
     """
     A tag for a blog article.
@@ -95,4 +98,3 @@ class ArticleComment(dj_model.Model):
 
     class Meta:
         db_table = "blog_articlecomment"
-

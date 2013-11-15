@@ -7,7 +7,24 @@
 {% block content %}
 
 {% for article in article_list %}
-  {% include "blog/include/article.dj.htm" with show_link=True show_post=True %}
+  {% include "blog/include/article.dj.htm" %}
 {% endfor %}
+
+<nav class="page_navigation">
+  <ul>
+    {% if page_obj.has_next %}
+      {% url "article-page" page=page_obj.next_page_number as next_url %}
+      <li class="next_page_link">
+        <a href="{{next_url}}">Older</a>
+      </li>
+    {% endif %}
+    {% if page_obj.has_previous %}
+      {% url "article-page" page=page_obj.previous_page_number as prev_url %}
+      <li class="prev_page_link">
+        <a href="{{prev_url}}">Newer</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
 
 {% endblock %}

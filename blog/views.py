@@ -17,10 +17,10 @@ class NavigationMixin(ContextMixin):
         return context
 
 class ArticlePageView (ListView, NavigationMixin):
-    model = models.Article
+    queryset = models.Article.objects.all().defer("content")
     context_object_name = "article_list"
     template_name = "blog/page.dj.htm"
-    paginate_by = 3
+    paginate_by = 10
 
 class ArticleDetailView (DetailView, NavigationMixin):
     model = models.Article
@@ -28,7 +28,7 @@ class ArticleDetailView (DetailView, NavigationMixin):
     template_name = "blog/detail.dj.htm"
 
 class ArticleMonthArchiveView (MonthArchiveView, NavigationMixin):
-    queryset = models.Article.objects.all()
+    queryset = models.Article.objects.all().defer("content")
     context_object_name = "article_list"
     date_field = "creation_date"
     make_object_list= True
