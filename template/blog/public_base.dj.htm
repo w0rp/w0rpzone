@@ -1,0 +1,22 @@
+{% extends "blog/base.dj.htm" %}
+
+{% block head %}
+  {{ block.super }}
+
+  <link rel="stylesheet" type="text/css" href="/media/css/blog/public.css" />
+{% endblock %}
+
+{% block main %}
+  <div class="content">{% block content %}{% endblock %}</div>
+  <nav>
+    <aside class="article_archive">
+      <header>Archive</header>
+      <ol>
+        {% for month in article_months %}
+          {% url "article-archive" year=month|date:"Y" month=month|date:"m" as article_url %}
+          <li><a href="{{article_url}}">{{ month | date:"F Y" }}</a></li>
+        {% endfor %}
+      </ol>
+    </aside>
+  </nav>
+{% endblock %}

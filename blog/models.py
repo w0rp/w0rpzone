@@ -38,6 +38,35 @@ class Article(dj_model.Model):
     def get_absolute_url(self):
         return url_reverse("article-detail", args=(self.slug,))
 
+    def replace_all_tags(self, tag_seq):
+        """
+        Replace all tags for an article object with a given sequence of tags.
+
+        Duplicates will be ignored. Tags not in the sequence will be removed.
+        """
+        ArticleTag.objects.filter(article=self).delete()
+
+        for tag in tag_seq:
+            tag_obj, created = ArticleTag.objects.get_or_create(
+                article= self,
+                tag= tag.lower(),
+            )
+
+            if created:
+                tag_obj.save()
+
+    def tags(self):
+        """
+        Generate all tags set for the article, in ascending order.
+        """
+        return (
+            x["tag"] for x in (
+                ArticleTag.objects.filter(article= self)
+                .order_by("tag")
+                .values("tag")
+            )
+        )
+
 class ArticleTag(dj_model.Model):
     """
     A tag for a blog article.
@@ -98,3 +127,4 @@ class ArticleComment(dj_model.Model):
 
     class Meta:
         db_table = "blog_articlecomment"
+

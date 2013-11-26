@@ -6,6 +6,8 @@ from .views import (
     ArticlePageView,
     ArticleDetailView,
     ArticleMonthArchiveView,
+    edit_article_view,
+    new_article_view,
 )
 
 from .feed import LatestArticleFeed
@@ -30,6 +32,8 @@ urlpatterns = patterns("blog.views",
         ArticleMonthArchiveView.as_view(month_format="%m"),
         name= "article-archive"
     ),
-    (r"^latest/feed/$", LatestArticleFeed())
+    (r"^latest/feed/$", LatestArticleFeed()),
+    url(r"^new/$", new_article_view),
+    url(r"^edit/(?P<slug>[\w-]+)/$", edit_article_view),
 )
 

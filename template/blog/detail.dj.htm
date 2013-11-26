@@ -1,6 +1,8 @@
-{% extends "blog/base.dj.htm" %}
+{% extends "blog/public_base.dj.htm" %}
 
 {% block head %}
+  {{ block.super }}
+
   <title>{{ article.title }} - w0rpzone</title>
 {% endblock %}
 

@@ -21,27 +21,17 @@
 
     <link rel="stylesheet" type="text/css" href="/media/css/inconsolata.css" />
     <link rel="stylesheet" type="text/css" href="/media/css/highlight_obsidian.css" />
-    <link rel="stylesheet" type="text/css" href="/media/css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="/media/css/blog/main.css" />
 
-    {% block head %}{% endblock %}
+    {% block head %}
+    {% endblock %}
   </head>
   <body>
     <header>
       <h1 class="blog_title"><a class="blog_link" href="/blog">The w0rpzone</a></h1>
     </header>
     <div id="main">
-      <div id="content">{% block content %}{% endblock %}</div>
-      <nav>
-        <aside class="article_archive">
-          <header>Archive</header>
-          <ol>
-            {% for month in article_months %}
-              {% url "article-archive" year=month|date:"Y" month=month|date:"m" as article_url %}
-              <li><a href="{{article_url}}">{{ month | date:"F Y" }}</a></li>
-            {% endfor %}
-          </ol>
-        </aside>
-      </nav>
+      {% block main %}{% endblock %}
     </div>
     <footer>
       <div class="license">

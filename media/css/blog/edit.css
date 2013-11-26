@@ -1,0 +1,25 @@
+#main > .post_edit {
+}
+
+#main > .post_edit > form {
+    width: 100%;
+}
+
+#main > .post_edit > form ul label {
+    width: 200px;
+}
+
+#main > .post_edit > form ul input,
+#main > .post_edit > form ul textarea {
+    width: 800px;
+}
+
+#main > .post_edit > form ul input {
+    font-size: 12pt;
+}
+
+#id_content {
+    font-family: "Inconsolata", monospace;
+
+    font-size: 14pt;
+}
