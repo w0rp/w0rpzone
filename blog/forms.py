@@ -27,7 +27,14 @@ class ArticleForm(dj_form.ModelForm):
 
     class Meta:
         model = Article
-        fields = ["title", "slug", "content", "creation_date"]
+        fields = [
+            "title",
+            "slug",
+            "content",
+            "creation_date",
+            "tags",
+            "active"
+        ]
 
     error_css_class = "error"
     tags = dj_form.CharField(required=False)

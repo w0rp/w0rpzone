@@ -3,6 +3,11 @@
 
 <article>
   <header>
+    {% if user.is_authenticated %}
+      <a href="{% url "blog.views.edit_article_view" article.slug %}">
+        <button type="button" class="edit_post">Edit Post</button>
+      </a>
+    {% endif %}
     {% if not full_article %}
       {% url "article-detail" slug=article.slug as article_url %}
       <h2><a class="article_link" href="{{ article_url }}">{{article.title}}</a></h2>

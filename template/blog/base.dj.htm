@@ -29,6 +29,14 @@
   <body>
     <header>
       <h1 class="blog_title"><a class="blog_link" href="/blog">The w0rpzone</a></h1>
+      {% if user.is_authenticated %}
+        <menu class="author_utils">
+          <span class="description">Author Tools</span>
+          <a href="{% url "blog.views.new_article_view" %}">
+          <button type="button">Add New Post</button>
+          </a>
+        </menu>
+      {% endif %}
     </header>
     <div id="main">
       {% block main %}{% endblock %}

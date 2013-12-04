@@ -1,25 +1,45 @@
 #main > .post_edit {
+    float: left;
+
+    width: 800px;
 }
 
 #main > .post_edit > form {
     width: 100%;
+
+    margin-bottom: 2em;
 }
 
-#main > .post_edit > form ul label {
-    width: 200px;
+#main > .post_edit > form > ul label {
+    width: 100px;
 }
 
-#main > .post_edit > form ul input,
-#main > .post_edit > form ul textarea {
-    width: 800px;
+#main > .post_edit > form > ul input,
+#main > .post_edit > form > ul textarea {
+    width: 700px;
 }
 
-#main > .post_edit > form ul input {
+#main > .post_edit > form > ul input {
     font-size: 12pt;
 }
 
 #id_content {
     font-family: "Inconsolata", monospace;
 
-    font-size: 14pt;
+    font-size: 12pt;
+}
+
+article.preview {
+    display: none;
+
+    margin: 0 0 2em 0;
+}
+
+form.busy,
+form.busy * {
+    cursor: wait;
+}
+
+#main > nav > button {
+    margin: 0.5em;
 }

@@ -23,6 +23,7 @@ class Article(dj_model.Model):
     An article on the blog.
     """
     author = dj_model.ForeignKey(User)
+    active = dj_model.BooleanField(default=False)
     creation_date = dj_model.DateTimeField()
     slug = dj_model.SlugField(max_length=255, unique=True)
     title = dj_model.CharField(max_length=255)

@@ -1,6 +1,10 @@
 {% extends "blog/base.dj.htm" %}
 
 {% block head %}
+  {{ block.super }}
+
+  <script src="/media/js/blog/edit.js"></script>
+
   <link rel="stylesheet" type="text/css" href="/media/css/blog/edit.css" />
 
   <title>Edit Post - w0rpzone</title>
@@ -9,16 +13,34 @@
 {% block main %}
 
 <div class="post_edit">
+  <article class="preview">
+    <header>
+      <h2></h2>
+      <ul class="post_metadata">
+        <li class="author"><a class="name">{{ user }}</a></li>
+        <li class="creation_date">
+          <span class="date">{% now "d F Y" %}</span>
+          <span class="time">{% now "H:i" %}</span>
+        </li>
+      </ul>
+    </header>
+    <div class="post"></div>
+  </article>
   <form action="" method="post">
     {% csrf_token %}
     <ul>
+      {% spaceless %}
       {{form.as_ul}}
+      {% endspaceless %}
       <li class="buttons">
-        <button name="button">Submit</button>
+        <button name="save">Save</button>
       </li>
     </ul>
 
   </form>
 </div>
+<nav>
+  <button type="button" class="toggle_preview_button">Toggle Preview</button>
+</nav>
 
 {% endblock %}

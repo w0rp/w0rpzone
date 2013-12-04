@@ -1,5 +1,5 @@
 /* Reset absolutely everything to border-box, which makes more sense */
-* {
+*, *:before, *:after {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
@@ -18,6 +18,28 @@ a {
     /* Reset link colors to inherit, so they don't differ. */
     color: inherit;
     cursor: pointer;
+}
+
+button {
+    padding: 0.5em;
+
+    font-size: 12pt;
+    font-family: "Droid Sans", sans-serif;
+
+    background-color: #444;
+    color: white;
+
+    border: 0;
+
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+button.toggled {
+    background-color: white;
+    color: #444;
 }
 
 pre {
@@ -198,7 +220,7 @@ form > ul {
     list-style-type: none;
 
     margin: 0;
-    padding: 1em 0;
+    padding: 0;
 }
 
 form > ul label {
@@ -218,21 +240,30 @@ form > ul > li {
     margin-top: 1em;
 }
 
+form > ul > li:first-child {
+    margin-top: 0;
+}
+
 form > ul > li {
+    text-align: left;
+}
+
+form > ul > li.buttons {
     text-align: center;
 }
 
-form > ul > li.error {
-    padding: 1em 0;
-
-    background-color: #7D3535;
-    color: white;
+form > ul > li.error > label {
+    font-style: italic;
 }
 
 form > ul > li.error > ul.errorlist {
+    background-color: #7D3535;
+    color: white;
+
     display: block;
 
-    padding: 0 0 1em 0;
+    padding: 0.5em 1em;
+    margin: 0 0 1em 0;
 
     list-style-type: none;
 }
@@ -241,4 +272,64 @@ form > ul > li.error > ul.errorlist > li {
     display: inline-block;
 
     font-weight: bold;
+}
+
+/* Main site sidebar navigation. */
+
+#main > nav {
+    float: right;
+
+    width: 200px;
+
+    padding: 10px;
+    margin: 0 5px 2em 0;
+
+    box-shadow: 5px 5px 10px 0 black;
+
+    border-radius: 5px 20px 5px 5px;
+
+    background-color: #2a2a34;
+    color: white;
+}
+
+#main > nav > aside {
+
+}
+
+#main > nav > aside > header {
+    text-align: center;
+    font-size: 14pt;
+}
+
+#main > nav > aside > ol {
+    font-size: 10pt;
+    padding: 0;
+
+    list-style-type: none;
+}
+
+#main > nav > aside > ol > li:not(:first-child) {
+    margin-top: 0.25em;
+}
+
+#main > nav > aside.article_archive {
+}
+
+/* Author tools */
+
+body > header > menu.author_utils {
+    background-color: #222;
+    color: white;
+
+    padding: 1em;
+
+    border-radius: 20px;
+}
+
+body > header > menu.author_utils > .description {
+    margin-right: 1em;
+}
+
+body > header > menu.author_utils > .description:after {
+    content: ":";
 }
