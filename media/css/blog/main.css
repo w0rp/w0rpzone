@@ -1,55 +1,18 @@
-/* Reset absolutely everything to border-box, which makes more sense */
-*, *:before, *:after {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-}
-
 body {
     background-color: #333;
     color: white;
-
-    padding: 0;
-    margin: 0;
-
-    font-family: "Droid Sans", sans-serif;
 }
 
-a {
-    /* Reset link colors to inherit, so they don't differ. */
-    color: inherit;
-    cursor: pointer;
-}
-
+a.button,
 button {
-    padding: 0.5em;
-
-    font-size: 12pt;
-    font-family: "Droid Sans", sans-serif;
-
     background-color: #444;
     color: white;
-
-    border: 0;
-
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 
+a.button.toggled,
 button.toggled {
     background-color: white;
     color: #444;
-}
-
-pre {
-    white-space: pre-wrap;
-}
-
-code {
-    font-size: 12pt;
-    font-family: "Inconsolata", monospace;
-    font-weight: normal;
 }
 
 input, textarea {
@@ -76,7 +39,8 @@ article:not(:first-child) {
 }
 
 article {
-    padding: 1em 1em 0.5em 1em;
+    padding: 1em 2em 0.5em 2em;
+    margin: 0 2em 0 0;
 
     font-size: 14pt;
 
@@ -107,9 +71,17 @@ article h5 {
     margin: 0.5em 0;
 }
 
+article p {
+    line-height: 1.5em;
+}
+
 article strong {
     font-weight: bold;
     color: #fff;
+}
+
+article pre > code {
+    padding: 0.5em;
 }
 
 article > header {
@@ -180,14 +152,21 @@ body > footer {
 
 /* The blog site header */
 
-body > header .blog_link {
-    text-decoration: none;
-}
-
 body > header .blog_title {
     margin: 1em 0;
 
     text-align: center;
+
+    text-shadow: black 5px 5px 10px;
+    font-family: "Inconsolata", monospace;
+
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+body > header .blog_link {
+    text-decoration: none;
 }
 
 /* The blog site footer */
@@ -310,9 +289,6 @@ form > ul > li.error > ul.errorlist > li {
 
 #main > nav > aside > ol > li:not(:first-child) {
     margin-top: 0.25em;
-}
-
-#main > nav > aside.article_archive {
 }
 
 /* Author tools */

@@ -4,8 +4,8 @@
 <article>
   <header>
     {% if user.is_authenticated %}
-      <a href="{% url "blog.views.edit_article_view" article.slug %}">
-        <button type="button" class="edit_post">Edit Post</button>
+      <a class="button" href="{% url "blog.views.edit_article_view" article.slug %}">
+        Edit Post
       </a>
     {% endif %}
     {% if not full_article %}

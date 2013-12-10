@@ -1,39 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+{% extends "global.dj.htm" %}
 
-    <!-- Licenses for software used in this page. -->
-    <link rel="license" type="text/plain" href="{{MEDIA_URL}}text/highlight_license" title="Licence for hightlight.js" />
+{% block head %}
+  <link rel="alternate" type="application/rss+xml" title="w0rpzone Articles Feed" href="/blog/latest/feed">
 
-    <link rel="alternate" type="application/rss+xml"
-      title="w0rpzone Articles Feed" href="/blog/latest/feed">
+  <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/blog/main.css" />
+{% endblock %}
 
-    {% if debug %}
-    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery-2.0.3.js"></script>
-    {% else %}
-    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery-2.0.3.min.js"></script>
-    {% endif %}
-
-    <script type="text/javascript" src="{{MEDIA_URL}}js/highlight.pack.js"></script>
-
-    <script type="text/javascript" src="{{MEDIA_URL}}js/soverflow_like_highlight.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/inconsolata.css" />
-    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/highlight_obsidian.css" />
-    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/blog/main.css" />
-
-    {% block head %}
-    {% endblock %}
-  </head>
-  <body>
+{% block body %}
     <header>
-      <h1 class="blog_title"><a class="blog_link" href="/blog">The w0rpzone</a></h1>
+      <h1 class="blog_title"><a class="blog_link" href="/blog">w0rpzone</a></h1>
       {% if user.is_authenticated %}
         <menu class="author_utils">
           <span class="description">Author Tools</span>
-          <a href="{% url "blog.views.new_article_view" %}">
-          <button type="button">Add New Post</button>
+          <a class="button" href="{% url "blog.views.new_article_view" %}">
+            Add New Post
+          </a>
+          <a class="button" href="{% url "django.contrib.auth.views.logout" %}?next={{ request.path }}">
+            Logout
           </a>
         </menu>
       {% endif %}
@@ -45,8 +28,8 @@
       <div class="license">
         <a class="license_image_link" rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
         All blog content is licensed to respective authors under a
+        wat
         <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
       </div>
     </footer>
-  </body>
-</html>
+{% endblock %}

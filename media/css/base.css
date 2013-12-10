@@ -1,0 +1,53 @@
+/* Base CSS styles for the entire website */
+
+/* Reset absolutely everything to border-box, which makes more sense */
+*, *:before, *:after {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+
+    font-family: "Droid Sans", sans-serif;
+}
+
+a {
+    /* Reset link colors to inherit, so they don't differ. */
+    color: inherit;
+    cursor: pointer;
+}
+
+a.button,
+button {
+    padding: 0.5em;
+
+    font-size: 12pt;
+    font-family: "Droid Sans", sans-serif;
+    text-decoration: none;
+
+    border: 0;
+
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+button + button,
+a.button + a.button,
+button + a.button,
+a.button + button {
+    margin-left: 1em;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+code {
+    font-size: 12pt;
+    font-family: "Inconsolata", monospace;
+    font-weight: normal;
+}

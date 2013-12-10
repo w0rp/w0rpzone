@@ -15,9 +15,14 @@ from .feed import LatestArticleFeed
 
 urlpatterns = patterns("blog.views",
     # Loading the main site gets you page 1.
-    (r"^$", ArticlePageView.as_view(), {"page": "1"}),
+    url(r"^$", ArticlePageView.as_view(), {"page": "1"},
+        name= "blog-home",
+    ),
     # Redirect the first page back to the blog main page, for SEO.
     redir(r"^page/0*1/$", "/blog"),
+    # Redirect appending "login" to the blog URL to the right login URL,
+    # which will redirect back to the blog.
+    redir(r"^login/$", "/login/?next=/blog"),
     url(
         r"^page/(?P<page>[\d]+)/$",
         ArticlePageView.as_view(),

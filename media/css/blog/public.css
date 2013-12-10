@@ -58,3 +58,9 @@
     border-radius: 0 2em 2em 0;
     padding: 0.5em 0.75em 0.5em 0.5em;
 }
+
+#main > nav > aside.article_archive > ol {
+    font-size: 12pt;
+    font-family: "Inconsolata", monospace;
+    font-weight: normal;
+}

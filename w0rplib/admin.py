@@ -1,6 +1,8 @@
 from django.contrib import admin as dj_admin
 from django.core.management.base import BaseCommand
 
+from functools import wraps
+
 def register_for(model):
     def inner(cls):
         dj_admin.site.register(model, cls)

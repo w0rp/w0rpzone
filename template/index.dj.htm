@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-  </head>
-  <body>
+{% extends "global.dj.htm" %}
+
+{% block head %}
+    <title>w0rp's Website</title>
+
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/index.css" />
+{% endblock %}
+
+{% block body %}
     <h1>Hey look, an index page.</h1>
     <ul>
       <li><a href="/blog">The Blog</a></li>
     </ul>
-  </body>
-</html>
+{% endblock %}
