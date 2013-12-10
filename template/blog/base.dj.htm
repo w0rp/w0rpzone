@@ -4,24 +4,24 @@
     <meta charset="UTF-8" />
 
     <!-- Licenses for software used in this page. -->
-    <link rel="license" type="text/plain" href="/media/text/highlight_license" title="Licence for hightlight.js" />
+    <link rel="license" type="text/plain" href="{{MEDIA_URL}}text/highlight_license" title="Licence for hightlight.js" />
 
     <link rel="alternate" type="application/rss+xml"
       title="w0rpzone Articles Feed" href="/blog/latest/feed">
 
     {% if debug %}
-    <script type="text/javascript" src="/media/js/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery-2.0.3.js"></script>
     {% else %}
-    <script type="text/javascript" src="/media/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery-2.0.3.min.js"></script>
     {% endif %}
 
-    <script type="text/javascript" src="/media/js/highlight.pack.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/highlight.pack.js"></script>
 
-    <script type="text/javascript" src="/media/js/soverflow_like_highlight.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/soverflow_like_highlight.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="/media/css/inconsolata.css" />
-    <link rel="stylesheet" type="text/css" href="/media/css/highlight_obsidian.css" />
-    <link rel="stylesheet" type="text/css" href="/media/css/blog/main.css" />
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/inconsolata.css" />
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/highlight_obsidian.css" />
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/blog/main.css" />
 
     {% block head %}
     {% endblock %}

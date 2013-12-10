@@ -27,11 +27,8 @@ urlpatterns += patterns("",
 
 if settings.DEBUG:
     # Serve media files via Django in DEBUG mode.
-    urlpatterns += patterns("",
-        url(r"^media/(?P<path>.*)$", "django.views.static.serve", {
-            "document_root": settings.MEDIA_ROOT
-        }),
-    )
+    urlpatterns += static(settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT)
 
     # Serve static files via Django in DEBUG mode.
     urlpatterns += static(settings.STATIC_URL,
