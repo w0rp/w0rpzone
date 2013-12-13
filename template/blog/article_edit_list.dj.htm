@@ -1,0 +1,33 @@
+{% extends "blog/base.dj.htm" %}
+
+{% block head %}
+  {{ block.super }}
+
+  <script src="{{MEDIA_URL}}js/blog/edit.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/blog/edit.css" />
+
+  <title>Edit Post - w0rpzone</title>
+{% endblock %}
+
+{% block main %}
+
+<div class="post_edit">
+  {% include "blog/include/edit_list_nav.dj.htm" %}
+  <ul>
+    {% for article in article_list %}
+      <li>
+        {% url "edit-article" slug=article.slug as article_url %}
+        <a class="article_link" href="{{ article_url }}">{{article.title}}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% include "blog/include/edit_list_nav.dj.htm" %}
+</div>
+<nav>
+  <aside>
+    <header>Edit Articles</header>
+  </aside>
+</nav>
+
+{% endblock %}

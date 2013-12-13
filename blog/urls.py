@@ -1,9 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.conf.urls import patterns, include, url
 
 from w0rplib.url import redir
 
 from .views import (
     ArticlePageView,
+    ArticleEditPageView,
     ArticleDetailView,
     ArticleMonthArchiveView,
     edit_article_view,
@@ -29,6 +31,11 @@ urlpatterns = patterns("blog.views",
         name= "article-page"
     ),
     url(
+        r"^edit-page/(?P<page>[\d]+)/$",
+        login_required(ArticleEditPageView.as_view()),
+        name= "article-edit-list"
+    ),
+    url(
         r"^post/(?P<slug>[\w-]+)/$",
         ArticleDetailView.as_view(),
         name= "article-detail"
@@ -38,9 +45,13 @@ urlpatterns = patterns("blog.views",
         ArticleMonthArchiveView.as_view(month_format="%m"),
         name= "article-archive"
     ),
-    (r"^latest/feed/$", LatestArticleFeed()),
+    url(r"^latest/feed/$", LatestArticleFeed()),
     url(r"^new/$", new_article_view),
-    url(r"^edit/(?P<slug>[\w-]+)/$", edit_article_view),
+    url(
+        r"^edit/(?P<slug>[\w-]+)/$",
+        edit_article_view,
+        name= "edit-article"
+    ),
     url(r"^preview_markdown/$", preview_markdown_view),
 )
 

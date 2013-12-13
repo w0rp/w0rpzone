@@ -5,6 +5,8 @@ import os
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+PIPELINE_ENABLED = True
+
 PROJECT_ROOT = os.path.dirname(__file__)
 
 ADMINS = ()
@@ -63,7 +65,7 @@ STATICFILES_DIRS = (
     "staticfiles",
 )
 
-ADMIN_REGEX = r'^controlcentre/'
+ADMIN_REGEX = r'^admin/'
 LOGIN_REGEX = r'^login/$'
 LOGIN_URL = "/login/"
 LOGOUT_REGEX = r'^logout/$'
@@ -97,6 +99,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     "django.middleware.gzip.GZipMiddleware",
+    "pipeline.middleware.MinifyHTMLMiddleware",
 )
 
 ROOT_URLCONF = 'urls'

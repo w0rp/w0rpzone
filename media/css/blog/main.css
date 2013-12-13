@@ -136,6 +136,8 @@ article > header > ul.post_metadata > li.creation_date
 
 article > header > ul.post_metadata > li.creation_date
 > .time:before {
+    margin-left: 0.5em;
+
     content: "at ";
     font-style: italic;
 }

@@ -38,6 +38,16 @@ class ArticlePageView (ArticleListMixin, ListView, NavigationMixin):
     template_name = "blog/page.dj.htm"
     paginate_by = 10
 
+class ArticleEditPageView(ListView):
+    queryset = (
+        models.Article.objects.all()
+        .defer("content")
+    )
+
+    context_object_name = "article_list"
+    template_name = "blog/article_edit_list.dj.htm"
+    paginate_by = 20
+
 class ArticleDetailView (DetailView, NavigationMixin):
     model = models.Article
     context_object_name = "article"
@@ -57,7 +67,7 @@ NavigationMixin):
 def edit_article_view(request, slug):
     article = get_object_or_404(models.Article, slug=slug)
 
-    form = forms.ArticleForm(request.POST or None, instance=article)
+    form = forms.EditArticleForm(request.POST or None, instance=article)
     updated = False
 
     if request.method == "POST" and form.is_valid():
@@ -66,9 +76,10 @@ def edit_article_view(request, slug):
 
         # When an edit works, reload the form to get the values
         # as they are set.
-        form = forms.ArticleForm(instance= article)
+        form = forms.EditArticleForm(instance= article)
 
     return render(request, "blog/post_edit.dj.htm", {
+        "article": article,
         "form": form,
         "updated": updated,
     })
@@ -76,7 +87,7 @@ def edit_article_view(request, slug):
 @login_required
 @transaction.atomic
 def new_article_view(request):
-    form = forms.ArticleForm(request.POST or None)
+    form = forms.NewArticleForm(request.POST or None)
 
     if not form.is_valid():
         return render(request, "blog/post_edit.dj.htm", {

@@ -29,9 +29,7 @@
   <form action="" method="post">
     {% csrf_token %}
     <ul>
-      {% spaceless %}
       {{form.as_ul}}
-      {% endspaceless %}
       <li class="buttons">
         <button name="save">Save</button>
       </li>
@@ -40,6 +38,10 @@
   </form>
 </div>
 <nav>
+  {% if article.active %}
+    {% url "article-detail" slug=article.slug as article_url %}
+    <a class="button" href="{{article_url}}">View Live Article</a>
+  {% endif %}
   <button type="button" class="toggle_preview_button">Toggle Preview</button>
 </nav>
 

@@ -15,7 +15,10 @@
           <a class="button" href="{% url "blog.views.new_article_view" %}">
             Add New Post
           </a>
-          <a class="button" href="{% url "django.contrib.auth.views.logout" %}?next={{ request.path }}">
+          <a class="button" href="{% url "article-edit-list" 1 %}">
+            All Posts
+          </a>
+          <a class="button" href="{% url "django.contrib.auth.views.logout" %}?next={% url "blog-home" %}">
             Logout
           </a>
         </menu>

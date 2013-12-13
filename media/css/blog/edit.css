@@ -40,6 +40,85 @@ form.busy * {
     cursor: wait;
 }
 
-#main > nav > button {
-    margin: 0.5em;
+#main > nav {
+    padding: 1em;
+}
+
+#main > nav > button,
+#main > nav > .button {
+    display: inline-block;
+
+    margin: 1em 0 0 0;
+
+    width: 100%;
+    text-align: center;
+}
+
+#main > nav > button:first-child,
+#main > nav > .button:first-child {
+    margin-top: 0;
+}
+
+#main > .post_edit > .page_navigation:first-child {
+    margin: 0 0 1em 0;
+}
+
+#main > .post_edit > .page_navigation:last-child {
+    margin: 1em 0 1em 0;
+}
+
+#main > .post_edit > .page_navigation > ul {
+    position: relative;
+
+    height: 2em;
+
+    margin: 0;
+    padding: 0;
+}
+
+#main > .post_edit > .page_navigation > ul > li {
+    position: absolute;
+
+    list-style-type: none;
+}
+
+#main > .post_edit > .page_navigation > ul > li > a {
+    display: block;
+}
+
+#main > .post_edit > .page_navigation > ul > .next_page_link {
+    top: 0;
+    left: 0;
+}
+
+#main > .post_edit > .page_navigation > ul > .prev_page_link {
+    top: 0;
+    right: 0;
+}
+
+#main > .post_edit > ul {
+    margin: 0 0 1em 0;
+    padding: 0;
+}
+
+#main > .post_edit > ul > li {
+    padding: 0.75em 1em;
+    margin-top: 0.75em;
+
+    border-radius: 1em;
+
+    list-style-type: none;
+
+    background: #222;
+    color: white;
+
+    box-shadow: 5px 5px 10px 0 black;
+}
+
+#main > .post_edit > ul > li:first-child {
+    margin-top: 0;
+}
+
+#main > .post_edit > ul > li > h2 {
+    margin: 0;
 }

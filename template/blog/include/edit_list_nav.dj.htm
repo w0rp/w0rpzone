@@ -1,0 +1,18 @@
+{% if page_obj.has_next or page_obj.has_previous %}
+<nav class="page_navigation">
+  <ul>
+    {% if page_obj.has_next %}
+      {% url "article-edit-list" page=page_obj.next_page_number as next_url %}
+      <li class="next_page_link">
+        <a class="button" href="{{next_url}}">Older</a>
+      </li>
+    {% endif %}
+    {% if page_obj.has_previous %}
+      {% url "article-edit-list" page=page_obj.previous_page_number as prev_url %}
+      <li class="prev_page_link">
+        <a class="button" href="{{prev_url}}">Newer</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
