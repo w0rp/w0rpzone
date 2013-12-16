@@ -1,14 +1,25 @@
 {% extends "global.dj.htm" %}
 
 {% block head %}
-    <title>w0rp's Website</title>
+    <title>w0rpzone</title>
 
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/index.css" />
 {% endblock %}
 
 {% block body %}
-    <h1>Hey look, an index page.</h1>
-    <ul>
-      <li><a href="/blog">The Blog</a></li>
-    </ul>
+    <header>
+      Enter the <em>w0rpzone</em>.
+    </header>
+    <!-- Ljubljana graph - by Koko90 on Wikipedia-->
+
+    <div class="blog_enter">
+      <a href="/blog">
+        <img src="{{MEDIA_URL}}image/ljubljana_graph_hamiltonian.svg"
+        alt="Enter the w0rp zone" title="Enter the w0rp zone"
+        class="blog_image"
+        width="200"
+        height="200"
+        />
+      </a>
+    </div>
 {% endblock %}

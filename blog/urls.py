@@ -10,6 +10,7 @@ from .views import (
     ArticleMonthArchiveView,
     edit_article_view,
     new_article_view,
+    DeleteArticleView,
     preview_markdown_view,
 )
 
@@ -29,6 +30,11 @@ urlpatterns = patterns("blog.views",
         r"^page/(?P<page>[\d]+)/$",
         ArticlePageView.as_view(),
         name= "article-page"
+    ),
+    url(
+        r"^delete/(?P<slug>[\w-]+)/$",
+        login_required(DeleteArticleView.as_view()),
+        name= "delete-article"
     ),
     url(
         r"^edit-page/(?P<page>[\d]+)/$",
@@ -54,4 +60,3 @@ urlpatterns = patterns("blog.views",
     ),
     url(r"^preview_markdown/$", preview_markdown_view),
 )
-

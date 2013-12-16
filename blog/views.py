@@ -8,10 +8,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse as url_reverse
 from django.db import transaction
+from django.views.generic.edit import DeleteView
+from django.core.urlresolvers import reverse_lazy
 
 from w0rplib.templatetags.markdown import unsafe_markdown
 
-from . import models
+from .models import Article
 from . import forms
 from . import query
 
@@ -27,7 +29,7 @@ class NavigationMixin(ContextMixin):
 
 class ArticleListMixin:
     queryset = (
-        models.Article.objects.all()
+        Article.objects.all()
         .filter(active= True)
         .defer("content")
     )
@@ -40,7 +42,7 @@ class ArticlePageView (ArticleListMixin, ListView, NavigationMixin):
 
 class ArticleEditPageView(ListView):
     queryset = (
-        models.Article.objects.all()
+        Article.objects.all()
         .defer("content")
     )
 
@@ -49,7 +51,7 @@ class ArticleEditPageView(ListView):
     paginate_by = 20
 
 class ArticleDetailView (DetailView, NavigationMixin):
-    model = models.Article
+    model = Article
     context_object_name = "article"
     template_name = "blog/detail.dj.htm"
 
@@ -65,7 +67,7 @@ NavigationMixin):
 @login_required
 @transaction.atomic
 def edit_article_view(request, slug):
-    article = get_object_or_404(models.Article, slug=slug)
+    article = get_object_or_404(Article, slug=slug)
 
     form = forms.EditArticleForm(request.POST or None, instance=article)
     updated = False
@@ -97,6 +99,17 @@ def new_article_view(request):
     article = form.save(author= request.user)
 
     return redirect(url_reverse(edit_article_view, args=[article.slug]))
+
+class DeleteArticleView(DeleteView):
+    model = Article
+    context_object_name = "article"
+    template_name = "blog/article_delete.dj.htm"
+    success_url = reverse_lazy(
+        "article-edit-list",
+        kwargs={
+            "page": 1,
+        }
+    )
 
 @login_required
 @csrf_exempt
