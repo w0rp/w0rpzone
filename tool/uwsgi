@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Figure out paths automatically.
+script_dir="$(dirname "$(realpath "$0")")"
+
+if (( $? )); then
+    echo 'Failed to determine script path!' 1>&2
+    exit 1
+fi
+
+project_dir="$(dirname "$script_dir")"
+project_name="$(basename "$project_dir")"
+project_dir_parent="$(dirname "$project_dir")"
+
+uwsgi_dir="$project_dir/uwsgi"
+sock_file="$uwsgi_dir/site.sock"
+pid_file="$uwsgi_dir/site.pid"
+
+stop_uwsgi() {
+    if [ -f "$pid_file" ]; then
+        kill `cat -- "$pid_file"`
+        rm -f -- "$pid_file"
+    fi
+
+    if [ -e "$sock_file" ]; then
+        rm -f -- "$sock_file"
+    fi
+}
+
+start_uwsgi() {
+    if [ ! -d "$uwsgi_dir" ]; then
+        mkdir -- "$uwsgi_dir"
+    fi
+
+    if [ ! -d "$uwsgi_dir" ]; then
+        echo 'Failed to create uwsgi directory!' 1>&2
+        exit 1
+    fi
+
+    source env/bin/activate
+
+    if (( $? )); then
+        echo 'Loading the virtualenv failed!' 1>&2
+        exit 1
+    fi
+
+    uwsgi --chdir="$project_dir_parent" \
+        --module="$project_name".wsgi:application \
+        --pythonpath="$project_dir" \
+        --socket "$sock_file" \
+        --pidfile "$pid_file" \
+        --daemonize="$uwsgi_dir/log"
+}
+
+case "$1" in
+stop)
+    stop_uwsgi
+;;
+start)
+    start_uwsgi
+;;
+restart)
+    stop_uwsgi
+    start_uwsgi
+;;
+*)
+    echo 'Please supply either stop, start, or restart' 2>&1
+;;
+esac
+

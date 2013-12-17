@@ -1,5 +1,6 @@
 # requirements.txt for w0rpzone, running Python 3.3
 
+uwsgi==1.9
 psycopg2==2.5.1
 markdown2==2.1.0
 django==1.6
