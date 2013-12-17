@@ -7,6 +7,7 @@ from django.contrib.auth.views import (
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import TemplateView
+from django.views.generic import RedirectView
 
 def templ(regex, template):
     return (regex, TemplateView.as_view(template_name= template + ".dj.htm"))
@@ -28,7 +29,12 @@ urlpatterns = patterns("",
 )
 
 urlpatterns += patterns("",
-    templ(r"^$", "index"),
+    # TODO: Implement a more meaningful homepage.
+    # templ(r"^$", "index"),
+    (r"^$", RedirectView.as_view(
+        url= "/blog/",
+        permanent= False,
+    )),
 )
 
 if settings.DEBUG:
