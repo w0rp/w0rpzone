@@ -1,313 +1,368 @@
-body {
-    background-color: #333;
-    color: white;
+/* Tiny screens and up. */
+@media screen {
+    body {
+        background-color: #333;
+        color: white;
+    }
+
+    a.button,
+    button {
+        background-color: #444;
+        color: white;
+    }
+
+    a.button.toggled,
+    button.toggled {
+        background-color: white;
+        color: #444;
+    }
+
+    input, textarea {
+        background-color: #111;
+        color: white;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    /* Articles */
+    article:not(:first-child) {
+        margin-top: 1em;
+    }
+
+    article {
+        padding: 1em 2em 0.5em 2em;
+
+        font-size: 14pt;
+
+        border-radius: 10px;
+
+        background-color: #222;
+        color: #eee;
+
+        word-wrap: break-word;
+    }
+
+    article pre > code {
+        padding: 0.5em;
+    }
+
+
+    article > .post a {
+        color: #84D284;
+        text-decoration: none;
+    }
+
+    article > .post a:before {
+        /* Right arrow, space */
+        content: "\2192\a0";
+    }
+
+    article h2,
+    article h3,
+    article h4,
+    article h5 {
+        margin: 0.5em 0;
+    }
+
+    article p {
+    }
+
+    article strong {
+        font-weight: bold;
+        color: #afa;
+    }
+
+    /* The article header */
+
+    article > header {
+        font-size: 14pt;
+
+        margin-bottom: 0.25em;
+    }
+
+    article > header h1 {
+        margin-bottom: 0.25em;
+    }
+
+    article > header .article_link {
+        text-decoration: none;
+    }
+
+    article > header .article_link:hover {
+        text-decoration: underline;
+    }
+
+    article > header > ul.post_metadata {
+        margin: 0;
+        padding: 0.125em 0.25em;
+
+        background-color: #262626;
+        color: #4C8E79;
+
+        font-family: "Inconsolata", monospace;
+
+        font-size: 1.5em;
+    }
+
+    article > header > ul.post_metadata > li {
+        display: inline-block;
+        margin: 0;
+    }
+
+    article > header > ul.post_metadata > li.author > .name {
+        font-style: normal;
+    }
+
+    article > header > ul.post_metadata > li.author > .name:before {
+        content: "By";
+        margin-right: 0.5em;
+
+        font-style: italic;
+    }
+
+    article > header > ul.post_metadata > li.creation_date {
+        margin-left: 0.25em;
+    }
+
+    article > header > ul.post_metadata > li.creation_date
+    > .date:before {
+        content: "on";
+        font-style: italic;
+        margin-right: 0.4em;
+    }
+
+    article > header > ul.post_metadata > li.creation_date
+    > .time:before {
+        content: "at";
+        font-style: italic;
+        margin: 0 0.4em;
+    }
+
+    /* The blog site header */
+    body > header .blog_title {
+        margin: 0.5em 0;
+
+        text-align: center;
+
+        text-shadow: black 5px 5px 10px;
+        font-family: "Inconsolata", monospace;
+        font-size: 40pt;
+
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+
+    body > header .blog_link {
+        text-decoration: none;
+    }
+
+    /* The blog site footer */
+    body > footer {
+        clear: both;
+
+        padding: 1em;
+        margin-bottom: 2em;
+
+        background-color: #2b2b2b;
+        color: white;
+    }
+
+    body > footer > * {
+        font-size: 10pt;
+    }
+
+    body > footer > .license {
+        text-align: center;
+    }
+
+    body > footer > .license * {
+        vertical-align: middle;
+    }
+
+    body > footer > .license a.license_image_link {
+        text-decoration: none;
+
+        margin-right: 1em;
+    }
+
+    /* Forms */
+    form > ul {
+        list-style-type: none;
+
+        margin: 0;
+        padding: 0;
+    }
+
+    form > ul label {
+        display: inline-block;
+    }
+
+    form > ul > li > * {
+        vertical-align: middle;
+    }
+
+    form > ul > li > label {
+        text-align: right;
+        padding: 0 1em;
+    }
+
+    form > ul > li {
+        margin-top: 1em;
+    }
+
+    form > ul > li:first-child {
+        margin-top: 0;
+    }
+
+    form > ul > li {
+        text-align: left;
+    }
+
+    form > ul > li.buttons {
+        text-align: center;
+    }
+
+    form > ul > li.error > label {
+        font-style: italic;
+    }
+
+    form > ul > li.error > ul.errorlist {
+        background-color: #7D3535;
+        color: white;
+
+        display: block;
+
+        padding: 0.5em 1em;
+        margin: 0 0 1em 0;
+
+        list-style-type: none;
+    }
+
+    form > ul > li.error > ul.errorlist > li {
+        display: inline-block;
+
+        font-weight: bold;
+    }
+
+    /* Main site sidebar navigation. */
+    #main > nav {
+        padding: 0.5em;
+        margin: 2em 0;
+
+        box-shadow: 5px 5px 10px 0 black;
+
+        border-radius: 5px 20px 5px 5px;
+
+        background-color: #2a2a34;
+        color: white;
+    }
+
+    #main > nav > aside > header {
+        text-align: center;
+        font-size: 14pt;
+    }
+
+    #main > nav > aside > ol {
+        font-size: 14pt;
+        padding: 0;
+
+        list-style-type: none;
+    }
+
+    #main > nav > aside > ol > li {
+        /* Aside lists are horizontal on small screens. */
+        display: inline-block;
+
+        margin-left: 1em;
+    }
+
+    #main > nav > aside > ol > li:not(:first-child) {
+        margin-top: 0.25em;
+    }
+
+    /* Author tools */
+
+    body > header > menu.author_utils {
+        background-color: #222;
+        color: white;
+
+        padding: 1em;
+
+        border-radius: 20px;
+    }
+
+    body > header > menu.author_utils > .description {
+        margin-right: 1em;
+    }
+
+    body > header > menu.author_utils > .description:after {
+        content: ":";
+    }
 }
 
-a.button,
-button {
-    background-color: #444;
-    color: white;
+/* Small size screens and up */
+@media screen and (min-width: 48em) {
 }
 
-a.button.toggled,
-button.toggled {
-    background-color: white;
-    color: #444;
+/* Medium size screens and up */
+@media screen and (min-width: 62em) {
+    /* Set the size of the pages in general. */
+    body > header,
+    #main,
+    body > footer {
+        width: 57em;
+        min-height: 1em;
+
+        margin: 0 auto;
+    }
+
+    #main > div {
+        float: left;
+
+        width: 44em;
+    }
+
+    /* Main site navigation as a sidebar */
+    #main > nav {
+        float: right;
+
+        width: 12em;
+        margin: 0 0 0 1em;
+    }
+
+    #main > nav > aside > ol > li {
+        /* Now the aside are on the side, make the lists vertical */
+        display: list-item;
+    }
+
+    article:not(:first-child) {
+        margin-top: 2em;
+    }
+
+    article {
+        margin: 0 2em 0 0;
+
+        box-shadow: 5px 5px 10px 0 black;
+        border-radius: 20px 5px 5px 5px;
+    }
+
+    input, textarea {
+        border: 1px solid white;
+
+        padding: 0.5em;
+    }
+
+    textarea {
+        /* Stop shrinking when size + padding is hit. */
+        min-height: 2em;
+        /* Enough initial height for 5 lines with padding. */
+        height: 6.5em;
+    }
 }
 
-input, textarea {
-    background-color: #111;
-    color: white;
-
-    border: 1px solid white;
-
-    padding: 0.5em;
-}
-
-textarea {
-    resize: vertical;
-    /* Stop shrinking when size + padding is hit. */
-    min-height: 2em;
-    /* Enough initial height for 5 lines with padding. */
-    height: 6.5em;
-}
-
-/* Articles */
-
-article:not(:first-child) {
-    margin-top: 2em;
-}
-
-article {
-    padding: 1em 2em 0.5em 2em;
-    margin: 0 2em 0 0;
-
-    font-size: 14pt;
-
-    background-color: #222;
-    color: #eee;
-
-    word-wrap: break-word;
-
-    box-shadow: 5px 5px 10px 0 black;
-
-    border-radius: 20px 5px 5px 5px;
-}
-
-article > .post a {
-    color: #84D284;
-    text-decoration: none;
-}
-
-article > .post a:before {
-    /* Right arrow, space */
-    content: "\2192\a0";
-}
-
-article h2,
-article h3,
-article h4,
-article h5 {
-    margin: 0.5em 0;
-}
-
-article p {
-    line-height: 1.5em;
-}
-
-article strong {
-    font-weight: bold;
-    color: #afa;
-}
-
-article pre > code {
-    padding: 0.5em;
-}
-
-article > header {
-    margin-bottom: 0.25em;
-}
-
-article > header .article_link {
-    text-decoration: none;
-}
-
-article > header .article_link:hover {
-    text-decoration: underline;
-}
-
-article > header > ul.post_metadata {
-    margin: 0;
-    padding: 0.125em 0.25em;
-
-    background-color: #262626;
-    color: #4C8E79;
-}
-
-article > header > ul.post_metadata > li {
-    display: inline-block;
-    margin: 0;
-
-    font-size: 12pt;
-}
-
-article > header > ul.post_metadata > li.author > .name {
-    font-style: normal;
-}
-
-article > header > ul.post_metadata > li.author > .name:before {
-    content: "By";
-    margin-right: 0.5em;
-
-    font-style: italic;
-}
-
-article > header > ul.post_metadata > li.creation_date {
-    margin-left: 0.25em;
-
-    font-family: monospace;
-}
-
-article > header > ul.post_metadata > li.creation_date
-> .date:before {
-    content: "on ";
-    font-style: italic;
-}
-
-article > header > ul.post_metadata > li.creation_date
-> .time:before {
-    margin-left: 0.5em;
-
-    content: "at ";
-    font-style: italic;
-}
-
-/* Set the size of the pages in general. */
-
-body > header,
-#main,
-body > footer {
-    width: 1024px;
-
-    margin: 0 auto;
-}
-
-/* The blog site header */
-
-body > header .blog_title {
-    margin: 1em 0;
-
-    text-align: center;
-
-    text-shadow: black 5px 5px 10px;
-    font-family: "Inconsolata", monospace;
-
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-}
-
-body > header .blog_link {
-    text-decoration: none;
-}
-
-/* The blog site footer */
-
-body > footer {
-    clear: both;
-
-    padding: 1em;
-    margin-bottom: 2em;
-
-    background-color: #2b2b2b;
-    color: white;
-
-    font-size: 10pt;
-}
-
-body > footer > .license * {
-    vertical-align: middle;
-}
-
-body > footer > .license a.license_image_link {
-    text-decoration: none;
-
-    margin-right: 1em;
-}
-
-/* Forms */
-
-form > ul {
-    list-style-type: none;
-
-    margin: 0;
-    padding: 0;
-}
-
-form > ul label {
-    display: inline-block;
-}
-
-form > ul > li > * {
-    vertical-align: middle;
-}
-
-form > ul > li > label {
-    text-align: right;
-    padding: 0 1em;
-}
-
-form > ul > li {
-    margin-top: 1em;
-}
-
-form > ul > li:first-child {
-    margin-top: 0;
-}
-
-form > ul > li {
-    text-align: left;
-}
-
-form > ul > li.buttons {
-    text-align: center;
-}
-
-form > ul > li.error > label {
-    font-style: italic;
-}
-
-form > ul > li.error > ul.errorlist {
-    background-color: #7D3535;
-    color: white;
-
-    display: block;
-
-    padding: 0.5em 1em;
-    margin: 0 0 1em 0;
-
-    list-style-type: none;
-}
-
-form > ul > li.error > ul.errorlist > li {
-    display: inline-block;
-
-    font-weight: bold;
-}
-
-/* Main site sidebar navigation. */
-
-#main > nav {
-    float: right;
-
-    width: 200px;
-
-    padding: 10px;
-    margin: 0 5px 2em 0;
-
-    box-shadow: 5px 5px 10px 0 black;
-
-    border-radius: 5px 20px 5px 5px;
-
-    background-color: #2a2a34;
-    color: white;
-}
-
-#main > nav > aside {
-
-}
-
-#main > nav > aside > header {
-    text-align: center;
-    font-size: 14pt;
-}
-
-#main > nav > aside > ol {
-    font-size: 10pt;
-    padding: 0;
-
-    list-style-type: none;
-}
-
-#main > nav > aside > ol > li:not(:first-child) {
-    margin-top: 0.25em;
-}
-
-/* Author tools */
-
-body > header > menu.author_utils {
-    background-color: #222;
-    color: white;
-
-    padding: 1em;
-
-    border-radius: 20px;
-}
-
-body > header > menu.author_utils > .description {
-    margin-right: 1em;
-}
-
-body > header > menu.author_utils > .description:after {
-    content: ":";
+/* Large screens */
+@media screen and (min-width: 75em) {
 }

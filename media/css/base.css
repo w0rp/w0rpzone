@@ -35,6 +35,26 @@ button {
     user-select: none;
 }
 
+h1 {
+    font-size: 1.5em;
+}
+
+h2 {
+    font-size: 1.4em;
+}
+
+h2 {
+    font-size: 1.3em;
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+h5 {
+    font-size: 1.1em;
+}
+
 button + button,
 a.button + a.button,
 button + a.button,
@@ -47,7 +67,31 @@ pre {
 }
 
 code {
-    font-size: 12pt;
     font-family: "Inconsolata", monospace;
     font-weight: normal;
+
+    /*
+     * Reset the line height to inherit so it inline code spans
+     * don't mess up line height.
+     */
+    line-height: inherit;
+}
+
+/* Tiny screens and up. */
+@media screen {
+    pre > code {
+        font-size: 10pt;
+    }
+}
+
+/* Small size screens and up */
+@media screen and (min-width: 48em) {
+}
+
+/* Medium size screens and up */
+@media screen and (min-width: 58em) {
+}
+
+/* Large screens */
+@media screen and (min-width: 75em) {
 }
