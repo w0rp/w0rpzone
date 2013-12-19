@@ -51,7 +51,11 @@ urlpatterns = patterns("blog.views",
         ArticleMonthArchiveView.as_view(month_format="%m"),
         name= "article-archive"
     ),
-    url(r"^latest/feed/$", LatestArticleFeed()),
+    url(
+        r"^latest/feed/$",
+        LatestArticleFeed(),
+        name= "article-feed"
+    ),
     url(r"^new/$", new_article_view),
     url(
         r"^edit/(?P<slug>[\w-]+)/$",
@@ -60,3 +64,4 @@ urlpatterns = patterns("blog.views",
     ),
     url(r"^preview_markdown/$", preview_markdown_view),
 )
+

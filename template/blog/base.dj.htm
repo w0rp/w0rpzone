@@ -56,6 +56,13 @@
               />
             </a>
           </li>
+          <li>
+            <a href="{% url "article-feed" %}">
+              <img src="{{MEDIA_URL}}image/simpleicons/rss.png" alt="Sound Cloud"
+              title="Subscribe to my articles"
+              />
+            </a>
+          </li>
         </ul>
       </nav>
       {% if user.is_authenticated %}
