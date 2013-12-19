@@ -79,9 +79,6 @@ code {
 
 /* Tiny screens and up. */
 @media screen {
-    pre > code {
-        font-size: 10pt;
-    }
 }
 
 /* Small size screens and up */

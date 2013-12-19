@@ -40,7 +40,7 @@ $(function() {
                 var $post = $article.children(".post");
 
                 // Set produced HTML in the preview article.
-                $article.find("header > h2").text(title);
+                $article.find("header > h1").text(title);
                 $post.html(html);
 
                 // Apply code highlighting to the generated text.

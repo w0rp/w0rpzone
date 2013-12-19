@@ -3,13 +3,13 @@
 /* Tiny screens and up. */
 @media screen {
     #main > .content {
-        margin-bottom: 2em;
+        margin-bottom: 1em;
     }
 
     /* Page navigation in content */
 
     #main > .content > .page_navigation {
-        margin-bottom: 3em;
+        margin-bottom: 4em;
     }
 
     #main > .content > .page_navigation a {
@@ -72,6 +72,10 @@
 @media screen and (min-width: 62em) {
     #main > nav > aside.article_archive > ol {
         font-size: 1em;
+    }
+
+    #main > .content > .page_navigation {
+        margin-bottom: 3em;
     }
 }
 

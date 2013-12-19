@@ -3,6 +3,18 @@
     #main > .post_edit > form {
         width: 100%;
         margin-bottom: 2em;
+
+        padding: 0 1em;
+    }
+
+    #main > .post_edit > form > ul label {
+        width: 20%;
+    }
+
+    #main > .post_edit > form > ul input,
+    #main > .post_edit > form > ul textarea {
+        width: 80%;
+        font-size: 1em;
     }
 
     #id_content {
@@ -106,6 +118,10 @@
 
 /* Medium size screens and up */
 @media screen and (min-width: 62em) {
+    #main > .post_edit > form {
+        padding: 0;
+    }
+
     #main > .post_edit > form > ul label {
         width: 8em;
     }
