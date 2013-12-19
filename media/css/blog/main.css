@@ -222,6 +222,11 @@
         text-align: center;
     }
 
+    form > ul > li.buttons > button,
+    form > ul > li.buttons > .button {
+        padding: 1em;
+    }
+
     form > ul > li.error > label {
         font-style: italic;
     }
