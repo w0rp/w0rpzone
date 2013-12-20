@@ -3,7 +3,13 @@
 {% block head %}
   {{ block.super }}
 
-  <title>w0rpzone</title>
+  {% if page_obj.number == 1 %}
+    <title>w0rpzone</title>
+    <meta name="description" content="The opinions of a cheery but stubborn programmer called &quot;w0rp.&quot;" />
+  {% else %}
+    <title>w0rpzone - Page {{page_obj.number}} </title>
+    <meta name="description" content="Article archive page {{page_obj.number}}" />
+  {% endif %}
 {% endblock %}
 
 {% block content %}

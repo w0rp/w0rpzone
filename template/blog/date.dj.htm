@@ -3,9 +3,8 @@
 {% block head %}
   {{ block.super }}
 
-  <title>w0rpzone</title>
-
-  {# TODO: Add canonical URL here. #}
+  <title>w0rpzone - {{month|date:"F Y"}}</title>
+  <meta name="description" content="Articles posted in {{month|date:"F Y"}}" />
 {% endblock %}
 
 {% block content %}
