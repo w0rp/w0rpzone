@@ -4,6 +4,7 @@
   {{ block.super }}
 
   <title>{{ article.title }} - w0rpzone</title>
+  <meta name="description" content="{{ article.content|slice:":160" }}" />
 {% endblock %}
 
 {% block content %}
