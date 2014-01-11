@@ -18,7 +18,7 @@ pid_file="$uwsgi_dir/site.pid"
 
 stop_uwsgi() {
     if [ -f "$pid_file" ]; then
-        kill `cat -- "$pid_file"`
+        kill -INT `cat -- "$pid_file"`
         rm -f -- "$pid_file"
     fi
 
@@ -47,8 +47,11 @@ start_uwsgi() {
     uwsgi --chdir="$project_dir_parent" \
         --module="$project_name".wsgi:application \
         --pythonpath="$project_dir" \
-        --socket "$sock_file" \
-        --pidfile "$pid_file" \
+        --protocol=uwsgi \
+        --socket="$sock_file" \
+        --pidfile="$pid_file" \
+        --master \
+        --reaper \
         --daemonize="$uwsgi_dir/log"
 }
 
