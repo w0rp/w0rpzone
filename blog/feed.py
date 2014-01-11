@@ -7,7 +7,11 @@ class LatestArticleFeed(Feed):
     link = "/blog/"
 
     def items(self):
-        return models.Article.objects.all().order_by("-creation_date")[:20]
+        return (
+            models.Article.objects
+            .filter(active= True)
+            .order_by("-creation_date")[:20]
+        )
 
     def item_title(self, item):
         return item.title
