@@ -24,6 +24,7 @@ class NavigationMixin(ContextMixin):
         context.update({
             "article_months" : (
                 Article.objects
+                .filter(active= True)
                 .datetimes("creation_date", "month", order="DESC")
             )
         })
