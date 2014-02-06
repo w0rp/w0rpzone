@@ -24,8 +24,6 @@ urlpatterns = patterns("",
     }),
     # Include all of the blog app urls.
     (r"^blog/", include("blog.urls")),
-    # Include all of the hording urls.
-    (r"^hording/", include("hording.urls")),
 )
 
 urlpatterns += patterns("",
