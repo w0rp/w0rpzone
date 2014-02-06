@@ -10,12 +10,12 @@ fi
 
 project_dir="$(dirname "$script_dir")"
 guni_dir="$project_dir/guni"
-sock_file="$uwsgi_dir/site.sock"
-pid_file="$uwsgi_dir/site.pid"
+sock_file="$guni_dir/site.sock"
+pid_file="$guni_dir/site.pid"
 
 stop_guni() {
     if [ -f "$pid_file" ]; then
-        kill -HUP `cat -- "$pid_file"`
+        kill `cat -- "$pid_file"`
         rm -f -- "$pid_file"
     fi
 
