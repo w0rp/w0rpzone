@@ -22,7 +22,10 @@ class NavigationMixin(ContextMixin):
         context = super().get_context_data(**kwargs)
 
         context.update({
-            "article_months" : query.all_article_months(),
+            "article_months" : (
+                Article.objects
+                .datetimes("creation_date", "month", order="DESC")
+            )
         })
 
         return context
