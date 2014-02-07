@@ -36,6 +36,7 @@ class ArticleListMixin:
         Article.objects.all()
         .filter(active= True)
         .defer("content")
+        .select_related("author")
     )
 
     context_object_name = "article_list"

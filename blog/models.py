@@ -32,6 +32,9 @@ class Article(dj_model.Model):
     class Meta:
         db_table = "blog_article"
         ordering = ["-creation_date"]
+        index_together = (
+            ("creation_date", "active"),
+        )
 
     def __str__(self):
         return str(self.slug)
