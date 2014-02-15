@@ -32,17 +32,20 @@
     }
 
     article {
-        padding: 1em 1em 0.5em 1em;
-
-        font-size: 14pt;
-
         background-color: #222;
         color: #eee;
+    }
+
+    article,
+    section.comment {
+        padding: 1em 1em 0.5em 1em;
+        font-size: 14pt;
 
         word-wrap: break-word;
     }
 
-    article pre > code {
+    article pre > code,
+    section.comment pre > code {
         font-size: 10pt;
     }
 
@@ -63,10 +66,7 @@
         margin: 0.5em 0;
     }
 
-    article p {
-    }
-
-    article strong {
+    article strong, {
         font-weight: bold;
         color: #afa;
     }
@@ -91,7 +91,7 @@
         text-decoration: underline;
     }
 
-    article > header > ul.post_metadata {
+    ul.post_metadata {
         margin: 0;
         padding: 0.125em 0.25em;
 
@@ -103,38 +103,87 @@
         font-size: 1.5em;
     }
 
-    article > header > ul.post_metadata > li {
+    ul.post_metadata > li {
         display: inline-block;
         margin: 0;
     }
 
-    article > header > ul.post_metadata > li.author > .name {
+    ul.post_metadata > li.author > .name {
         font-style: normal;
     }
 
-    article > header > ul.post_metadata > li.author > .name:before {
+    ul.post_metadata > li.author > .name:before {
         content: "By";
         margin-right: 0.5em;
 
         font-style: italic;
     }
 
-    article > header > ul.post_metadata > li.creation_date {
+    ul.post_metadata > li.creation_date {
         margin-left: 0.25em;
     }
 
-    article > header > ul.post_metadata > li.creation_date
+    ul.post_metadata > li.creation_date
     > .date:before {
         content: "on";
         font-style: italic;
         margin-right: 0.4em;
     }
 
-    article > header > ul.post_metadata > li.creation_date
+    ul.post_metadata > li.creation_date
     > .time:before {
         content: "at";
         font-style: italic;
         margin: 0 0.4em;
+    }
+
+    section.comment_list > h2 {
+        margin: 0.5em;
+
+        font-size: 24pt;
+    }
+
+    section.comment_list > form > ul label {
+        width: 10em;
+    }
+
+    section.comment_list > form > ul > li > * {
+        font-size: 12pt;
+    }
+
+    section.comment_list > form > ul input,
+    section.comment_list > form > ul textarea {
+        width: -webkit-calc(100% - 11em);
+        width: -moz-calc(100% - 11em);
+        width: calc(100% - 11em);
+
+        margin-right: 1em;
+    }
+
+    section.comment {
+        background-color: #222;
+        color: #eee;
+    }
+
+    section.comment:not(.first) {
+        margin-top: 1em;
+    }
+
+    section.comment > header {
+    }
+
+    section.comment > header a {
+        cursor: inherit;
+    }
+
+    section.comment > header > .buttons {
+        display: block;
+        margin: 0.5em 0 1em 0;
+    }
+
+    section.comment > header .poster_name {
+        display: block;
+        font-size: 2em;
     }
 
     /* The blog site header */
@@ -231,7 +280,7 @@
         font-style: italic;
     }
 
-    form > ul > li.error > ul.errorlist {
+    form > ul > li > ul.errorlist {
         background-color: #7D3535;
         color: white;
 
@@ -243,7 +292,7 @@
         list-style-type: none;
     }
 
-    form > ul > li.error > ul.errorlist > li {
+    form > ul > li > ul.errorlist > li {
         display: inline-block;
 
         font-weight: bold;
@@ -379,19 +428,21 @@
         border-radius: 20px;
     }
 
-    article:not(:first-child) {
+    article:not(:first-child),
+    section.comment {
         margin-top: 1.5em;
     }
 
-    article {
-        margin: 0 2em 0 0;
+    article,
+    section.comment {
         padding: 1em 2em 0.5em 2em;
 
         box-shadow: 5px 5px 10px 0 black;
         border-radius: 20px 5px 5px 5px;
     }
 
-    article pre > code {
+    article pre > code,
+    section.comment pre > code {
         font-size: 12pt;
     }
 

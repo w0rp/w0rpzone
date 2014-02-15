@@ -14,9 +14,11 @@
     <form action="" method="post" id="confirmation_form">
       {% csrf_token %}
       <p>{{message}}</p>
-      <li class="buttons">
-        <button name="apply_action">Confirm</button>
-      </li>
+      <ul>
+        <li class="buttons">
+          <button name="apply_action">Confirm</button>
+        </li>
+      </ul>
     </form>
   </section>
 {% endblock %}

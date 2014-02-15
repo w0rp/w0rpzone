@@ -1,4 +1,5 @@
 {% extends "blog/public_base.dj.htm" %}
+{% load tz %}
 {% load markdown %}
 
 {% block head %}
@@ -14,15 +15,29 @@
   {% include "blog/include/article.dj.htm" with full_article=True %}
 
   <section class="comment_list">
+    <h2>Post Your Comment</h2>
+    <form action="#last_comment" method="post" id="comment_form">
+      {% csrf_token %}
+      <ul>
+        {{comment_form.as_ul}}
+        <input type="text" id="id_title" name="title" class="ningen" value="" />
+        <input type="hidden" id="id_verify" name="verify" value="" />
+        <li class="buttons">
+          <button name="comment">Comment</button>
+        </li>
+      </ul>
+    </form>
+
+    <h2>Comments</h2>
     {% for comment in article.comments.all %}
-      <section class="comment">
+      <section class="comment {% if forloop.first %}first{% endif %}" id="comment_{{forloop.counter}}">
+        {% if forloop.last %}<a id="last_comment"></a>{% endif %}
         <header>
-          <a class="poster_name">{{comment.poster_name_or_default}}</a>
-          {% if user.is_authenticated %}
-            <a class="button" href="{% url "delete-comment" article.slug comment.id %}">
-              Delete Comment
-            </a>
-            {% spaceless %}
+          {% if user.is_authenticated %}{% spaceless %}
+            <div class="buttons">
+              <a class="button" href="{% url "delete-comment" article.slug comment.id %}">
+                Delete Comment
+              </a>
               {% if comment.commenter.is_banned %}
                 <a class="button" href="{% url "unban-comment" article.slug comment.commenter.id %}">
                   Unban Commenter
@@ -32,8 +47,17 @@
                   Ban Commenter
                 </a>
               {% endif %}
-            {% endspaceless %}
-          {% endif %}
+            </div>
+          {% endspaceless %}{% endif %}
+          <ul class="post_metadata">
+            <li class="author"><a class="name">{{comment.poster_name_or_default}}</a></li>
+            <li class="creation_date">
+              {% localtime on %}
+                <span class="date">{{comment.creation_date | date:"Y-m-d"}}</span>
+                <span class="time">{{comment.creation_date | date:"H:i"}}</span>
+              {% endlocaltime %}
+            </li>
+          </ul>
         </header>
         <section class="comment_body">
           {{comment.content|markdown}}
@@ -41,15 +65,4 @@
       </section>
     {% endfor %}
   </section>
-  <form action="#comment_form" method="post" id="comment_form">
-    {% csrf_token %}
-    <ul>
-      {{comment_form.as_ul}}
-      <input type="text" id="id_title" name="title" class="ningen" value="" />
-      <input type="hidden" id="id_verify" name="verify" value="" />
-      <li class="buttons">
-        <button name="comment">Comment</button>
-      </li>
-    </ul>
-  </form>
 {% endblock %}
