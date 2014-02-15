@@ -1,12 +1,55 @@
 {% extends "blog/public_base.dj.htm" %}
+{% load markdown %}
 
 {% block head %}
   {{ block.super }}
 
   <title>{{ article.title }} - w0rpzone</title>
   <meta name="description" content="{{ article.content|slice:":160" }}" />
+
+  <script src="{{MEDIA_URL}}js/blog/main.js"></script>
 {% endblock %}
 
 {% block content %}
   {% include "blog/include/article.dj.htm" with full_article=True %}
+
+  <section class="comment_list">
+    {% for comment in article.comments.all %}
+      <section class="comment">
+        <header>
+          <a class="poster_name">{{comment.poster_name_or_default}}</a>
+          {% if user.is_authenticated %}
+            <a class="button" href="{% url "delete-comment" article.slug comment.id %}">
+              Delete Comment
+            </a>
+            {% spaceless %}
+              {% if comment.commenter.is_banned %}
+                <a class="button" href="{% url "unban-comment" article.slug comment.commenter.id %}">
+                  Unban Commenter
+                </a>
+              {% else %}
+                <a class="button" href="{% url "ban-comment" article.slug comment.commenter.id %}">
+                  Ban Commenter
+                </a>
+              {% endif %}
+            {% endspaceless %}
+          {% endif %}
+        </header>
+        <section class="comment_body">
+          {{comment.content|markdown}}
+        </section>
+      </section>
+    {% endfor %}
+  </section>
+  <form action="#comment_form" method="post" id="comment_form">
+    {% csrf_token %}
+    <ul>
+      {{comment_form.as_ul}}
+      <input type="text" id="id_title" name="title" class="ningen" value="" />
+      <input type="hidden" id="id_verify" name="verify" value="" />
+      <li class="buttons">
+        <button name="comment">Comment</button>
+      </li>
+    </ul>
+  </form>
 {% endblock %}

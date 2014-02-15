@@ -15,7 +15,6 @@ def markdown(value):
         text= value,
         extras= ["fenced-code-blocks", "code-friendly"],
         safe_mode= True,
-        enable_attributes= False,
     ))
 
 # Not really safe, but Django needs to think it is.

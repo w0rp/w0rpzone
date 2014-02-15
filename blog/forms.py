@@ -1,11 +1,23 @@
 import datetime
 
 from django import forms as dj_form
-from .models import Article
 
-class ArticleForm(dj_form.ModelForm):
-    error_css_class = "error"
-    tags = dj_form.CharField(required=False)
+from django.forms import (
+    CharField,
+    HiddenInput,
+)
+
+from django.core.exceptions import ValidationError
+
+from w0rplib.form import ModelForm
+
+from .models import (
+    Article,
+    ArticleComment,
+)
+
+class ArticleForm(ModelForm):
+    tags = CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -15,18 +27,22 @@ class ArticleForm(dj_form.ModelForm):
         # Set the initial value for the tags field with the space-separated
         # tags for the article.
         if isinstance(article, Article):
-            self.fields["tags"].initial = " ".join(article.tags())
+            self.fields["tags"].initial = " ".join(
+                article.tags.all()
+                .order_by("tag")
+                .values_list("tag", flat= True)
+            )
 
 class NewArticleForm(ArticleForm):
     class Meta:
         model = Article
-        fields = [
+        fields = (
             "title",
             "slug",
             "content",
             "tags",
-            "active"
-        ]
+            "active",
+        )
 
     def save(self, author=None):
         article = super().save(commit=False)
@@ -34,7 +50,7 @@ class NewArticleForm(ArticleForm):
         if author is not None:
             article.author = author
 
-        article.creation_date = datetime.datetime.now()
+        article.creation_date = datetime.datetime.utcnow()
 
         article.save()
 
@@ -46,14 +62,14 @@ class NewArticleForm(ArticleForm):
 class EditArticleForm(ArticleForm):
     class Meta:
         model = Article
-        fields = [
+        fields = (
             "title",
             "slug",
             "content",
             "creation_date",
             "tags",
-            "active"
-        ]
+            "active",
+        )
 
     def save(self, author=None):
         article = super().save(commit=False)
@@ -67,4 +83,12 @@ class EditArticleForm(ArticleForm):
         article.replace_all_tags(self.cleaned_data["tags"].split())
 
         return article
+
+class ArticleCommentForm (ModelForm):
+    class Meta:
+        model = ArticleComment
+        fields = (
+            "poster_name",
+            "content",
+        )
 

@@ -1,0 +1,22 @@
+{% extends "blog/public_base.dj.htm" %}
+{% load markdown %}
+
+{% block head %}
+  {{ block.super }}
+
+  <title>Really Delete {{object_name}}?</title>
+
+  <script src="{{MEDIA_URL}}js/blog/main.js"></script>
+{% endblock %}
+
+{% block content %}
+  <section class="confirmation">
+    <form action="" method="post" id="confirmation_form">
+      {% csrf_token %}
+      <p>{{message}}</p>
+      <li class="buttons">
+        <button name="apply_action">Confirm</button>
+      </li>
+    </form>
+  </section>
+{% endblock %}

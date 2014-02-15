@@ -1,4 +1,5 @@
 {% extends "blog/base.dj.htm" %}
+{% load request %}
 
 {% block head %}
   {{ block.super }}
@@ -26,7 +27,7 @@
     </header>
     <div class="post"></div>
   </article>
-  <form action="" method="post">
+  <form action="{{request.path}}#comment" method="post">
     {% csrf_token %}
     <ul>
       {{form.as_ul}}

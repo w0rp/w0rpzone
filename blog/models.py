@@ -1,15 +1,34 @@
 import os.path
 import time
+import datetime
+from django.utils import timezone
 
-from django.db import models as dj_model
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse as url_reverse
+from django.core.exceptions import ObjectDoesNotExist
 
-class BlogAuthor(dj_model.Model):
+from django.db.models import (
+    Model,
+    ForeignKey,
+    TextField,
+    CharField,
+    BooleanField,
+    DateTimeField,
+    SlugField,
+    FileField,
+    GenericIPAddressField,
+)
+
+from .managers import (
+    ArticleManager,
+    CommenterManager,
+)
+
+class BlogAuthor(Model):
     """
     Users which can edit the blog posts.
     """
-    author = dj_model.ForeignKey(User, unique=True)
+    author = ForeignKey(User, unique=True)
 
     class Meta:
         # Tables are named explicitly to make direct SQL more predictable.
@@ -18,23 +37,25 @@ class BlogAuthor(dj_model.Model):
     def __str__(self):
         return str(self.author)
 
-class Article(dj_model.Model):
+class Article(Model):
     """
     An article on the blog.
     """
-    author = dj_model.ForeignKey(User)
-    active = dj_model.BooleanField(default=False)
-    creation_date = dj_model.DateTimeField()
-    slug = dj_model.SlugField(max_length=255, unique=True)
-    title = dj_model.CharField(max_length=255)
-    content = dj_model.TextField()
-
     class Meta:
         db_table = "blog_article"
         ordering = ["-creation_date"]
         index_together = (
             ("creation_date", "active"),
         )
+
+    author = ForeignKey(User)
+    active = BooleanField(default=False)
+    creation_date = DateTimeField()
+    slug = SlugField(max_length=255)
+    title = CharField(max_length=255)
+    content = TextField()
+
+    objects = ArticleManager()
 
     def __str__(self):
         return str(self.slug)
@@ -48,40 +69,25 @@ class Article(dj_model.Model):
 
         Duplicates will be ignored. Tags not in the sequence will be removed.
         """
-        ArticleTag.objects.filter(article=self).delete()
+        self.tags.clear()
 
-        for tag in tag_seq:
-            tag_obj, created = ArticleTag.objects.get_or_create(
-                article= self,
-                tag= tag.lower(),
-            )
+        ArticleTag.objects.bulk_create([
+            ArticleTag(article= self, tag= tag)
+            for tag in
+            set(tag_seq)
+        ])
 
-            if created:
-                tag_obj.save()
-
-    def tags(self):
-        """
-        Generate all tags set for the article, in ascending order.
-        """
-        return (
-            x["tag"] for x in (
-                ArticleTag.objects.filter(article= self)
-                .order_by("tag")
-                .values("tag")
-            )
-        )
-
-class ArticleTag(dj_model.Model):
+class ArticleTag(Model):
     """
     A tag for a blog article.
     """
-    article = dj_model.ForeignKey(Article)
-    # The tag is indexed for fast lookup.
-    tag = dj_model.CharField(max_length=255, db_index=True)
-
     class Meta:
         db_table = "blog_articletag"
         unique_together = ("article", "tag")
+
+    article = ForeignKey(Article, related_name= "tags")
+    # The tag is indexed for fast lookup.
+    tag = CharField(max_length=255, db_index=True)
 
     def __str__(self):
         return "{} - {}".format(self.tag, self.article)
@@ -110,25 +116,97 @@ def article_file_path(article, filename):
         file_extension(filename)
     )
 
-class ArticleFile(dj_model.Model):
+class ArticleFile(Model):
     """
     A file uploaded for an article.
     """
-    article = dj_model.ForeignKey(Article)
-    file = dj_model.FileField(upload_to=article_file_path)
-
     class Meta:
         db_table = "blog_articlefile"
 
-class ArticleComment(dj_model.Model):
+    article = ForeignKey(Article)
+    file = FileField(upload_to=article_file_path)
+
+class Commenter(Model):
+    ip_address = GenericIPAddressField(unique= True)
+    time_banned = DateTimeField(null=True, blank=True)
+
+    objects = CommenterManager()
+
+    def __str__(self):
+        return self.ip_address if self.ip_address is not None else "NULL"
+
+    @property
+    def is_banned(self):
+        """
+        Return True if this commenter has been banned.
+        """
+        return bool(self.pk and self.time_banned is not None)
+
+    def last_comment_time_or_none(self):
+        """
+        Return the last creation date for all comments tied to this object.
+
+        This time is None when the commenter doesn't yet exist in the database
+        or no comments exist for the commenter.
+        """
+        if not self.pk:
+            return None
+
+        try:
+            latest_comment = (
+                self.comments
+                .only("creation_date")
+                .latest()
+            )
+
+            return latest_comment.creation_date
+        except ObjectDoesNotExist:
+            return None
+
+    def is_comment_too_soon(self, timestamp):
+        """
+        Return True if this commenter is making another comment too soon.
+        """
+        assert isinstance(timestamp, datetime.datetime)
+
+        last_post_time = self.last_comment_time_or_none()
+
+        return (
+            last_post_time is not None
+            and (timestamp - last_post_time).total_seconds() < 30
+        )
+
+class ArticleComment(Model):
     """
     A comment on an article.
     """
-    article = dj_model.ForeignKey(Article)
-    creation_date = dj_model.DateTimeField(auto_now_add=True)
-    poster_name = dj_model.CharField(max_length=255)
-    content = dj_model.TextField()
+    DEFAULT_NAME = "Anonymous"
 
     class Meta:
         db_table = "blog_articlecomment"
+        ordering = ["creation_date"]
+        get_latest_by = "creation_date"
 
+    commenter = ForeignKey(Commenter, related_name="comments")
+    article = ForeignKey(Article, related_name="comments")
+    creation_date = DateTimeField(auto_now_add=True)
+    poster_name = CharField(max_length=255, blank=True)
+    content = TextField()
+
+    def __str__(self):
+        return "{}/{} - {}".format(
+            self.commenter,
+            self.poster_name,
+            self.creation_date.strftime("%Y-%m-%d %H:%M:%S"),
+        )
+
+    @property
+    def poster_name_or_default(self):
+        """
+        Return either the name the poster set or the DEFAULT_NAME
+        """
+        return (
+            self.poster_name
+            if self.poster_name.strip() else
+            self.DEFAULT_NAME
+        )

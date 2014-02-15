@@ -6,10 +6,13 @@ from w0rplib.url import redir
 from .views import (
     ArticlePageView,
     ArticleEditPageView,
-    ArticleDetailView,
+    article_detail_view,
     ArticleMonthArchiveView,
     edit_article_view,
     new_article_view,
+    article_delete_comment_view,
+    article_ban_commenter_view,
+    article_unban_commenter_view,
     DeleteArticleView,
     preview_markdown_view,
 )
@@ -43,8 +46,23 @@ urlpatterns = patterns("blog.views",
     ),
     url(
         r"^post/(?P<slug>[\w-]+)/$",
-        ArticleDetailView.as_view(),
+        article_detail_view,
         name= "article-detail"
+    ),
+    url(
+        r"^post/(?P<slug>[\w-]+)/delete-comment/(?P<pk>\d+)/$",
+        article_delete_comment_view,
+        name= "delete-comment"
+    ),
+    url(
+        r"^post/(?P<slug>[\w-]+)/ban-comment/(?P<pk>\d+)/$",
+        article_ban_commenter_view,
+        name= "ban-comment"
+    ),
+    url(
+        r"^post/(?P<slug>[\w-]+)/unban-comment/(?P<pk>\d+)/$",
+        article_unban_commenter_view,
+        name= "unban-comment"
     ),
     url(
         r"^date/(?P<year>\d{4})/(?P<month>1[0-2]|0[1-9])/$",

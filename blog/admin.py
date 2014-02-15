@@ -1,30 +1,131 @@
-from django.contrib import admin as dj_admin
+from html import escape as html_escape
 
-from . import models
+from django.core.urlresolvers import reverse as url_reverse
+from django.contrib.admin import site as admin_site
+from django.utils import timezone
 
-class BlogAuthorAdmin(dj_admin.ModelAdmin):
+from django.contrib.admin import (
+    ModelAdmin,
+    StackedInline,
+    TabularInline,
+)
+
+from .models import (
+    BlogAuthor,
+    Article,
+    ArticleTag,
+    ArticleFile,
+    Commenter,
+    ArticleComment,
+)
+
+class BlogAuthorAdmin (ModelAdmin):
     list_display = ("author", )
 
-class ArticleTagInline(dj_admin.StackedInline):
-    model = models.ArticleTag
+class ArticleTagInline (StackedInline):
+    model = ArticleTag
 
-class ArticleFileInline(dj_admin.StackedInline):
-    model = models.ArticleFile
+class ArticleFileInline (StackedInline):
+    model = ArticleFile
 
-class ArticleAdmin(dj_admin.ModelAdmin):
-    list_display = ("slug", "title", "author", "creation_date")
+class ArticleCommentInline (StackedInline):
+    model = ArticleComment
+
+class ArticleAdmin (ModelAdmin):
+    list_display = (
+        "slug",
+        "title",
+        "author",
+        "creation_date",
+    )
 
     inlines = [
         ArticleTagInline,
-        ArticleFileInline
+        ArticleFileInline,
+        ArticleCommentInline,
     ]
 
-class ArticleTagAdmin(dj_admin.ModelAdmin):
-    list_display = ("tag", "article")
+class CommenterAdmin (ModelAdmin):
+    list_display = (
+        "ip_address",
+        "time_banned",
+    )
 
-dj_admin.site.register(models.BlogAuthor, BlogAuthorAdmin)
-dj_admin.site.register(models.Article, ArticleAdmin)
-dj_admin.site.register(models.ArticleTag, ArticleTagAdmin)
-dj_admin.site.register(models.ArticleFile)
-dj_admin.site.register(models.ArticleComment)
+    inlines = [
+        ArticleCommentInline,
+    ]
+
+class ArticleTagAdmin (ModelAdmin):
+    list_display = (
+        "tag",
+        "article",
+    )
+
+class CommenterAdmin (ModelAdmin):
+    actions = (
+        "ban_all",
+        "unban_all",
+    )
+
+    list_display = (
+        "ip_address",
+        "time_banned",
+    )
+
+    def ban_all(self, request, queryset):
+        """
+        Issue a ban for all unbanned commenters.
+        """
+        (
+            queryset
+            .filter(time_banned__isnull= True)
+            .update(time_banned= timezone.now())
+        )
+
+    ban_all.short_description = "Ban all selected commenters."
+
+    def unban_all(self, request, queryset):
+        """
+        Unban all commenters.
+        """
+        queryset.update(time_banned= None)
+
+    unban_all.short_description = "Unban all selected commenters."
+
+class ArticleCommentAdmin (ModelAdmin):
+    fields = (
+        "commenter_link",
+        "article",
+        "poster_name",
+        "content",
+    )
+
+    readonly_fields = (
+        "commenter_link",
+        "article",
+    )
+
+    list_display = (
+        "article",
+        "poster_name",
+        "creation_date",
+    )
+
+    def commenter_link(self, obj):
+        if obj is None or not obj.pk:
+            return "(None)"
+
+        return '<a href="/admin/blog/commenter/{}/">{}</a>'.format(
+            obj.commenter.pk,
+            html_escape(obj.commenter.ip_address),
+        )
+
+    commenter_link.short_description = "Commenter"
+    commenter_link.allow_tags = True
+
+admin_site.register(BlogAuthor, BlogAuthorAdmin)
+admin_site.register(Article, ArticleAdmin)
+admin_site.register(ArticleTag, ArticleTagAdmin)
+admin_site.register(Commenter, CommenterAdmin)
+admin_site.register(ArticleComment, ArticleCommentAdmin)
 

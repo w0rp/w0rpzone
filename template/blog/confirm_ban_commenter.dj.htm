@@ -1,0 +1,23 @@
+{% extends "blog/public_base.dj.htm" %}
+{% load markdown %}
+
+{% block head %}
+  {{ block.super }}
+
+  <title>Really Delete {{object_name}}?</title>
+
+  <script src="{{MEDIA_URL}}js/blog/main.js"></script>
+{% endblock %}
+
+{% block content %}
+  <section class="confirmation">
+    <form action="" method="post" id="confirmation_form">
+      <p>
+        Do you really want to delete this commenter? ({{object}})
+      </p>
+      <li class="buttons">
+        <button name="ban">Ban Commenter</button>
+      </li>
+    </form>
+  </section>
+{% endblock %}
