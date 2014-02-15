@@ -3,7 +3,7 @@
 {% block head %}
   <link rel="alternate" type="application/rss+xml" title="w0rpzone Articles Feed" href="/blog/latest/feed">
 
-  <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/blog/main.css" />
+  <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/blog/main.css" />
 {% endblock %}
 
 {% block body %}
@@ -15,35 +15,35 @@
         <ul>
           <li>
             <a href="https://github.com/w0rp">
-              <img src="{{MEDIA_URL}}image/simpleicons/github.png" alt="GitHub"
+              <img src="{{STATIC_URL}}image/simpleicons/github.png" alt="GitHub"
               title="View, run, or modify my code (including this website)"
               />
             </a>
           </li>
           <li>
             <a href="https://twitter.com/w0rp">
-              <img src="{{MEDIA_URL}}image/simpleicons/twitter.png" alt="Twitter"
+              <img src="{{STATIC_URL}}image/simpleicons/twitter.png" alt="Twitter"
               title="Follow me on Twitter!"
               />
             </a>
           </li>
           <li>
             <a href="https://www.youtube.com/hyperw0rp/videos">
-              <img src="{{MEDIA_URL}}image/simpleicons/youtube.png" alt="YouTube"
+              <img src="{{STATIC_URL}}image/simpleicons/youtube.png" alt="YouTube"
               title="Watch my videos on YouTube"
               />
             </a>
           </li>
           <li>
             <a href="https://steamcommunity.com/id/w0rp">
-              <img src="{{MEDIA_URL}}image/simpleicons/steam.png" alt="Steam"
+              <img src="{{STATIC_URL}}image/simpleicons/steam.png" alt="Steam"
               title="Play video games with me on Steam"
               />
             </a>
           </li>
           <li>
             <a href="https://soundcloud.com/w0rp">
-              <img src="{{MEDIA_URL}}image/simpleicons/soundcloud.png" alt="Sound Cloud"
+              <img src="{{STATIC_URL}}image/simpleicons/soundcloud.png" alt="Sound Cloud"
               title="Listen to my free music and spoken word tracks"
               />
             </a>
@@ -51,14 +51,14 @@
         <!-- Additional email icon by dAKirby309 - http://www.iconarchive.com/artist/dakirby309.html -->
           <li>
             <a href="mailto:devw0rp@gmail.com">
-              <img src="{{MEDIA_URL}}image/email.png" alt="Email"
+              <img src="{{STATIC_URL}}image/email.png" alt="Email"
               title="Send me an email"
               />
             </a>
           </li>
           <li>
             <a href="{% url "article-feed" %}">
-              <img src="{{MEDIA_URL}}image/simpleicons/rss.png" alt="Sound Cloud"
+              <img src="{{STATIC_URL}}image/simpleicons/rss.png" alt="Sound Cloud"
               title="Subscribe to my articles"
               />
             </a>
