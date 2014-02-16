@@ -25,7 +25,7 @@ $(function() {
 
         // Send markdown content to the server-side parser.
         $.ajax({
-            url: "/blog/preview_safe_markdown/",
+            url: "/blog/preview-safe-markdown/",
             type: "POST",
             dataType: "html",
             data: {
