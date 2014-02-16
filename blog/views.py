@@ -101,9 +101,6 @@ def comment_on_article(article, request):
         comment.article = article
         comment.save()
 
-        # Reset the form now everything has been accepted.
-        comment_form = ArticleCommentForm()
-
     return comment_form
 
 def article_or_404(slug):
@@ -118,11 +115,20 @@ def article_or_404(slug):
 def article_detail_view(request, slug):
     article = article_or_404(slug)
 
+    comment_form = comment_on_article(article, request)
+
+    if comment_form.is_valid():
+        # Redirect away to make it hard to accidentally submit twice.
+        return redirect(url_reverse(
+            "article-comment-bounce",
+            args=[article.slug],
+        ))
+
     return render(request, "blog/detail.dj.htm", {
         "article": article,
         "article_months": Article.objects.active_months(),
         "comment_default_name": ArticleComment.DEFAULT_NAME,
-        "comment_form": comment_on_article(article, request)
+        "comment_form": comment_form,
     })
 
 @login_required
@@ -255,3 +261,13 @@ def preview_safe_markdown_view(request):
 
     return HttpResponse(markdown(text))
 
+def bounce_view(request, url):
+    return render(request, "blog/bounce.dj.htm", {
+        "url": url() if callable(url) else url,
+    })
+
+def article_bounce_view(request, slug):
+    return bounce_view(request, url_reverse(
+        article_detail_view,
+        kwargs= {"slug": slug},
+    ) + "#last_comment")

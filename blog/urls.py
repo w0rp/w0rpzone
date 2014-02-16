@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.conf.urls import patterns, include, url
 
-from w0rplib.url import redir
+from w0rplib.url import redir, redir_temp
 
 from .views import (
     ArticlePageView,
@@ -16,6 +16,7 @@ from .views import (
     DeleteArticleView,
     preview_markdown_view,
     preview_safe_markdown_view,
+    article_bounce_view,
 )
 
 from .feed import LatestArticleFeed
@@ -49,6 +50,11 @@ urlpatterns = patterns("blog.views",
         r"^post/(?P<slug>[\w-]+)/$",
         article_detail_view,
         name= "article-detail"
+    ),
+    url(
+        r"^post/(?P<slug>[\w-]+)/comment-bounce/$",
+        article_bounce_view,
+        name= "article-comment-bounce"
     ),
     url(
         r"^post/(?P<slug>[\w-]+)/delete-comment/(?P<pk>\d+)/$",
