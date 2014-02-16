@@ -69,7 +69,7 @@ class Article(Model):
 
         Duplicates will be ignored. Tags not in the sequence will be removed.
         """
-        self.tags.clear()
+        ArticleTag.objects.filter(article= self).delete()
 
         ArticleTag.objects.bulk_create([
             ArticleTag(article= self, tag= tag)
