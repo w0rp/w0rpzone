@@ -190,8 +190,14 @@ class ArticleComment(Model):
     commenter = ForeignKey(Commenter, related_name="comments")
     article = ForeignKey(Article, related_name="comments")
     creation_date = DateTimeField(auto_now_add=True)
-    poster_name = CharField(max_length=255, blank=True)
-    content = TextField()
+    poster_name = CharField(
+        verbose_name= "Name",
+        max_length=255,
+        blank=True,
+    )
+    content = TextField(
+        verbose_name= "Comment",
+    )
 
     def __str__(self):
         return "{}/{} - {}".format(
@@ -210,3 +216,4 @@ class ArticleComment(Model):
             if self.poster_name.strip() else
             self.DEFAULT_NAME
         )
+

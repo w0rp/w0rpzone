@@ -9,6 +9,7 @@
   <meta name="description" content="{{ article.content|slice:":160" }}" />
 
   <script src="{{STATIC_URL}}js/blog/main.js"></script>
+  <script src="{{STATIC_URL}}js/blog/comment.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -18,15 +19,72 @@
     <h2>Post Your Comment</h2>
     <form action="#last_comment" method="post" id="comment_form">
       {% csrf_token %}
+      <p class="markdown_help brief active">Need <a href="#" class="show_help">help</a> with comment formatting?</p>
+      <div class="markdown_help full">
+        <p>
+          Okay, here's a cheat sheet for you.
+          <a href="#" class="hide_help">Click here</a> to get rid of this.
+        </p>
+        <p>
+          Choose a help topic below.
+          Raw HTML is not allowed and will be replaced with ugly text.
+          <a target="_blank" href="https://daringfireball.net/projects/markdown/syntax">Other Markdown syntax</a>
+          is valid, but probably not relevant.
+        </p>
+        <div class="help_tabs">
+          <button type="button" class="tab emphasis active" data-topic="emphasis">Emphasis</button>
+          <button type="button" class="tab hyperlinks" data-topic="hyperlinks">Hyperlinks</button>
+          <button type="button" class="tab lists" data-topic="lists">Lists</button>
+          <button type="button" class="tab code" data-topic="code">Code</button>
+        </div>
+        <div class="help_topic emphasis active">
+<pre><code class="markdown">*italic* **bold**
+_italic_ __bold__</code></pre>
+        </div>
+        <div class="help_topic hyperlinks">
+<pre><code class="markdown">[text_here](http://some_url.com/ "Title text here")</code></pre>
+        </div>
+        <div class="help_topic lists">
+<pre><code class="markdown">1. Item #1
+2. Item #2
+
+* Unordered list item
+* Unordered list item</code></pre>
+        </div>
+        <div class="help_topic code">
+<pre><code class="markdown">Three backticks are your friend here: ```square = lambda x: x * x```
+
+Also in a block like so:
+
+```
+def square(x):
+  return x * x
+```</code></pre>
+        </div>
+      </div>
       <ul>
         {{comment_form.as_ul}}
         <input type="text" id="id_title" name="title" class="ningen" value="" />
         <input type="hidden" id="id_verify" name="verify" value="" />
         <li class="buttons">
+          <button type="button" class="show_preview">Preview</button>
           <button name="comment">Comment</button>
         </li>
       </ul>
     </form>
+    <section class="comment preview">
+      <header>
+        <div class="buttons"><button type="button" class="hide_preview">I'm Done Previwing</a></div>
+        <ul class="post_metadata">
+          <li class="author"><a class="name" data-default-name="{{comment_default_name}}"></a></li>
+          <li class="creation_date">
+            <span class="date">{% now "d F Y" %}</span>
+            <span class="time">{% now "H:i" %}</span>
+          </li>
+        </ul>
+      </header>
+      <section class="comment_body"></section>
+    </section>
 
     <h2>Comments</h2>
     {% for comment in article.comments.all %}

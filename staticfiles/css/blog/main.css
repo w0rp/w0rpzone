@@ -66,7 +66,8 @@
         margin: 0.5em 0;
     }
 
-    article strong, {
+    article strong,
+    section.comment strong {
         font-weight: bold;
         color: #afa;
     }
@@ -143,6 +144,57 @@
         font-size: 24pt;
     }
 
+    section.comment_list > form .markdown_help {
+        padding-left: 1em;
+    }
+
+    section.comment_list > form .markdown_help a {
+        color: #84D284;
+        text-decoration: none;
+    }
+
+    section.comment_list > form .markdown_help a:before {
+        /* Right arrow, space */
+        content: "\2192\a0";
+    }
+
+    section.comment_list > form .markdown_help pre code {
+        font-size: 14pt;
+    }
+
+    section.comment_list > form .markdown_help.brief {
+        display: none;
+    }
+
+    section.comment_list > form .markdown_help.brief.active {
+        display: block;
+    }
+
+    section.comment_list > form .markdown_help.full {
+        display: none;
+    }
+
+    section.comment_list > form .markdown_help.full.active {
+        display: block;
+    }
+
+    section.comment_list > form .markdown_help.full .help_topic {
+        display: none;
+    }
+
+    section.comment_list > form .markdown_help.full .help_topic.active {
+        display: block;
+    }
+
+    section.comment_list > form .markdown_help .help_tabs .tab.active {
+        background-color: #447;
+        color: #FFF;
+    }
+
+    section.comment_list > form .markdown_help .help_tabs .tab {
+        cursor: pointer;
+    }
+
     section.comment_list > form > ul label {
         width: 10em;
     }
@@ -169,7 +221,8 @@
         margin-top: 1em;
     }
 
-    section.comment > header {
+    section.comment.preview {
+        display: none;
     }
 
     section.comment > header a {

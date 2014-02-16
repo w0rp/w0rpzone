@@ -16,7 +16,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import Http404
 from django.utils import timezone
 
-from w0rplib.templatetags.markdown import unsafe_markdown
+from w0rplib.templatetags.markdown import unsafe_markdown, markdown
 
 from .models import (
     Article,
@@ -121,6 +121,7 @@ def article_detail_view(request, slug):
     return render(request, "blog/detail.dj.htm", {
         "article": article,
         "article_months": Article.objects.active_months(),
+        "comment_default_name": ArticleComment.DEFAULT_NAME,
         "comment_form": comment_on_article(article, request)
     })
 
@@ -244,4 +245,13 @@ def preview_markdown_view(request):
         return HttpResponse("No text supplied!", status=400)
 
     return HttpResponse(unsafe_markdown(text))
+
+@csrf_exempt
+def preview_safe_markdown_view(request):
+    text = request.POST.get("text")
+
+    if text is None:
+        return HttpResponse("No text supplied!", status=400)
+
+    return HttpResponse(markdown(text))
 

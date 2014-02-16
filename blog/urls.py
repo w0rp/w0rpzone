@@ -15,6 +15,7 @@ from .views import (
     article_unban_commenter_view,
     DeleteArticleView,
     preview_markdown_view,
+    preview_safe_markdown_view,
 )
 
 from .feed import LatestArticleFeed
@@ -81,5 +82,6 @@ urlpatterns = patterns("blog.views",
         name= "edit-article"
     ),
     url(r"^preview_markdown/$", preview_markdown_view),
+    url(r"^preview_safe_markdown/$", preview_safe_markdown_view),
 )
 

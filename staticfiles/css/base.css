@@ -35,6 +35,18 @@ button {
     user-select: none;
 
     background-image: none;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+button:focus {
+    outline: none;
+}
+
+button::-moz-focus-inner {
+    border: 0;
 }
 
 h1 {
