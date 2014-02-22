@@ -21,37 +21,23 @@ $(function() {
     }
 
     function generate_preview() {
-        $form.addClass("busy");
-
-        // Send markdown content to the server-side parser.
-        $.ajax({
-            url: "/blog/preview-safe-markdown/",
-            type: "POST",
-            dataType: "html",
-            data: {
-                text: $("#id_content").val()
-            },
-            error: function() {
-                $form.removeClass("busy");
-
-                // TODO: Handle request errors.
-            },
-            success: function(html) {
-                $form.removeClass("busy");
-
-                $name_field.text(
-                    $("#id_poster_name").val()
-                    || $name_field.data("default-name")
-                );
-
-                $comment_body.html(html);
-
-                // Apply code highlighting to the generated text.
-                HighlightCode.scan($comment_body);
-
-                switch_to_preview();
-            }
+        // Generate HTML with the JavaScript markdown parser.
+        var html = marked($("#id_content").val(), {
+            gfm: true,
+            sanitize: true
         });
+
+        $name_field.text(
+            $("#id_poster_name").val()
+            || $name_field.data("default-name")
+        );
+
+        $comment_body.html(html);
+
+        // Apply code highlighting to the generated text.
+        HighlightCode.scan($comment_body);
+
+        switch_to_preview();
     }
 
     $show_preview_button.click(function() {

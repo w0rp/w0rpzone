@@ -245,27 +245,6 @@ class DeleteArticleView(DeleteView):
         }
     )
 
-@csrf_exempt
-def preview_markdown_view(request):
-    if not request.user.is_authenticated():
-        return response_403(request);
-
-    text = request.POST.get("text")
-
-    if text is None:
-        return HttpResponse("No text supplied!", status=400)
-
-    return HttpResponse(unsafe_markdown(text))
-
-@csrf_exempt
-def preview_safe_markdown_view(request):
-    text = request.POST.get("text")
-
-    if text is None:
-        return HttpResponse("No text supplied!", status=400)
-
-    return HttpResponse(markdown(text))
-
 def bounce_view(request, url):
     return render(request, "blog/bounce.dj.htm", {
         "url": url() if callable(url) else url,

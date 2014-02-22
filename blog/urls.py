@@ -14,8 +14,6 @@ from .views import (
     article_ban_commenter_view,
     article_unban_commenter_view,
     DeleteArticleView,
-    preview_markdown_view,
-    preview_safe_markdown_view,
     article_bounce_view,
 )
 
@@ -87,7 +85,5 @@ urlpatterns = patterns("blog.views",
         edit_article_view,
         name= "edit-article"
     ),
-    url(r"^preview-markdown/$", preview_markdown_view),
-    url(r"^preview-safe-markdown/$", preview_safe_markdown_view),
 )
 
