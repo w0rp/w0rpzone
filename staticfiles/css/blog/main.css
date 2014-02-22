@@ -360,6 +360,10 @@
         color: white;
     }
 
+    #main > nav.fixed_when_big {
+        position: static;
+    }
+
     #main > nav > aside > header {
         text-align: center;
         font-size: 1.5em;
@@ -470,6 +474,13 @@
         border-radius: 5px 20px 5px 5px;
 
         box-shadow: 5px 5px 10px 0 black;
+    }
+
+    #main > nav.fixed_when_big {
+        position: fixed;
+        top: 10px;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
     #main > nav > aside > ol > li {
