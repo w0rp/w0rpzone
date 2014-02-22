@@ -87,7 +87,7 @@ urlpatterns = patterns("blog.views",
         edit_article_view,
         name= "edit-article"
     ),
-    url(r"^preview_markdown/$", preview_markdown_view),
-    url(r"^preview_safe_markdown/$", preview_safe_markdown_view),
+    url(r"^preview-markdown/$", preview_markdown_view),
+    url(r"^preview-safe-markdown/$", preview_safe_markdown_view),
 )
 

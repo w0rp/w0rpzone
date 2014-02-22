@@ -30,6 +30,9 @@ from .forms import (
     ArticleCommentForm,
 )
 
+def response_403(request):
+    return render(request, "403.html", {}, status= 403)
+
 class NavigationMixin(ContextMixin):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -242,9 +245,11 @@ class DeleteArticleView(DeleteView):
         }
     )
 
-@login_required
 @csrf_exempt
 def preview_markdown_view(request):
+    if not request.user.is_authenticated():
+        return response_403(request);
+
     text = request.POST.get("text")
 
     if text is None:
@@ -271,3 +276,4 @@ def article_bounce_view(request, slug):
         article_detail_view,
         kwargs= {"slug": slug},
     ) + "#last_comment")
+
