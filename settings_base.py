@@ -46,9 +46,6 @@ USE_TZ = True
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = "/media/"
 
 # Absolute path to the directory static files should be collected to.
@@ -57,18 +54,16 @@ MEDIA_URL = "/media/"
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static/")
 
-# URL prefix for static files.
-# Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = (
     "staticfiles",
 )
 
-ADMIN_REGEX = r'^admin/'
-LOGIN_REGEX = r'^login/$'
+ADMIN_REGEX = r"^admin/"
+LOGIN_REGEX = r"^login/$"
 LOGIN_URL = "/login/"
-LOGOUT_REGEX = r'^logout/$'
+LOGOUT_REGEX = r"^logout/$"
 LOGOUT_URL = "/logout/"
 
 LOGIN_REDIRECT_URL = "/"
@@ -102,10 +97,10 @@ MIDDLEWARE_CLASSES = (
     "pipeline.middleware.MinifyHTMLMiddleware",
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = "urls"
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = "wsgi.application"
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, "template"),
@@ -128,7 +123,7 @@ INSTALLED_APPS = (
     "blog",
 )
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
