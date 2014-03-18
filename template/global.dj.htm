@@ -24,6 +24,70 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-    {% block body %}{% endblock %}
+    <header>
+      <h1 class="site_title"><a class="site_link" href="/">w0rpzone</a></h1>
+      <nav>
+        <!-- Icons by Dan Leech - http://www.iconarchive.com/artist/danleech.html -->
+        <ul>
+          <li>
+            <a href="https://github.com/w0rp">
+              <img src="{{STATIC_URL}}image/simpleicons/github.png" alt="GitHub"
+              title="View, run, or modify my code (including this website)"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/w0rp">
+              <img src="{{STATIC_URL}}image/simpleicons/twitter.png" alt="Twitter"
+              title="Follow me on Twitter!"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/hyperw0rp/videos">
+              <img src="{{STATIC_URL}}image/simpleicons/youtube.png" alt="YouTube"
+              title="Watch my videos on YouTube"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://steamcommunity.com/id/w0rp">
+              <img src="{{STATIC_URL}}image/simpleicons/steam.png" alt="Steam"
+              title="Play video games with me on Steam"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://soundcloud.com/w0rp">
+              <img src="{{STATIC_URL}}image/simpleicons/soundcloud.png" alt="Sound Cloud"
+              title="Listen to my free music and spoken word tracks"
+              />
+            </a>
+          </li>
+        <!-- Additional email icon by dAKirby309 - http://www.iconarchive.com/artist/dakirby309.html -->
+          <li>
+            <a href="mailto:devw0rp@gmail.com">
+              <img src="{{STATIC_URL}}image/email.png" alt="Email"
+              title="Send me an email"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="{% url "article-feed" %}">
+              <img src="{{STATIC_URL}}image/simpleicons/rss.png" alt="Sound Cloud"
+              title="Subscribe to my articles"
+              />
+            </a>
+          </li>
+        </ul>
+      </nav>
+      {% block root_nav %}{% endblock %}
+    </header>
+    <div id="main">
+      {% block main %}{% endblock %}
+    </div>
+    <footer>
+      {% block footer %}{% endblock %}
+    </footer>
   </body>
 </html>

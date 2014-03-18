@@ -22,8 +22,8 @@ urlpatterns = patterns("",
     url(settings.LOGOUT_REGEX, logout_view, {
         "next_page": settings.LOGOUT_REDIRECT_URL,
     }),
-    # Include all of the blog app urls.
     (r"^blog/", include("blog.urls")),
+    (r"^project/", include("programming_projects.urls")),
 )
 
 urlpatterns += patterns("",

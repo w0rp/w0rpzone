@@ -8,8 +8,8 @@
     font-weight: normal;
 
     src: local("Droid Sans"),
-         url("/media/font/DroidSans.woff") format("woff"),
-         url("/media/font/DroidSans.ttf") format("truetype");
+         url("../font/DroidSans.woff") format("woff"),
+         url("../font/DroidSans.ttf") format("truetype");
 }
 
 @font-face {
@@ -17,6 +17,6 @@
     font-weight: bold;
 
     src: local("Droid Sans"),
-         url("/media/font/DroidSans_Bold.woff") format("woff"),
-         url("/media/font/DroidSans_Bold.ttf") format("truetype");
+         url("../font/DroidSans_Bold.woff") format("woff"),
+         url("../font/DroidSans_Bold.ttf") format("truetype");
 }

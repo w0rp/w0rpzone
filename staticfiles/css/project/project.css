@@ -1,0 +1,82 @@
+/* Tiny screens and up. */
+@media screen {
+    section.documentation {
+        background-color: #222;
+        border-radius: 20px;
+        padding: 1em;
+    }
+
+    .declaration {
+        font-family: "Inconsolata", monospace;
+
+        color: #eee;
+        text-shadow: 4px 2px 5px black;
+    }
+
+    .declaration > .name {
+        color: #84D284;
+    }
+
+    .parameter_list {
+    }
+
+    .declaration .parameter_name,
+    .parameter_list > dt > .parameter_name {
+        color: #84D284;
+    }
+
+    section.definition > .summary {
+        font-style: italic;
+    }
+
+    .parameter_list.caption {
+        font-weight: bold;
+    }
+
+    .parameter_list {
+        margin: 0.5em 0;
+        padding: 0.5em 1em;
+
+        background-color: #2d2d2d;
+        color: #fff;
+    }
+
+    .parameter_list > dt {
+        display: inline-block;
+        margin: 0.25em 0;
+
+        font-size: 1em;
+    }
+
+    .parameter_list > dt > .parameter_name {
+    }
+
+    .parameter_list > dd {
+        margin: 0 0 0 1em;
+    }
+
+    .parameter_list > dd:after {
+        content: "\A";
+        white-space: pre;
+    }
+
+    pre > code {
+        font-size: 12pt;
+        padding-left: 0;
+    }
+}
+
+/* Small size screens and up */
+@media screen and (min-width: 48em) {
+    section.definition {
+        margin-left: 2em;
+    }
+}
+
+/* Medium size screens and up */
+@media screen and (min-width: 62em) {
+}
+
+/* Large screens */
+@media screen and (min-width: 75em) {
+}

@@ -7,89 +7,28 @@
   <script src="{{STATIC_URL}}js/blog/main.js"></script>
 {% endblock %}
 
-{% block body %}
-    <header>
-      <h1 class="blog_title"><a class="blog_link" href="/blog">w0rpzone</a></h1>
-      {% block root_nav %}{% endblock %}
-      <nav>
-        <!-- Icons by Dan Leech - http://www.iconarchive.com/artist/danleech.html -->
-        <ul>
-          <li>
-            <a href="https://github.com/w0rp">
-              <img src="{{STATIC_URL}}image/simpleicons/github.png" alt="GitHub"
-              title="View, run, or modify my code (including this website)"
-              />
-            </a>
-          </li>
-          <li>
-            <a href="https://twitter.com/w0rp">
-              <img src="{{STATIC_URL}}image/simpleicons/twitter.png" alt="Twitter"
-              title="Follow me on Twitter!"
-              />
-            </a>
-          </li>
-          <li>
-            <a href="https://www.youtube.com/hyperw0rp/videos">
-              <img src="{{STATIC_URL}}image/simpleicons/youtube.png" alt="YouTube"
-              title="Watch my videos on YouTube"
-              />
-            </a>
-          </li>
-          <li>
-            <a href="https://steamcommunity.com/id/w0rp">
-              <img src="{{STATIC_URL}}image/simpleicons/steam.png" alt="Steam"
-              title="Play video games with me on Steam"
-              />
-            </a>
-          </li>
-          <li>
-            <a href="https://soundcloud.com/w0rp">
-              <img src="{{STATIC_URL}}image/simpleicons/soundcloud.png" alt="Sound Cloud"
-              title="Listen to my free music and spoken word tracks"
-              />
-            </a>
-          </li>
-        <!-- Additional email icon by dAKirby309 - http://www.iconarchive.com/artist/dakirby309.html -->
-          <li>
-            <a href="mailto:devw0rp@gmail.com">
-              <img src="{{STATIC_URL}}image/email.png" alt="Email"
-              title="Send me an email"
-              />
-            </a>
-          </li>
-          <li>
-            <a href="{% url "article-feed" %}">
-              <img src="{{STATIC_URL}}image/simpleicons/rss.png" alt="Sound Cloud"
-              title="Subscribe to my articles"
-              />
-            </a>
-          </li>
-        </ul>
-      </nav>
-      {% if user.is_authenticated %}
-        <menu class="author_utils">
-          <span class="description">Author Tools</span>
-          <a class="button" href="{% url "blog.views.new_article_view" %}">
-            Add New Post
-          </a>
-          <a class="button" href="{% url "article-edit-list" 1 %}">
-            All Posts
-          </a>
-          <a class="button" href="{% url "django.contrib.auth.views.logout" %}?next={% url "blog-home" %}">
-            Logout
-          </a>
-        </menu>
-      {% endif %}
-    </header>
-    <div id="main">
-      {% block main %}{% endblock %}
-    </div>
-    <footer>
-      <div class="license">
-        <a class="license_image_link" rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/3.0/88x31.png" /></a>
-        All blog content, unless otherwise noted, is licensed
-        by its respective authors under a
-        <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
-      </div>
-    </footer>
+{% block root_nav %}
+  {% if user.is_authenticated %}
+    <menu class="author_utils">
+      <span class="description">Author Tools</span>
+      <a class="button" href="{% url "blog.views.new_article_view" %}">
+        Add New Post
+      </a>
+      <a class="button" href="{% url "article-edit-list" 1 %}">
+        All Posts
+      </a>
+      <a class="button" href="{% url "django.contrib.auth.views.logout" %}?next={% url "blog-home" %}">
+        Logout
+      </a>
+    </menu>
+  {% endif %}
+{% endblock %}
+
+{% block footer %}
+  <div class="license">
+    <a class="license_image_link" rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+      All blog content, unless otherwise noted, is licensed
+      by its respective authors under a
+    <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+  </div>
 {% endblock %}

@@ -102,6 +102,68 @@ code {
 
 /* Tiny screens and up. */
 @media screen {
+    body {
+        background-color: #333;
+        color: white;
+    }
+
+    /* Author tools */
+    body > header > nav {
+    }
+
+    body > header > nav > ul {
+        list-style-type: none;
+        padding: 0;
+
+        text-align: center;
+    }
+
+    body > header > nav > ul > li:not(:first-child) {
+        margin-left: 0.5em;
+    }
+
+    body > header > nav > ul > li {
+        display: inline-block;
+    }
+
+    body > header > nav > ul > li > a > img {
+        width: 64px;
+        height: 64px;
+    }
+
+    body > header > menu.author_utils {
+        background-color: #222;
+        color: white;
+
+        padding: 1em;
+    }
+
+    body > header > menu.author_utils > .description {
+        margin-right: 1em;
+    }
+
+    body > header > menu.author_utils > .description:after {
+        content: ":";
+    }
+
+    /* The blog site header */
+    body > header .site_title {
+        margin: 0.5em 0;
+
+        text-align: center;
+
+        text-shadow: black 5px 5px 10px;
+        font-family: "Inconsolata", monospace;
+        font-size: 40pt;
+
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+
+    body > header .site_link {
+        text-decoration: none;
+    }
 }
 
 /* Small size screens and up */
@@ -109,7 +171,25 @@ code {
 }
 
 /* Medium size screens and up */
-@media screen and (min-width: 58em) {
+@media screen and (min-width: 62em) {
+    /* Set the size of the pages in general. */
+    body > header,
+    #main,
+    body > footer {
+        width: 57em;
+        min-height: 1em;
+
+        margin: 0 auto;
+    }
+
+    body > header > nav > ul {
+        padding: 0 2em;
+    }
+
+    body > header > nav > ul > li > a > img {
+        width: 48px;
+        height: 48px;
+    }
 }
 
 /* Large screens */

@@ -8,6 +8,6 @@
     font-weight: normal;
 
     src: local("Inconsolata"),
-         url("/media/font/Inconsolata.otf") format("opentype"),
-         url("/media/font/Inconsolata.woff") format("woff");
+         url("../font/Inconsolata.otf") format("opentype"),
+         url("../font/Inconsolata.woff") format("woff");
 }
