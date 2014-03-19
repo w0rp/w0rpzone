@@ -27,6 +27,9 @@ def post_process_ddoc(html):
         # Get an HTML string for the element.
         elem_string = lxml.html.tostring(elem).decode("utf-8")
 
+        # Get rid of the semicolon on functions and classes
+        elem_string = elem_string.replace(");", ")")
+
         # Correct some extra whitespace.
         elem_string = re.sub(
             THIS_SPACE_RE,
@@ -157,3 +160,4 @@ def generate_d_doc_tasks(project):
         )
 
     yield from (partial(doc_worker, *args) for args in find_d_files(project))
+

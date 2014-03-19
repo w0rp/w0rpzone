@@ -1,23 +1,40 @@
 /* Tiny screens and up. */
 @media screen {
-    section.documentation {
-        background-color: #222;
-        border-radius: 20px;
-        padding: 1em;
+    #main > nav > aside > ol {
+        font-family: "Inconsolata", monospace;
+        font-size: 12pt;
     }
 
-    .declaration {
+    #main > nav > menu  {
+        padding: 0 1em;
+    }
+
+    section.documentation {
+        background-color: #222;
+        padding: 1em;
+
+        box-shadow: 5px 5px 10px 0 black;
+        border-radius: 20px 5px 5px 5px;
+    }
+
+    section.documentation > h1 {
+        font-family: "Inconsolata", monospace;
+    }
+
+    section.documentation .declaration {
         font-family: "Inconsolata", monospace;
 
         color: #eee;
         text-shadow: 4px 2px 5px black;
+
+        font-size: 12pt;
     }
 
-    body.js .declaration {
+    body.js section.documentation .declaration {
         cursor: pointer;
     }
 
-    body.js .declaration.expandable:before {
+    body.js section.documentation .declaration.expandable:before {
         content: "+";
         margin-right: 0.5em;
 
@@ -25,41 +42,57 @@
         text-shadow: 4px 2px 5px black;
     }
 
-    body.js .declaration.expandable.open:before {
+    body.js section.documentation .declaration.expandable.open:before {
         content: "-";
 
         color: #f04;
     }
 
-    .declaration > .name {
+    section.documentation .declaration > .name {
         color: #84D284;
     }
 
-    .declaration > .template_constraint {
+    section.documentation .declaration > .template_constraint {
         font-style: italic;
     }
 
-    .parameter_list {
-    }
-
-    .declaration .parameter_name,
-    .parameter_list > dt > .parameter_name {
-        color: #84D284;
-    }
-
-    body.js .definition:not(.open) {
+    section.documentation.hide_template_constraints
+    .declaration > .template_constraint {
         display: none;
     }
 
-    .definition > .summary {
-        font-style: italic;
+    section.documentation .parameter_list {
     }
 
-    .parameter_list.caption {
+    section.documentation .declaration .parameter_name,
+    section.documentation .parameter_list > dt > .parameter_name {
+        color: #84D284;
+    }
+
+    body.js section.documentation .definition {
+        font-size: 12pt;
+    }
+
+    body.js section.documentation .definition:not(.open) > :not(.summary) {
+        display: none;
+    }
+
+    section.documentation > div > .summary,
+    section.documentation .definition > .summary {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+
+        padding: 0 0.25em;
+        max-width: 35em;
+
+        font-size: 12pt;
+    }
+
+    section.documentation .parameter_list.caption {
         font-weight: bold;
     }
 
-    .parameter_list {
+    section.documentation .parameter_list {
         margin: 0.5em 0;
         padding: 0.5em 1em;
 
@@ -67,26 +100,26 @@
         color: #fff;
     }
 
-    .parameter_list > dt {
+    section.documentation .parameter_list > dt {
         display: inline-block;
         margin: 0.25em 0;
 
         font-size: 1em;
     }
 
-    .parameter_list > dt > .parameter_name {
+    section.documentation .parameter_list > dt > .parameter_name {
     }
 
-    .parameter_list > dd {
+    section.documentation .parameter_list > dd {
         margin: 0 0 0 1em;
     }
 
-    .parameter_list > dd:after {
+    section.documentation .parameter_list > dd:after {
         content: "\A";
         white-space: pre;
     }
 
-    pre > code {
+    section.documentation pre > code {
         font-size: 12pt;
         padding-left: 0;
     }
@@ -94,13 +127,20 @@
 
 /* Small size screens and up */
 @media screen and (min-width: 48em) {
-    .definition {
+    section.documentation .definition {
         margin-left: 2em;
     }
 }
 
 /* Medium size screens and up */
 @media screen and (min-width: 62em) {
+    #main > nav > menu  {
+        padding: 0 1em;
+    }
+
+    #main > nav > menu > button {
+        width: 100%;
+    }
 }
 
 /* Large screens */

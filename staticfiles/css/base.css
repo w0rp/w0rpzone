@@ -102,6 +102,18 @@ code {
 
 /* Tiny screens and up. */
 @media screen {
+    a.button,
+    button {
+        background-color: #444;
+        color: white;
+    }
+
+    a.button.toggled,
+    button.toggled {
+        background-color: white;
+        color: #444;
+    }
+
     body {
         background-color: #333;
         color: white;
@@ -164,6 +176,49 @@ code {
     body > header .site_link {
         text-decoration: none;
     }
+
+    /* Main site navigation. */
+    #main > nav {
+        padding: 0.25em;
+        margin-bottom: 1em;
+
+        background-color: #2a2a34;
+        color: white;
+    }
+
+    #main > nav.fixed_when_big {
+        position: static;
+    }
+
+    #main > nav > aside > header {
+        text-align: center;
+        font-size: 1.5em;
+
+        margin: 0 auto 0.5em auto;
+        border-radius: 0.5em;
+
+        color: #eee;
+    }
+
+    #main > nav > aside > ol {
+        font-size: 14pt;
+        padding: 0;
+        margin: 0.5em 0;
+
+        list-style-type: none;
+    }
+
+    #main > nav > aside > ol > li {
+        /* Aside lists are horizontal on small screens. */
+        display: inline-block;
+
+        margin-left: 1em;
+    }
+
+    #main > nav > aside > ol > li:not(:first-child) {
+        margin-top: 0.25em;
+    }
+
 }
 
 /* Small size screens and up */
@@ -189,6 +244,36 @@ code {
     body > header > nav > ul > li > a > img {
         width: 48px;
         height: 48px;
+    }
+
+    #main > .content {
+        float: left;
+
+        width: 44em;
+    }
+
+    /* Main site navigation as a sidebar */
+    #main > nav {
+        float: right;
+
+        width: 12em;
+        margin: 0 0 0 1em;
+
+        border-radius: 5px 20px 5px 5px;
+
+        box-shadow: 5px 5px 10px 0 black;
+    }
+
+    #main > nav.fixed_when_big {
+        position: fixed;
+        top: 10px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    #main > nav > aside > ol > li {
+        /* Now the aside are on the side, make the lists vertical */
+        display: list-item;
     }
 }
 

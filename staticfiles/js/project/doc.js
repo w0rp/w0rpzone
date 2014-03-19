@@ -1,11 +1,36 @@
 $(function() {
     "use strict";
 
+    var $menu = $("#main > nav > menu");
+    var $doc = $("#main > .documentation");
+
+    var $toggle_constraint_button = $menu.find(".constraint_toggle");
+
     var $expandables = $("h2.declaration").filter(function() {
         return $(this).next(".definition").length > 0;
     });
 
-    $expandables.addClass("expandable");
+    function toggle_constraints_on() {
+        localStorage.setItem("constraints_on", "true");
+        $toggle_constraint_button.addClass("toggled");
+
+        $doc.removeClass("hide_template_constraints");
+    }
+
+    function toggle_constraints_off() {
+        localStorage.setItem("constraints_on", "false");
+        $toggle_constraint_button.removeClass("toggled");
+
+        $doc.addClass("hide_template_constraints");
+    }
+
+    $toggle_constraint_button.click(function() {
+        if (localStorage.getItem("constraints_on") === "false") {
+            toggle_constraints_on();
+        } else {
+            toggle_constraints_off();
+        }
+    });
 
     $expandables.click(function() {
         var $elem = $(this);
@@ -21,4 +46,10 @@ $(function() {
             $elem_def.addClass("open");
         }
     });
+
+    $expandables.addClass("expandable");
+
+    if (localStorage.getItem("constraints_on") === "false") {
+        toggle_constraints_off();
+    }
 });

@@ -65,6 +65,20 @@ class Project (Model):
             self.source_directory,
         ))
 
+    @property
+    def import_keyword(self):
+        if self.language == "d":
+            return "import"
+        else:
+            assert False
+
+    @property
+    def line_end(self):
+        if self.language == "d":
+            return ";"
+        else:
+            assert False
+
     def load_documentation(self, location):
         """
         Load a documentation object for this object.
@@ -123,4 +137,8 @@ class DDoc (Model):
     project = ForeignKey(Project, related_name="ddocs")
     location = CharField(max_length= 255)
     html = TextField()
+
+    @property
+    def namespace(self):
+        return self.location.replace("/", ".")
 

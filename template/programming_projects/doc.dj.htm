@@ -1,4 +1,5 @@
 {% extends "global.dj.htm" %}
+{% load text_formatting %}
 
 {% block head %}
   {{block.super}}
@@ -12,18 +13,23 @@
 {% endblock %}
 
 {% block main %}
-  <nav class="modules">
-    <ul>
-      {% for module in project.module_list %}
-        <li>
-          <a href="{% url "doc-single" project_slug=project.slug location=module.location %}">{{module.location}}</a>
-        </li>
-      {% endfor %}
-    </ul>
+  <nav class="module_nav">
+    <menu>
+      <button type="button" class="toggled constraint_toggle">Toggle Constraints</button>
+    </menu>
+    <aside>
+      <header>Modules</header>
+      <ol>
+        {% for module in project.module_list %}
+          <li>
+            <a href="{% url "doc-single" project_slug=project.slug location=module.location %}">{{module.namespace|word_break_on:"."}}</a>
+          </li>
+        {% endfor %}
+      </ol>
+    </aside>
   </nav>
-  <section class="documentation">
-    <h1>{{module.location}}</h1>
-
+  <section class="documentation content">
+    <h1>{{module.namespace|word_break_on:"."}}</h1>
     {{doc_body}}
   </section>
 {% endblock %}
