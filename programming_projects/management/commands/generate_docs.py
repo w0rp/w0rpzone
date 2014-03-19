@@ -1,176 +1,105 @@
 import os
 import sys
 import shutil
-import subprocess
 import tempfile
-from itertools import chain
+from optparse import make_option
 
-from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-from programming_projects.models import (
-    Project,
-    DDoc,
-)
+from programming_projects.models import Project
+from programming_projects.doc_generator.d import generate_d_doc_tasks
 
-class SettingsException(Exception):
-    pass
-
-def find_d_files(project):
+def check_d_settings(queryset):
     """
-    Given a Project, which defines a source directory, yield
-    pairs of (full_path_to_file, module_path)
+    Check settings for D projects for the project queryset, if any D
+    projects exist.
     """
-    top_dir = project.absolute_source_directory
-
-    for root, _, filename_list in os.walk(top_dir):
-        for filename in filename_list:
-            extension_length = 0
-
-            if filename.endswith(".d"):
-                extension_length = 2
-            elif filename.endswith(".di"):
-                extension_length = 3
-
-            if extension_length == 0:
-                continue
-
-            full_filename = os.path.join(root, filename)
-            module_location = full_filename[
-                len(top_dir) + 1 : -extension_length
-            ]
-
-            if os.path.sep != "/":
-                # On operating systems like say, Windows, force
-                # this into being / here.
-                module_location = module_location.replace(
-                    os.path.sep, "/"
-                )
-
-            yield (full_filename, module_location)
-
-def prepare_dmd_commandline(project):
-    """
-    Build a DMD commandline without the sources specified.
-    """
-    return tuple(chain(
-        (
-            "dmd",
-            # Don't generate object code.
-            "-o-",
-            # Include this source path.
-            "-I" + project.absolute_source_directory,
-        ),
-        (
-            "-I" + os.path.join(
-                settings.D_SOURCE_PARENT_DIR,
-                extra_source_directory
-            )
-            for extra_source_directory in
-            project.extra_source_list()
-        ),
-        (
-            settings.DDOC_TEMPLATE,
-        )
-    ))
-
-def generate_ddoc_html(project, dmd_commandline, source_filename):
-    """
-    Given a project, a previously prepared DMD commandline, and a
-    source filename, generate DDoc HTML for that source file.
-
-    The resulting HTML will be returned.
-    """
-    temp_filename = tempfile.mkstemp()[1]
-
-    try:
-        command = tuple(chain(
-            dmd_commandline,
-            (
-                # Write the doc to this temporary file.
-                "-Df" + temp_filename,
-                # Generate the doc from this source filename.
-                source_filename,
-            )
-        ))
-
-        # TODO: Raise errors from DMD here.
-        subprocess.check_call(command)
-
-        with open(temp_filename) as html_file:
-            return html_file.read()
-    finally:
-        # We must check if the file exists.
-        # Exceptions *can* remove it before we do.
-        if os.path.isfile(temp_filename):
-            os.remove(temp_filename)
-
-def generate_d_docs(project):
-    """
-    Generate all DDocs for a project and store them in the database.
-
-    All previously created DDocs will be deleted.
-    """
-    dmd_commandline = prepare_dmd_commandline(project)
-
-    with transaction.atomic():
-        # Delete all current DDocs.
-        project.ddocs.all().delete()
-
-        # Create them again.
-        for filename, module_path in find_d_files(project):
-            DDoc(
-                project= project,
-                location= module_path,
-                html= generate_ddoc_html(project, dmd_commandline, filename)
-            ).save()
-
-def generate_d_projects():
-    """
-    Generate documentation for every D project the site knows about.
-    """
-    d_projects = Project.objects.filter(language= "d")
-
-    if not d_projects:
+    if not queryset.filter(language= "d").exists():
         return
 
     if not hasattr(settings, "D_SOURCE_PARENT_DIR"):
-        raise SettingsException(
+        raise CommandError(
             "D_SOURCE_PARENT_DIR is not set in settings!"
         )
 
     if not hasattr(settings, "DDOC_TEMPLATE"):
-        raise SettingsException(
+        raise CommandError(
             "DDOC_TEMPLATE is not set in settings!"
         )
 
     if not os.path.exists(settings.DDOC_TEMPLATE):
-        raise SettingsException(
+        raise CommandError(
             "DDOC_TEMPLATE file does not exist! ({})".format(
                 settings.DDOC_TEMPLATE,
             )
         )
 
     if not shutil.which("dmd"):
-        raise SettingsException(
+        raise CommandError(
             "dmd could not be found in your path!"
         )
 
-    for project in d_projects:
-        generate_d_docs(project)
+def delete_previous_models(project_queryset):
+    for project in project_queryset:
+        if project.language == "d":
+            project.ddocs.all().delete()
+        else:
+            assert False, "Unhandled project type: " + project.language
 
-def generate_everything():
+def generate_model_tasks(project_queryset):
     """
-    Generate documentation for every single type of programming
-    project on the site.
+    Generate a sequence of tasks yielding model for generating
+    documentation. The models should be saved later in the main thread.
     """
-    try:
-        generate_d_projects()
-    except SettingsException as err:
-        sys.stderr.write(str(err))
-        sys.stderr.write("\nD documentation will not be generated!\n")
+    for project in project_queryset:
+        if project.language == "d":
+            yield from generate_d_doc_tasks(project)
+        else:
+            assert False, "Unhandled project type: " + project.language
+
+def parallel(iterator):
+    """
+    Given an iterator of zero argument functions, execute those
+    functions in a thread pool and yield the results.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+    from multiprocessing import cpu_count
+
+    with ThreadPoolExecutor(max_workers= cpu_count()) as executor:
+        yield from executor.map(lambda f: f(), iterator)
 
 class Command(BaseCommand):
+    option_list = BaseCommand.option_list + (
+        make_option("--all",
+            action= "store_true",
+            dest= "generate_all",
+            default= False,
+            help= "Generate documentation for all projects."
+        ),
+    )
+
     def handle(self, *args, **options):
-        generate_everything()
+        if options["generate_all"]:
+            queryset = Project.objects.all()
+        elif len(args) > 0:
+            queryset = Project.objects.filter(slug__in= args)
+        else:
+            raise CommandError(
+                "At least one project name should be given."
+            )
+
+        if not queryset:
+            raise CommandError(
+                "No projects were matched."
+            )
+
+        # Writes all have to happen in the main thread,
+        # this is because the DB API is not thread safe.
+        with transaction.atomic():
+            delete_previous_models(queryset)
+
+            # We'll do all of the doc processing in a few different threads.
+            for model in parallel(generate_model_tasks(queryset)):
+                model.save()

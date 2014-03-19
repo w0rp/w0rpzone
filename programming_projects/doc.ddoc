@@ -46,10 +46,10 @@ DDOC_KEYWORD = <span class="d_keyword">$0</span>
 DDOC_PARAM = <span class="parameter_name">$0</span>
 
 D_CODE = <pre><code class="d">$0</code></pre>
-D_KEYWORD = $(DDOC_KEYWORD $0)
-D_STRING = <span class="d_string">$0</span>
-D_PARAM = $(B $0)
-D_COMMENT = <span class="d_comment">$0</span>
+D_KEYWORD = $0
+D_STRING = $0
+D_PARAM = $0
+D_COMMENT = $0
 
 RPAREN = )
 LPAREN = (

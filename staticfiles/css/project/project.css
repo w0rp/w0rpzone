@@ -13,8 +13,30 @@
         text-shadow: 4px 2px 5px black;
     }
 
+    body.js .declaration {
+        cursor: pointer;
+    }
+
+    body.js .declaration.expandable:before {
+        content: "+";
+        margin-right: 0.5em;
+
+        color: #0f4;
+        text-shadow: 4px 2px 5px black;
+    }
+
+    body.js .declaration.expandable.open:before {
+        content: "-";
+
+        color: #f04;
+    }
+
     .declaration > .name {
         color: #84D284;
+    }
+
+    .declaration > .template_constraint {
+        font-style: italic;
     }
 
     .parameter_list {
@@ -25,7 +47,11 @@
         color: #84D284;
     }
 
-    section.definition > .summary {
+    body.js .definition:not(.open) {
+        display: none;
+    }
+
+    .definition > .summary {
         font-style: italic;
     }
 
@@ -68,7 +94,7 @@
 
 /* Small size screens and up */
 @media screen and (min-width: 48em) {
-    section.definition {
+    .definition {
         margin-left: 2em;
     }
 }
