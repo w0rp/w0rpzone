@@ -123,23 +123,47 @@ code {
         color: white;
     }
 
-    /* Author tools */
+    body > header .site_title,
     body > header > nav {
+        display: inline;
+        margin: 16px 16px;
+    }
+
+    /* The blog site header */
+    body > header .site_title {
+        float: left;
+
+        text-shadow: black 5px 5px 10px;
+        font-family: "Inconsolata", monospace;
+        font-size: 40pt;
+
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+
+    body > header .site_link {
+        text-decoration: none;
+    }
+
+    body > header > nav {
+        float: right;
     }
 
     body > header > nav > ul {
+        display: inline;
+
         list-style-type: none;
         padding: 0;
-
-        text-align: center;
-    }
-
-    body > header > nav > ul > li:not(:first-child) {
-        margin-left: 0.5em;
     }
 
     body > header > nav > ul > li {
         display: inline-block;
+        margin-right: 0.5em;
+    }
+
+    body > header > nav > ul > li:last-child {
+        margin-right: 0;
     }
 
     body > header > nav > ul > li > a > img {
@@ -148,6 +172,8 @@ code {
     }
 
     body > header > menu {
+        clear: both;
+
         background-color: #222;
         color: white;
 
@@ -176,25 +202,6 @@ code {
         margin-left: 0.5em;
         border-left: 1px solid #444;
         padding-left: 0.75em;
-    }
-
-    /* The blog site header */
-    body > header .site_title {
-        margin: 0.5em 0;
-
-        text-align: center;
-
-        text-shadow: black 5px 5px 10px;
-        font-family: "Inconsolata", monospace;
-        font-size: 40pt;
-
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-    }
-
-    body > header .site_link {
-        text-decoration: none;
     }
 
     /* Main site navigation. */
@@ -240,12 +247,32 @@ code {
 
 }
 
+@media screen and (max-width: 799px) {
+    body > header .site_title,
+    body > header > nav {
+        display: block;
+        float: none;
+    }
+
+    body > header .site_title {
+        text-align: center;
+    }
+
+    body > header > nav {
+    }
+}
+
 /* Small size screens and up */
 @media screen and (min-width: 48em) {
 }
 
 /* Medium size screens and up */
 @media screen and (min-width: 62em) {
+    body > header .site_title,
+    body > header > nav {
+        margin: 16px 0;
+    }
+
     /* Set the size of the pages in general. */
     body > header,
     #main,
@@ -268,10 +295,6 @@ code {
 
         width: 14em;
         margin: 0 0 0 1em;
-    }
-
-    body > header > nav > ul {
-        padding: 0 2em;
     }
 
     body > header > nav > ul > li > a > img {
