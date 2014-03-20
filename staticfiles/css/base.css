@@ -143,7 +143,7 @@ code {
         height: 64px;
     }
 
-    body > header > menu.author_utils {
+    body > header > menu {
         background-color: #222;
         color: white;
 
@@ -156,6 +156,20 @@ code {
 
     body > header > menu.author_utils > .description:after {
         content: ":";
+    }
+
+    body > header > menu > a:not(.button) {
+        padding: 0.25em 0.5em;
+        border-radius: 10px;
+
+        background-color: #666;
+        color: white;
+
+        text-decoration: none;
+    }
+
+    body > header > menu > a:not(.button) + a:not(.button) {
+        margin-left: 1em;
     }
 
     /* The blog site header */
@@ -244,6 +258,10 @@ code {
     body > header > nav > ul > li > a > img {
         width: 48px;
         height: 48px;
+    }
+
+    body > header > menu {
+        border-radius: 20px;
     }
 
     #main > .content {

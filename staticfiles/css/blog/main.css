@@ -322,16 +322,6 @@
 
 /* Medium size screens and up */
 @media screen and (min-width: 62em) {
-    #main > div {
-        float: left;
-
-        width: 44em;
-    }
-
-    body > header > menu.author_utils {
-        border-radius: 20px;
-    }
-
     article:not(:first-child),
     section.comment {
         margin-top: 1.5em;
