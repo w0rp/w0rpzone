@@ -84,8 +84,8 @@
         </ul>
       </nav>
       <menu>
-        <a href="{% url "blog-home" %}">Blog</a>
-        <a href="{% url "project-list" %}">Projects</a>
+        <a class="site_nav_link{% if main_nav == 'blog' %} active{% endif %}" href="{% url "blog-home" %}">Blog</a>
+        <a class="site_nav_link{% if main_nav == 'project' %} active{% endif %}" href="{% url "project-list" %}">Projects</a>
       </menu>
       {% block root_nav %}{% endblock %}
     </header>

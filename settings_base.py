@@ -85,6 +85,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
+    "misc.context_processors.navigation",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -120,6 +121,7 @@ INSTALLED_APPS = (
     "gunicorn",
     "south",
     "w0rplib",
+    "misc",
     "blog",
     "programming_projects",
 )

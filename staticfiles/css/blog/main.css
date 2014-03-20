@@ -322,6 +322,10 @@
 
 /* Medium size screens and up */
 @media screen and (min-width: 62em) {
+    #main > .content > .page_navigation {
+        margin-bottom: 3em;
+    }
+
     article:not(:first-child),
     section.comment {
         margin-top: 1.5em;
@@ -330,9 +334,6 @@
     article,
     section.comment {
         padding: 1em 2em 0.5em 2em;
-
-        box-shadow: 5px 5px 10px 0 black;
-        border-radius: 20px 5px 5px 5px;
     }
 
     article pre > code,

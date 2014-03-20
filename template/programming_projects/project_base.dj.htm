@@ -8,14 +8,11 @@
 {% endblock %}
 
 {% block main %}
+  {% block content %}{% endblock %}
   <nav class="module_nav">
     <aside>
-      <header>{{project.name}}</header>
+      <header><a href="{% url "project-summary" project_slug=project.slug %}">{{project.name}}</a></header>
       <ol>
-        <li>
-          <a href="{% url "project-summary" project_slug=project.slug %}"><strong>Project Summary</strong></a>
-        </li>
-
         {% for module in project.module_list %}
           <li>
             <a href="{% url "doc-single" project_slug=project.slug location=module.location %}">{{module.namespace|word_break_on:"."}}</a>
@@ -25,7 +22,6 @@
     </aside>
     {% block top_nav %}{% endblock %}
   </nav>
-  {% block content %}{% endblock %}
 {% endblock %}
 
 {% block footer %}

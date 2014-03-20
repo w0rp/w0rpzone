@@ -102,6 +102,10 @@ code {
 
 /* Tiny screens and up. */
 @media screen {
+    #main > nav {
+        margin-top: 4em;
+    }
+
     a.button,
     button {
         background-color: #444;
@@ -158,18 +162,20 @@ code {
         content: ":";
     }
 
-    body > header > menu > a:not(.button) {
-        padding: 0.25em 0.5em;
-        border-radius: 10px;
-
-        background-color: #666;
-        color: white;
+    body > header > menu > .site_nav_link {
+        padding: 0.25em;
 
         text-decoration: none;
     }
 
-    body > header > menu > a:not(.button) + a:not(.button) {
-        margin-left: 1em;
+    body > header > menu > .site_nav_link.active {
+        font-weight: bold;
+    }
+
+    body > header > menu > .site_nav_link + .site_nav_link {
+        margin-left: 0.5em;
+        border-left: 1px solid #444;
+        padding-left: 0.75em;
     }
 
     /* The blog site header */
@@ -193,7 +199,6 @@ code {
 
     /* Main site navigation. */
     #main > nav {
-        padding: 0.25em;
         margin-bottom: 1em;
 
         background-color: #2a2a34;
@@ -208,15 +213,15 @@ code {
         text-align: center;
         font-size: 1.5em;
 
-        margin: 0 auto 0.5em auto;
-        border-radius: 0.5em;
-
         color: #eee;
+        background-color: #222;
+
+        padding: 0.25em 0;
     }
 
     #main > nav > aside > ol {
         font-size: 14pt;
-        padding: 0;
+        padding: 0 0 0.5em 0;
         margin: 0.5em 0;
 
         list-style-type: none;
@@ -245,23 +250,10 @@ code {
     body > header,
     #main,
     body > footer {
-        width: 57em;
+        width: 60em;
         min-height: 1em;
 
         margin: 0 auto;
-    }
-
-    body > header > nav > ul {
-        padding: 0 2em;
-    }
-
-    body > header > nav > ul > li > a > img {
-        width: 48px;
-        height: 48px;
-    }
-
-    body > header > menu {
-        border-radius: 20px;
     }
 
     #main > .content {
@@ -274,12 +266,17 @@ code {
     #main > nav {
         float: right;
 
-        width: 12em;
+        width: 14em;
         margin: 0 0 0 1em;
+    }
 
-        border-radius: 5px 20px 5px 5px;
+    body > header > nav > ul {
+        padding: 0 2em;
+    }
 
-        box-shadow: 5px 5px 10px 0 black;
+    body > header > nav > ul > li > a > img {
+        width: 48px;
+        height: 48px;
     }
 
     #main > nav.fixed_when_big {
@@ -297,4 +294,19 @@ code {
 
 /* Large screens */
 @media screen and (min-width: 75em) {
+    /* Increase sizes on larger screens. */
+    body > header,
+    #main,
+    body > footer {
+        width: 73em;
+    }
+
+    #main > .content {
+        width: 53em;
+    }
+
+    #main > nav {
+        width: 18em;
+        margin: 0 0 0 1em;
+    }
 }

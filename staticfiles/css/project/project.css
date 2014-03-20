@@ -2,7 +2,6 @@
 @media screen {
     #main > nav > aside > ol {
         font-family: "Inconsolata", monospace;
-        font-size: 12pt;
     }
 
     #main > nav > menu  {
@@ -15,9 +14,10 @@
         background-color: #222;
         padding: 1em;
         min-height: 10em;
+    }
 
-        box-shadow: 5px 5px 10px 0 black;
-        border-radius: 20px 5px 5px 5px;
+    #main > nav.module_nav {
+        min-height: 10em;
     }
 
     section.project_list > table {
@@ -37,15 +37,22 @@
 
     section.project_list > table > * > tr > .name {
         width: 12em;
+
+        text-align: left;
+    }
+
+    section.project_list > table > * > tr > .summary {
+        text-align: left;
     }
 
     section.project_list > table > * > tr > .time {
         width: 12em;
+
+        text-align: right;
     }
 
     section.project_list > table > tbody > tr > .time {
         font-size: 10pt;
-        text-align: right;
     }
 
     section.documentation > h1 {
@@ -55,10 +62,9 @@
     section.documentation .declaration {
         font-family: "Inconsolata", monospace;
 
-        color: #eee;
-        text-shadow: 4px 2px 5px black;
-
         font-size: 12pt;
+
+        color: #eee;
     }
 
     body.js section.documentation .declaration {
@@ -114,7 +120,6 @@
         -moz-box-sizing: border-box;
 
         padding: 0 0.25em;
-        max-width: 35em;
 
         font-size: 12pt;
     }
@@ -170,6 +175,10 @@
     }
 
     #main > nav > menu > button {
+        width: 100%;
+    }
+
+    #main > .content.project_list {
         width: 100%;
     }
 }
