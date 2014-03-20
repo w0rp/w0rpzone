@@ -1,0 +1,34 @@
+{% extends "global.dj.htm" %}
+{% load text_formatting %}
+
+{% block head %}
+  {{block.super}}
+
+  <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/project/project.css" />
+{% endblock %}
+
+{% block main %}
+  <section class="content project_list">
+    <table>
+      <thead>
+        <tr>
+          <th class="name">Name</th>
+          <th class="summary">Summary</th>
+          <th class="time">Last Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for project in projects %}
+        <tr>
+          <th class="name"><a href="{% url "project-summary" project_slug=project.slug %}">{{project.name}}</a></th>
+          <td class="summary">{{project.summary_line}}</td>
+          <td class="time">{{project.time_updated|date:"SHORT_DATETIME_FORMAT"}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

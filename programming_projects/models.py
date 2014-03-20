@@ -1,3 +1,4 @@
+import datetime
 import os
 from django.conf import settings
 
@@ -11,14 +12,23 @@ from django.db.models import (
     BooleanField,
     DateTimeField,
     SlugField,
-    FileField,
-    GenericIPAddressField,
+)
+
+from .managers import (
+    ProjectManager,
 )
 
 class Project (Model):
     SUPPORTED_LANGUAGES = (
         ("d", "D"),
     )
+
+    active = BooleanField(
+        default= False,
+        help_text= "Switch this on to make the project public.",
+    )
+
+    time_updated = DateTimeField()
 
     name = CharField(
         max_length= 255,
@@ -51,6 +61,17 @@ class Project (Model):
         verbose_name= "Source URL",
         help_text= "Set this to a URL for the project's source code.",
     )
+
+    summary_line = CharField(
+        max_length= 255,
+    )
+
+    description = TextField(
+        default= "",
+        help_text= "Input Markdown here to describe the project.",
+    )
+
+    objects = ProjectManager()
 
     def __str__(self):
         return self.slug

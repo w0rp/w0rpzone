@@ -9,12 +9,43 @@
         padding: 0 1em;
     }
 
-    section.documentation {
+    section.documentation,
+    section.project_summary,
+    section.project_list {
         background-color: #222;
         padding: 1em;
+        min-height: 10em;
 
         box-shadow: 5px 5px 10px 0 black;
         border-radius: 20px 5px 5px 5px;
+    }
+
+    section.project_list > table {
+        width: 100%;
+
+        border-collapse: collapse;
+    }
+
+    section.project_list > table > thead > tr > * {
+        padding-bottom: 0.5em;
+        border-bottom: 1px solid;
+    }
+
+    section.project_list > table > tbody > tr > * {
+        padding-top: 0.5em;
+    }
+
+    section.project_list > table > * > tr > .name {
+        width: 12em;
+    }
+
+    section.project_list > table > * > tr > .time {
+        width: 12em;
+    }
+
+    section.project_list > table > tbody > tr > .time {
+        font-size: 10pt;
+        text-align: right;
     }
 
     section.documentation > h1 {

@@ -1,0 +1,9 @@
+{% extends "programming_projects/project_base.dj.htm" %}
+{% load markdown %}
+
+{% block content %}
+  <section class="content project_summary">
+    <h1>{{project.name}}</h1>
+    {{project.description|unsafe_markdown}}
+  </section>
+{% endblock %}

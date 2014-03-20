@@ -19,6 +19,7 @@ class ProjectAdmin (ModelAdmin):
     list_display = (
         "name",
         "language",
+        "active",
     )
 
     inlines = (

@@ -7,6 +7,7 @@ from optparse import make_option
 from django.db import transaction
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
+from django.utils.timezone import now
 
 from programming_projects.models import Project
 from programming_projects.doc_generator.d import generate_d_doc_tasks
@@ -103,3 +104,7 @@ class Command(BaseCommand):
             # We'll do all of the doc processing in a few different threads.
             for model in parallel(generate_model_tasks(queryset)):
                 model.save()
+
+            # Update all project 'updated' times.
+            queryset.update(time_updated= now())
+

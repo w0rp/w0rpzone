@@ -1,0 +1,32 @@
+{% extends "global.dj.htm" %}
+{% load text_formatting %}
+
+{% block head %}
+  {{block.super}}
+
+  <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/project/project.css" />
+{% endblock %}
+
+{% block main %}
+  <nav class="module_nav">
+    <aside>
+      <header>{{project.name}}</header>
+      <ol>
+        <li>
+          <a href="{% url "project-summary" project_slug=project.slug %}"><strong>Project Summary</strong></a>
+        </li>
+
+        {% for module in project.module_list %}
+          <li>
+            <a href="{% url "doc-single" project_slug=project.slug location=module.location %}">{{module.namespace|word_break_on:"."}}</a>
+          </li>
+        {% endfor %}
+      </ol>
+    </aside>
+    {% block top_nav %}{% endblock %}
+  </nav>
+  {% block content %}{% endblock %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

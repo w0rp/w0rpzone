@@ -1,38 +1,21 @@
-{% extends "global.dj.htm" %}
+{% extends "programming_projects/project_base.dj.htm" %}
 {% load text_formatting %}
 
 {% block head %}
   {{block.super}}
 
-  <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/project/project.css" />
-
   <script type="text/javascript" src="{{STATIC_URL}}js/project/doc.js"></script>
 {% endblock %}
 
-{% block root_nav %}
+{% block top_nav %}
+  <menu>
+    <button type="button" class="toggled constraint_toggle">Toggle Constraints</button>
+  </menu>
 {% endblock %}
 
-{% block main %}
-  <nav class="module_nav">
-    <menu>
-      <button type="button" class="toggled constraint_toggle">Toggle Constraints</button>
-    </menu>
-    <aside>
-      <header>Modules</header>
-      <ol>
-        {% for module in project.module_list %}
-          <li>
-            <a href="{% url "doc-single" project_slug=project.slug location=module.location %}">{{module.namespace|word_break_on:"."}}</a>
-          </li>
-        {% endfor %}
-      </ol>
-    </aside>
-  </nav>
+{% block content %}
   <section class="documentation content">
     <h1>{{module.namespace|word_break_on:"."}}</h1>
     {{doc_body}}
   </section>
-{% endblock %}
-
-{% block footer %}
 {% endblock %}

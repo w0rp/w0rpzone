@@ -8,7 +8,6 @@ from itertools import chain
 from functools import partial
 
 from django.conf import settings
-from django.db import transaction
 
 import lxml.html
 
