@@ -49,12 +49,15 @@ def wrap_individual_declarations(html_text):
     """
     start, inner, end = html_tag_split(html_text)
 
-    wrapped_inner = "".join(
-        '<span class="individual">{})</span>'.format(remove_br(x))
-        for x in
-        inner.split(");")
-        if x != "" and not x.isspace()
-    )
+    split = inner.split(");")
+
+    if len(split) == 1:
+        wrapped_inner = '<span class="individual">{}</span>'.format(split[0])
+    else:
+        wrapped_inner = "".join(
+            '<span class="individual">{})</span>'.format(remove_br(x))
+            for x in split if x != "" and not x.isspace()
+        )
 
     return "".join((start, wrapped_inner, end))
 
