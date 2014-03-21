@@ -120,12 +120,12 @@
         color: #84D284;
     }
 
-    section.documentation .declaration > .template_constraint {
+    section.documentation .declaration > .individual > .template_constraint {
         font-style: italic;
     }
 
     section.documentation.hide_template_constraints
-    .declaration > .template_constraint {
+    .declaration > .individual > .template_constraint {
         display: none;
     }
 
