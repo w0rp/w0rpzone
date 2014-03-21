@@ -116,7 +116,7 @@
         color: #f04;
     }
 
-    section.documentation .declaration > .name {
+    section.documentation .declaration > .individual > .name {
         color: #84D284;
     }
 
