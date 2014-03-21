@@ -30,6 +30,11 @@ remove_br = p_sub(r"(?:<br */?>)+", "")
 # Regex is never a perfect solution for HTML, but this will do.
 SPLIT_RE = re.compile("^([^>]+>)(.*)(</[^<]+)$", re.MULTILINE | re.DOTALL)
 
+class NullDDoc:
+    def save(self): pass
+
+NULL_DDOC = NullDDoc()
+
 def html_tag_split(html_text):
     """
     Given some HTML text for a tag, return the text split into a 3-tuple
@@ -190,10 +195,19 @@ def generate_d_doc_tasks(project):
     dmd_commandline = prepare_dmd_commandline(project)
 
     def doc_worker(filename, module_path):
+        html= generate_ddoc_html(project, dmd_commandline, filename)
+
+        # Check the text content.
+        text_content = lxml.html.fromstring(html).text_content()
+
+        # Filter out empty documents with null documents.
+        if text_content == "" or text_content.isspace():
+            return NULL_DDOC
+
         return DDoc(
             project= project,
             location= module_path,
-            html= generate_ddoc_html(project, dmd_commandline, filename)
+            html= html
         )
 
     yield from (partial(doc_worker, *args) for args in find_d_files(project))
