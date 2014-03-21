@@ -112,12 +112,45 @@
         display: none;
     }
 
+    section.documentation .declaration.enum
+    + .definition:not(.open) > :not(.summary) {
+        display: block;
+    }
+
+    section.documentation .declaration {
+        clear: left;
+    }
+
+    section.documentation .enum_members {
+        display: table;
+    }
+
+    section.documentation .enum_members > .decl_row {
+        display: table-row;
+    }
+
+    section.documentation .enum_members > .decl_row > * {
+        display: table-cell;
+
+        padding-bottom: 0.5em;
+    }
+
+    section.documentation .enum_members > .decl_row:last-child > * {
+        padding-bottom: 0;
+    }
+
+    section.documentation .enum_members > .decl_row > .declaration {
+        padding-right: 1em;
+    }
+
+    section.documentation .enum_members > .decl_row > .definition > .summary {
+        margin: 0;
+    }
+
     section.documentation > div > .summary,
     section.documentation .definition > .summary {
         box-sizing: border-box;
         -moz-box-sizing: border-box;
-
-        padding: 0 0.25em;
 
         font-size: 12pt;
     }

@@ -16,13 +16,30 @@ from programming_projects.models import (
     DDoc,
 )
 
-THIS_SPACE_RE = re.compile(r"> +this")
-CONSTRAINT_RE = re.compile(r"(if \(.*\))")
+p_sub = lambda x, y : partial(re.compile(x).sub, y)
+
+sub_this = p_sub(r"> +this", r'>this')
+
+sub_cons = p_sub(
+    r"(if \(.*\))",
+    r'<span class="template_constraint">\1</span>'
+)
 
 def post_process_ddoc(html):
     root = lxml.html.fromstring(html)
 
+    for child in root.findall("br"):
+        root.remove(child)
+
     for elem in root.find_class("declaration"):
+        if elem.text is not None:
+            if elem.text.startswith("enum"):
+                elem.attrib["class"] += " enum"
+            elif elem.text.startswith("class"):
+                elem.attrib["class"] += " class"
+            elif elem.text.startswith("struct"):
+                elem.attrib["class"] += " struct"
+
         # Get an HTML string for the element.
         elem_string = lxml.html.tostring(elem).decode("utf-8")
 
@@ -30,23 +47,15 @@ def post_process_ddoc(html):
         elem_string = elem_string.replace(");", ")")
 
         # Correct some extra whitespace.
-        elem_string = re.sub(
-            THIS_SPACE_RE,
-            r'>this',
-            elem_string
-        )
+        elem_string = sub_this(elem_string)
 
         # Wrap template constraints in spans so we can style them, etc.
-        elem_string = re.sub(
-            CONSTRAINT_RE,
-            r'<span class="template_constraint">\1</span>',
-            elem_string
-        )
+        elem_string = sub_cons(elem_string)
+
+        new_elem = lxml.html.fromstring(elem_string)
 
         # Replace the element instead with the string we created.
-        parent = elem.getparent()
-        parent.insert(parent.index(elem), lxml.html.fromstring(elem_string))
-        parent.remove(elem)
+        elem.getparent().replace(elem, new_elem)
 
     for elem in root.find_class("definition"):
         # Remove all definitions which are blank.

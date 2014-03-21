@@ -6,8 +6,19 @@ $(function() {
 
     var $toggle_constraint_button = $menu.find(".constraint_toggle");
 
-    var $expandables = $("h2.declaration").filter(function() {
-        return $(this).next(".definition").length > 0;
+    var $expandables = $("h2.declaration:not(.enum)").filter(function() {
+        var $elem = $(this);
+
+        if ($elem.next(".definition").length === 0) {
+            // No definition, so this doesn't expand.
+            return false;
+        }
+
+        if ($elem.parent().parent().hasClass("enum_members")) {
+            return false;
+        }
+
+        return true;
     });
 
     function toggle_constraints_on() {
