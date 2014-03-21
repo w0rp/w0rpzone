@@ -25,6 +25,34 @@ sub_cons = p_sub(
     r'<span class="template_constraint">\1</span>'
 )
 
+remove_br = p_sub(r"(?:<br */?>)+", "")
+
+# Regex is never a perfect solution for HTML, but this will do.
+SPLIT_RE = re.compile("^([^>]+>)(.*)(</[^<]+)$", re.MULTILINE | re.DOTALL)
+
+def html_tag_split(html_text):
+    """
+    Given some HTML text for a tag, return the text split into a 3-tuple
+    of (<start_tag>, <content>, <end_tag>)
+    """
+    return SPLIT_RE.search(html_text).groups()
+
+def wrap_individual_declarations(html_text):
+    """
+    Given some HTML text for a DDoc declaration, find individual declarations
+    inside and wrap them in spans.
+    """
+    start, inner, end = html_tag_split(html_text)
+
+    wrapped_inner = "".join(
+        '<span class="individual">{})</span>'.format(remove_br(x))
+        for x in
+        inner.split(");")
+        if x != "" and not x.isspace()
+    )
+
+    return "".join((start, wrapped_inner, end))
+
 def post_process_ddoc(html):
     root = lxml.html.fromstring(html)
 
@@ -43,8 +71,9 @@ def post_process_ddoc(html):
         # Get an HTML string for the element.
         elem_string = lxml.html.tostring(elem).decode("utf-8")
 
-        # Get rid of the semicolon on functions and classes
-        elem_string = elem_string.replace(");", ")")
+        # Remove semicolons and wrap individual declarations in spans.
+        # Extra declarations could appear here for 'ditto,' etc.
+        elem_string = wrap_individual_declarations(elem_string)
 
         # Correct some extra whitespace.
         elem_string = sub_this(elem_string)

@@ -7,7 +7,7 @@ DDOC = $(BODY)
 DDOC_DECL    = <div class="decl_row"><h2 class="declaration">$0</h2>
 DDOC_DECL_DD = <section class="definition">$0</section></div>
 DDOC_ANCHOR  =
-DDOC_PSYMBOL = <wbr><span class="name">$0</span>
+DDOC_PSYMBOL = <span class="name">$0</span>
 DDOC_SYMBOL = <s>$0</s>
 DDOC_SUMMARY = <p class="summary">$0</p>
 

@@ -65,13 +65,47 @@
         color: #eee;
     }
 
-    body.js section.documentation .declaration {
+    body.js section.documentation .declaration.expandable {
         cursor: pointer;
+    }
+
+    section.documentation .decl_row {
+        position: relative;
+    }
+
+    section.documentation .declaration {
+        margin-left: 1em;
+    }
+
+    section.documentation .declaration .individual {
+        display: block;
+    }
+
+    section.documentation .declaration .individual:not(:first-child) {
+        margin-top: 1em;
+    }
+
+    /*
+     * A little Ditto image from IconArchive.
+     *
+     * author: HEKTakun
+     *
+     * The copyright for Ditto is owned by Nintendo.
+     */
+    section.documentation .declaration .individual:not(:first-child):before {
+        content: "";
+        background-image: url(/static/image/ditto.png);
+        background-size: 1em 1em;
+        width: 1em;
+        height: 1em;
+        position: absolute;
+        left: -0.25em;
     }
 
     body.js section.documentation .declaration.expandable:before {
         content: "+";
-        margin-right: 0.5em;
+        position: absolute;
+        left: 0px;
 
         color: #0f4;
         text-shadow: 4px 2px 5px black;
@@ -79,7 +113,6 @@
 
     body.js section.documentation .declaration.expandable.open:before {
         content: "-";
-
         color: #f04;
     }
 

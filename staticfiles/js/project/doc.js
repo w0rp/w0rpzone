@@ -7,14 +7,18 @@ $(function() {
     var $toggle_constraint_button = $menu.find(".constraint_toggle");
 
     var $expandables = $("h2.declaration:not(.enum)").filter(function() {
-        var $elem = $(this);
+        var $decl = $(this);
 
-        if ($elem.next(".definition").length === 0) {
+        var $def = $decl.next(".definition");
+
+        if ($def.length === 0) {
             // No definition, so this doesn't expand.
             return false;
         }
 
-        if ($elem.parent().parent().hasClass("enum_members")) {
+        if ($def.children(":not(.summary)").length === 0) {
+            // The defition is there, but has nothing but a summary.
+            // Don't expand it.
             return false;
         }
 
