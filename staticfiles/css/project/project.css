@@ -36,8 +36,6 @@
     }
 
     section.project_list > table > * > tr > .name {
-        width: 12em;
-
         text-align: left;
     }
 
