@@ -24,6 +24,14 @@
         width: 100%;
 
         border-collapse: collapse;
+
+        font-size: 16pt;
+    }
+
+    section.project_list > table > caption {
+        font-size: 18pt;
+        font-weight: bold;
+        padding-bottom: 0.5em;
     }
 
     section.project_list > table > thead > tr > * {
@@ -44,13 +52,11 @@
     }
 
     section.project_list > table > * > tr > .time {
-        width: 12em;
-
         text-align: right;
     }
 
     section.project_list > table > tbody > tr > .time {
-        font-size: 10pt;
+        font-size: 12pt;
     }
 
     section.documentation > h1 {

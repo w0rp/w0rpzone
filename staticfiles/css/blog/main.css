@@ -109,77 +109,56 @@
     }
 
     section.comment_list > h2 {
-        margin: 0.5em;
+        margin: 0.5em 0 0 0;
 
         font-size: 24pt;
     }
 
-    section.comment_list > form .markdown_help {
-        padding-left: 1em;
-    }
-
-    section.comment_list > form .markdown_help a {
+    section.comment_list .markdown_help a {
         color: #84D284;
         text-decoration: none;
     }
 
-    section.comment_list > form .markdown_help a:before {
+    section.comment_list .markdown_help a:before {
         /* Right arrow, space */
         content: "\2192\a0";
     }
 
-    section.comment_list > form .markdown_help pre code {
+    section.comment_list .markdown_help pre code {
         font-size: 14pt;
     }
 
-    section.comment_list > form .markdown_help.brief {
+    section.comment_list .markdown_help.brief {
         display: none;
     }
 
-    section.comment_list > form .markdown_help.brief.active {
+    section.comment_list .markdown_help.brief.active {
         display: block;
     }
 
-    section.comment_list > form .markdown_help.full {
+    section.comment_list .markdown_help.full {
         display: none;
     }
 
-    section.comment_list > form .markdown_help.full.active {
+    section.comment_list .markdown_help.full.active {
         display: block;
     }
 
-    section.comment_list > form .markdown_help.full .help_topic {
+    section.comment_list .markdown_help.full .help_topic {
         display: none;
     }
 
-    section.comment_list > form .markdown_help.full .help_topic.active {
+    section.comment_list .markdown_help.full .help_topic.active {
         display: block;
     }
 
-    section.comment_list > form .markdown_help .help_tabs .tab.active {
+    section.comment_list .markdown_help .help_tabs .tab.active {
         background-color: #447;
         color: #FFF;
     }
 
-    section.comment_list > form .markdown_help .help_tabs .tab {
+    section.comment_list .markdown_help .help_tabs .tab {
         cursor: pointer;
-    }
-
-    section.comment_list > form > ul label {
-        width: 10em;
-    }
-
-    section.comment_list > form > ul > li > * {
-        font-size: 12pt;
-    }
-
-    section.comment_list > form > ul input,
-    section.comment_list > form > ul textarea {
-        width: -webkit-calc(100% - 11em);
-        width: -moz-calc(100% - 11em);
-        width: calc(100% - 11em);
-
-        margin-right: 1em;
     }
 
     section.comment {
@@ -237,70 +216,6 @@
 
         margin-right: 1em;
     }
-
-    /* Forms */
-    form > ul {
-        list-style-type: none;
-
-        margin: 0;
-        padding: 0;
-    }
-
-    form > ul label {
-        display: inline-block;
-    }
-
-    form > ul > li > * {
-        vertical-align: middle;
-    }
-
-    form > ul > li > label {
-        text-align: right;
-        padding: 0 1em;
-    }
-
-    form > ul > li {
-        margin-top: 1em;
-    }
-
-    form > ul > li:first-child {
-        margin-top: 0;
-    }
-
-    form > ul > li {
-        text-align: left;
-    }
-
-    form > ul > li.buttons {
-        text-align: center;
-    }
-
-    form > ul > li.buttons > button,
-    form > ul > li.buttons > .button {
-        padding: 1em;
-    }
-
-    form > ul > li.error > label {
-        font-style: italic;
-    }
-
-    form > ul > li > ul.errorlist {
-        background-color: #7D3535;
-        color: white;
-
-        display: block;
-
-        padding: 0.5em 1em;
-        margin: 0 0 1em 0;
-
-        list-style-type: none;
-    }
-
-    form > ul > li > ul.errorlist > li {
-        display: inline-block;
-
-        font-weight: bold;
-    }
 }
 
 /* Small size screens and up */
@@ -326,19 +241,6 @@
     article pre > code,
     section.comment pre > code {
         font-size: 12pt;
-    }
-
-    input, textarea {
-        border: 1px solid white;
-
-        padding: 0.5em;
-    }
-
-    textarea {
-        /* Stop shrinking when size + padding is hit. */
-        min-height: 2em;
-        /* Enough initial height for 5 lines with padding. */
-        height: 6.5em;
     }
 }
 

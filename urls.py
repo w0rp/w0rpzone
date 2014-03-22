@@ -1,13 +1,17 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+
 from django.contrib.auth.views import (
     login as login_view,
     logout as logout_view
 )
+
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
+
+from misc.views import settings_view
 
 def templ(regex, template):
     return (regex, TemplateView.as_view(template_name= template + ".dj.htm"))
@@ -24,6 +28,11 @@ urlpatterns = patterns("",
     }),
     (r"^blog/", include("blog.urls")),
     (r"^project/", include("programming_projects.urls")),
+    url(
+        r"^settings/$",
+        settings_view,
+        name= "settings",
+    )
 )
 
 urlpatterns += patterns("",

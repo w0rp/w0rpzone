@@ -97,6 +97,114 @@ code {
     line-height: inherit;
 }
 
+form {
+    padding: 1em;
+
+    max-width: 50em;
+}
+
+form.busy,
+form.busy * {
+    cursor: wait;
+}
+
+/* Forms */
+form > ul {
+    list-style-type: none;
+
+    margin: 0;
+    padding: 0;
+}
+
+form > ul > li {
+    margin-top: 2em;
+}
+
+form > ul > li:first-child {
+    margin-top: 0;
+}
+
+form > ul > li > label {
+    display: block;
+
+    width: 100%;
+    margin-bottom: 1em;
+
+    font-weight: bold;
+}
+
+form > ul > li > select,
+form > ul > li > input,
+form > ul > li > textarea {
+    display: block;
+
+    width: 100%;
+}
+
+form > ul > li > input,
+form > ul > li > textarea {
+    border: 1px solid white;
+}
+
+form > ul > li > textarea {
+    /* Enough initial height for 5 lines with padding. */
+    min-height: 2em;
+    height: 6.5em;
+}
+
+form > ul > li > .helptext {
+    display: block;
+    margin-top: 0.5em;
+}
+
+/* Checkboxes get special treatment */
+form > ul > li > input[type=checkbox] {
+    display: inline;
+}
+
+form > ul > li > input[type=checkbox] + .helptext {
+    display: inline;
+    margin-top: 0;
+    margin-left: 0.5em;
+}
+
+form > ul > li.buttons {
+    position: relative;
+    height: 2em;
+}
+
+form > ul > li.buttons > button,
+form > ul > li.buttons > .button {
+    margin: 0 1em 0 0;
+}
+
+form > ul > li.buttons > button:last-child,
+form > ul > li.buttons > .button:last-child {
+    font-weight: bold;
+}
+
+form > ul > li.error > label {
+    font-style: italic;
+}
+
+form > ul > li > ul.errorlist {
+    background-color: #7D3535;
+    color: white;
+
+    display: block;
+
+    padding: 0.5em 1em;
+    margin: 0 0 1em 0;
+
+    list-style-type: none;
+}
+
+form > ul > li > ul.errorlist > li {
+    display: inline-block;
+
+    font-weight: bold;
+}
+
 .ningen {
     display: none;
 }
@@ -263,8 +371,21 @@ code {
     #main > nav > aside > ol > li:not(:first-child) {
         margin-top: 0.25em;
     }
-
 }
+
+@media screen and (max-width: 520px) {
+    body > header > nav {
+        text-align: left;
+    }
+}
+
+@media screen and (min-width: 521px) {
+    body > header > nav {
+        text-align: center;
+    }
+}
+
+/* Keep the title above the social nav up to a very particular pixel size. */
 
 @media screen and (max-width: 768px) {
     body > header .site_title,
@@ -276,10 +397,22 @@ code {
     body > header .site_title {
         text-align: center;
     }
+}
 
-    body > header > nav {
+/* Introduce the settings text just after the break on nav alignment. */
+@media screen and (min-width: 769px) {
+    body > header > menu > .settings:before {
+        content: "Settings: ";
+
+        position: absolute;
+
+        top: 12px;
+        right: 80px;
+
+        font-size: 32px;
     }
 }
+
 
 /* Small size screens and up */
 @media screen and (min-width: 48em) {
@@ -331,6 +464,13 @@ code {
 
         width: 48px;
         height: 48px;
+    }
+
+    body > header > menu > .settings:before {
+        top: 14px;
+        right: 64px;
+
+        font-size: 16px;
     }
 
     #main > nav.fixed_when_big {

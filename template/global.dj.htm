@@ -90,7 +90,7 @@
         <a class="site_nav_link{% if main_nav == 'project' %} active{% endif %}" href="{% url "project-list" %}">Projects</a>
 
         <!-- Settings Icon by dAKirby309 - http://www.iconarchive.com/artist/dakirby309.html -->
-        <a class="settings"><img src="{{STATIC_URL}}image/settings.png" alt="Settings" title="Settings"></a></a>
+        <a class="settings" href="{% url "settings" %}"><img src="{{STATIC_URL}}image/settings.png" alt="Settings" title="Settings" /></a>
       </menu>
       {% block root_nav %}{% endblock %}
     </header>
