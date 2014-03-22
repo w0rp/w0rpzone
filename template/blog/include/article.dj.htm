@@ -1,6 +1,8 @@
 {% load tz %}
 {% load markdown %}
 
+{% get_current_timezone as time_zone %}
+
 <article>
   <header>
     {% if user.is_authenticated %}
@@ -16,12 +18,7 @@
     {% endif %}
     <ul class="post_metadata">
       <li class="author"><a class="name">{{ article.author }}</a></li>
-      <li class="creation_date">
-      {% localtime on %}
-        <span class="date">{{ article.creation_date | date:"Y-m-d" }}</span>
-        <span class="time">{{ article.creation_date | date:"H:i" }}</span>
-      {% endlocaltime %}
-      </li>
+      <li class="creation_time">{{article.creation_date|localtime|date:"SHORT_DATETIME_FORMAT"}}</li>
     </ul>
   </header>
   {% if full_article %}

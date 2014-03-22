@@ -1,4 +1,5 @@
 {% extends "global.dj.htm" %}
+{% load tz %}
 {% load text_formatting %}
 
 {% block head %}
@@ -22,7 +23,7 @@
         <tr>
           <th class="name"><a href="{% url "project-summary" project_slug=project.slug %}">{{project.name}}</a></th>
           <td class="summary">{{project.summary_line}}</td>
-          <td class="time">{{project.time_updated|date:"SHORT_DATETIME_FORMAT"}}</td>
+          <td class="time">{{project.time_updated|localtime|date:"SHORT_DATETIME_FORMAT"}}</td>
         </tr>
         {% endfor %}
       </tbody>

@@ -77,50 +77,44 @@ def square(x):
         <div class="buttons"><button type="button" class="hide_preview">I'm Done Previewing</a></div>
         <ul class="post_metadata">
           <li class="author"><a class="name" data-default-name="{{comment_default_name}}"></a></li>
-          <li class="creation_date">
-            <span class="date">{% now "d F Y" %}</span>
-            <span class="time">{% now "H:i" %}</span>
-          </li>
+          <li class="creation_time">{% now "SHORT_DATETIME_FORMAT" %}</li>
         </ul>
       </header>
       <section class="comment_body"></section>
     </section>
 
-    <h2>Comments</h2>
-    {% for comment in article.comments.all %}
-      <section class="comment {% if forloop.first %}first{% endif %}" id="comment_{{forloop.counter}}">
-        {% if forloop.last %}<a id="last_comment"></a>{% endif %}
-        <header>
-          {% if user.is_authenticated %}{% spaceless %}
-            <div class="buttons">
-              <a class="button" href="{% url "delete-comment" article.slug comment.id %}">
-                Delete Comment
-              </a>
-              {% if comment.commenter.is_banned %}
-                <a class="button" href="{% url "unban-comment" article.slug comment.commenter.id %}">
-                  Unban Commenter
+    {% if article.comments.all %}
+      <h2>Comments</h2>
+      {% for comment in article.comments.all %}
+        <section class="comment {% if forloop.first %}first{% endif %}" id="comment_{{forloop.counter}}">
+          {% if forloop.last %}<a id="last_comment"></a>{% endif %}
+          <header>
+            {% if user.is_authenticated %}{% spaceless %}
+              <div class="buttons">
+                <a class="button" href="{% url "delete-comment" article.slug comment.id %}">
+                  Delete Comment
                 </a>
-              {% else %}
-                <a class="button" href="{% url "ban-comment" article.slug comment.commenter.id %}">
-                  Ban Commenter
-                </a>
-              {% endif %}
-            </div>
-          {% endspaceless %}{% endif %}
-          <ul class="post_metadata">
-            <li class="author"><a class="name">{{comment.poster_name_or_default}}</a></li>
-            <li class="creation_date">
-              {% localtime on %}
-                <span class="date">{{comment.creation_date | date:"Y-m-d"}}</span>
-                <span class="time">{{comment.creation_date | date:"H:i"}}</span>
-              {% endlocaltime %}
-            </li>
-          </ul>
-        </header>
-        <section class="comment_body">
-          {{comment.content|markdown}}
+                {% if comment.commenter.is_banned %}
+                  <a class="button" href="{% url "unban-comment" article.slug comment.commenter.id %}">
+                    Unban Commenter
+                  </a>
+                {% else %}
+                  <a class="button" href="{% url "ban-comment" article.slug comment.commenter.id %}">
+                    Ban Commenter
+                  </a>
+                {% endif %}
+              </div>
+            {% endspaceless %}{% endif %}
+            <ul class="post_metadata">
+              <li class="author"><a class="name">{{comment.poster_name_or_default}}</a></li>
+              <li class="creation_time">{{comment.creation_date|localtime|date:"SHORT_DATETIME_FORMAT"}}</li>
+            </ul>
+          </header>
+          <section class="comment_body">
+            {{comment.content|markdown}}
+          </section>
         </section>
-      </section>
-    {% endfor %}
+      {% endfor %}
+    {% endif %}
   </section>
 {% endblock %}

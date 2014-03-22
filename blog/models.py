@@ -51,8 +51,8 @@ class Article(Model):
     author = ForeignKey(User)
     active = BooleanField(default=False)
     creation_date = DateTimeField()
-    slug = SlugField(max_length=255)
-    title = CharField(max_length=255)
+    slug = SlugField(max_length= 55)
+    title = CharField(max_length= 55)
     content = TextField()
 
     objects = ArticleManager()

@@ -11,6 +11,7 @@ body {
     margin: 0;
 
     font-family: "Droid Sans", sans-serif;
+    font-size: 16px;
 }
 
 a {
@@ -126,7 +127,7 @@ code {
     body > header .site_title,
     body > header > nav {
         display: inline;
-        margin: 16px 16px;
+        margin: 16px 8px;
     }
 
     /* The blog site header */
@@ -173,11 +174,13 @@ code {
 
     body > header > menu {
         clear: both;
+        position: relative;
 
         background-color: #222;
         color: white;
 
-        padding: 1em;
+        height: 80px;
+        padding: 24px 8px;
     }
 
     body > header > menu.author_utils > .description {
@@ -190,6 +193,7 @@ code {
 
     body > header > menu > .site_nav_link {
         padding: 0.25em;
+        font-size: 32px;
 
         text-decoration: none;
     }
@@ -202,6 +206,21 @@ code {
         margin-left: 0.5em;
         border-left: 1px solid #444;
         padding-left: 0.75em;
+    }
+
+    body > header > menu > .settings {
+        position: absolute;
+
+        right: 8px;
+        top: 8px;
+
+        width: 64px;
+        height: 64px;
+    }
+
+    body > header > menu > .settings > img {
+        width: 100%;
+        height: 100%;
     }
 
     /* Main site navigation. */
@@ -247,7 +266,7 @@ code {
 
 }
 
-@media screen and (max-width: 799px) {
+@media screen and (max-width: 768px) {
     body > header .site_title,
     body > header > nav {
         display: block;
@@ -268,11 +287,6 @@ code {
 
 /* Medium size screens and up */
 @media screen and (min-width: 62em) {
-    body > header .site_title,
-    body > header > nav {
-        margin: 16px 0;
-    }
-
     /* Set the size of the pages in general. */
     body > header,
     #main,
@@ -298,6 +312,23 @@ code {
     }
 
     body > header > nav > ul > li > a > img {
+        width: 48px;
+        height: 48px;
+    }
+
+    body > header > menu {
+        height: 64px;
+        padding: 20px 8px;
+    }
+
+    body > header > menu > .site_nav_link {
+        font-size: 24px;
+    }
+
+    body > header > menu > .settings {
+        right: 8px;
+        top: 8px;
+
         width: 48px;
         height: 48px;
     }

@@ -1,3 +1,5 @@
+{% load tz %}
+{% get_current_timezone as time_zone %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -86,6 +88,9 @@
       <menu>
         <a class="site_nav_link{% if main_nav == 'blog' %} active{% endif %}" href="{% url "blog-home" %}">Blog</a>
         <a class="site_nav_link{% if main_nav == 'project' %} active{% endif %}" href="{% url "project-list" %}">Projects</a>
+
+        <!-- Settings Icon by dAKirby309 - http://www.iconarchive.com/artist/dakirby309.html -->
+        <a class="settings"><img src="{{STATIC_URL}}image/settings.png" alt="Settings" title="Settings"></a></a>
       </menu>
       {% block root_nav %}{% endblock %}
     </header>

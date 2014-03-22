@@ -11,23 +11,19 @@
 {% endblock %}
 
 {% block main %}
-
 <div class="post_edit">
+  <h1>Edit Articles</h1>
+
   {% include "blog/include/edit_list_nav.dj.htm" %}
   <ul>
     {% for article in article_list %}
+      {% url "edit-article" slug=article.slug as article_url %}
       <li>
-        {% url "edit-article" slug=article.slug as article_url %}
         <a class="article_link" href="{{ article_url }}">{{article.title}}</a>
       </li>
     {% endfor %}
   </ul>
   {% include "blog/include/edit_list_nav.dj.htm" %}
 </div>
-<nav>
-  <aside>
-    <header>Edit Articles</header>
-  </aside>
-</nav>
 
 {% endblock %}

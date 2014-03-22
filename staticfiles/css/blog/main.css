@@ -21,7 +21,7 @@
 
     article,
     section.comment {
-        padding: 1em 1em 0.5em 1em;
+        padding: 0.5em 1em;
         font-size: 14pt;
 
         word-wrap: break-word;
@@ -58,13 +58,12 @@
     /* The article header */
 
     article > header {
-        font-size: 14pt;
-
         margin-bottom: 0.25em;
     }
 
     article > header h1 {
-        margin-bottom: 0.25em;
+        margin: 0.5em 0;
+        font-size: 18pt;
     }
 
     article > header .article_link {
@@ -78,6 +77,7 @@
     ul.post_metadata {
         margin: 0;
         padding: 0.125em 0.25em;
+        margin-bottom: 0.5em;
 
         background-color: #262626;
         color: #4C8E79;
@@ -97,28 +97,15 @@
     }
 
     ul.post_metadata > li.author > .name:before {
-        content: "By";
-        margin-right: 0.5em;
-
-        font-style: italic;
+        content: "by ";
     }
 
-    ul.post_metadata > li.creation_date {
-        margin-left: 0.25em;
+    ul.post_metadata > li.creation_time {
     }
 
-    ul.post_metadata > li.creation_date
-    > .date:before {
-        content: "on";
-        font-style: italic;
-        margin-right: 0.4em;
-    }
-
-    ul.post_metadata > li.creation_date
-    > .time:before {
-        content: "at";
-        font-style: italic;
-        margin: 0 0.4em;
+    ul.post_metadata > li.creation_time:before {
+        content: "on ";
+        margin-left: 16px;
     }
 
     section.comment_list > h2 {
@@ -333,7 +320,7 @@
 
     article,
     section.comment {
-        padding: 1em 2em 0.5em 2em;
+        padding: 0.5em 2em;
     }
 
     article pre > code,

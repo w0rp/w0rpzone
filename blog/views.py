@@ -113,7 +113,7 @@ def article_or_404(slug):
             .get(slug= slug)
         )
     except Article.DoesNotExist:
-        return Http404
+        raise Http404
 
 def article_detail_view(request, slug):
     article = article_or_404(slug)

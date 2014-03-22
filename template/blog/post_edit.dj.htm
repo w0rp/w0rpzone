@@ -19,10 +19,7 @@
       <h1></h1>
       <ul class="post_metadata">
         <li class="author"><a class="name">{{ user }}</a></li>
-        <li class="creation_date">
-          <span class="date">{% now "d F Y" %}</span>
-          <span class="time">{% now "H:i" %}</span>
-        </li>
+        <li class="creation_time">{% now "SHORT_DATETIME_FORMAT" %}</li>
       </ul>
     </header>
     <div class="post"></div>
