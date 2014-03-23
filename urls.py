@@ -11,7 +11,10 @@ from django.conf import settings
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 
-from misc.views import settings_view
+from misc.views import (
+    settings_view,
+    ajax_settings_view,
+)
 
 def templ(regex, template):
     return (regex, TemplateView.as_view(template_name= template + ".dj.htm"))
@@ -32,6 +35,11 @@ urlpatterns = patterns("",
         r"^settings/$",
         settings_view,
         name= "settings",
+    ),
+    url(
+        r"^ajax-settings/$",
+        ajax_settings_view,
+        name= "ajax-settings",
     )
 )
 

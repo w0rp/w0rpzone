@@ -7,14 +7,18 @@
     "freeze": true,
     "immed": true,
     "indent": 4,
+    "maxparams": 3,
+    "maxdepth": 4,
+    "maxlen": 80,
     "latedef": true,
     "noarg": true,
     "nonew": true,
     "strict": true,
-    "maxparams": 3,
-    "maxdepth": 4,
-    "maxlen": 80,
+    "undef": true,
+    "unused": true,
+    "trailing": true,
+    "laxbreak": true,
     "devel": true,
-    "jquery": true,
-    "laxbreak": true
+    "browser": true,
+    "jquery": true
 }
