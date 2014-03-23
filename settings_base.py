@@ -5,6 +5,8 @@ import os
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+PIPELINE_ENABLED = True
+
 PROJECT_ROOT = os.path.dirname(__file__)
 
 ADMINS = ()
@@ -129,37 +131,8 @@ INSTALLED_APPS = (
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
 
 # Use django-pipeline for handling static files.
+# yuglify will be used for all compression by default.
 STATICFILES_STORAGE = "pipeline.storage.PipelineCachedStorage"
-PIPELINE_DISABLE_WRAPPER = True
-PIPELINE_CSS_COMPRESSOR = "pipeline.compressors.yuglify.YuglifyCompressor"
-PIPELINE_JS_COMPRESSOR = "pipeline.compressors.yuglify.YuglifyCompressor"
-
-PIPELINE_JS = {
-    "global" : {
-        "source_filenames" : (
-            "js/jquery-2.0.3.js",
-            "js/jquery.cookie.js",
-            "js/jstz.js",
-            "js/notify-combined.js",
-            "js/highlight.pack.js",
-            "js/soverflow_like_highlight.js",
-            "js/global.js",
-        ),
-        "output_filename": "js/global.combined.js",
-    }
-}
-
-PIPELINE_CSS = {
-    "global" : {
-        "source_filenames" : (
-            "css/droidsans.css",
-            "css/inconsolata.css",
-            "css/highlight_obsidian.css",
-            "css/base.css",
-        ),
-        "output_filename": "css/global.combined.js",
-    }
-}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

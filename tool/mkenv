@@ -2,6 +2,6 @@
 
 (test -f env/bin/activate || virtualenv --no-site-packages -p python3.3 env) &&
 source env/bin/activate &&
-npm install -g --prefix env yuglify &&
+npm install -g --prefix env/bin yuglify &&
 pip install -r requirements.txt
 
