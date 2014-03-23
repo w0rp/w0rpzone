@@ -2,6 +2,7 @@
 @media screen {
     #id_content {
         font-family: "Source Code Pro", monospace;
+        font-size: 10pt;
     }
 
     article.preview {

@@ -117,7 +117,7 @@ form > ul {
 }
 
 form > ul > li {
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 form > ul > li:first-child {
@@ -128,9 +128,11 @@ form > ul > li > label {
     display: block;
 
     width: 100%;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 
     font-weight: bold;
+
+    color: #eee;
 }
 
 form > ul > li > select,
@@ -138,12 +140,14 @@ form > ul > li > input,
 form > ul > li > textarea {
     display: block;
 
+    font-size: 12pt;
     width: 100%;
 }
 
 form > ul > li > input,
 form > ul > li > textarea {
-    border: 1px solid white;
+    border: 1px solid black;
+    padding: 0.5em;
 }
 
 form > ul > li > textarea {
@@ -292,6 +296,7 @@ form > ul > li > ul.errorlist > li {
     }
 
     body > header > menu.author_utils > .description {
+        margin-left: 8px;
         margin-right: 1em;
     }
 

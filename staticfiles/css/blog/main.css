@@ -66,6 +66,11 @@
         font-size: 18pt;
     }
 
+    article > header > .button {
+        display: table;
+        margin-top: 0.5em;
+    }
+
     article > header .article_link {
         text-decoration: none;
     }
@@ -240,7 +245,10 @@
 
     article pre > code,
     section.comment pre > code {
-        font-size: 12pt;
+        font-size: 10pt;
+
+        margin-left: -0.5em;
+        margin-right: -0.5em;
     }
 }
 

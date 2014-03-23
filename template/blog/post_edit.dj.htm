@@ -12,37 +12,35 @@
 {% endblock %}
 
 {% block main %}
-
-<div class="post_edit">
-  <article class="preview">
-    <header>
-      <h1></h1>
-      <ul class="post_metadata">
-        <li class="author"><a class="name">{{ user }}</a></li>
-        <li class="creation_time">{% now "SHORT_DATETIME_FORMAT" %}</li>
+  <section class="post_edit content">
+    <article class="preview">
+      <header>
+        <h1></h1>
+        <ul class="post_metadata">
+          <li class="author"><a class="name">{{ user }}</a></li>
+          <li class="creation_time">{% now "SHORT_DATETIME_FORMAT" %}</li>
+        </ul>
+      </header>
+      <div class="post"></div>
+    </article>
+    <form action="" method="post">
+      {% csrf_token %}
+      <ul>
+        {{form.as_ul}}
+        <li class="buttons">
+          <button name="save">Save</button>
+        </li>
       </ul>
-    </header>
-    <div class="post"></div>
-  </article>
-  <form action="" method="post">
-    {% csrf_token %}
-    <ul>
-      {{form.as_ul}}
-      <li class="buttons">
-        <button name="save">Save</button>
-      </li>
-    </ul>
 
-  </form>
-</div>
-<nav>
-  {% if article.active %}
-    {% url "article-detail" slug=article.slug as article_url %}
-    <a class="button" href="{{article_url}}">View Live Article</a>
-  {% endif %}
-  <button type="button" class="toggle_preview_button">Toggle Preview</button>
-  {% url "delete-article" slug=article.slug as delete_article_url %}
-  <a class="button" href="{{delete_article_url}}">Delete Article</a>
-</nav>
-
+    </form>
+  </section>
+  <nav>
+    {% if article.active %}
+      {% url "article-detail" slug=article.slug as article_url %}
+      <a class="button" href="{{article_url}}">View Live Article</a>
+    {% endif %}
+    <button type="button" class="toggle_preview_button">Toggle Preview</button>
+    {% url "delete-article" slug=article.slug as delete_article_url %}
+    <a class="button" href="{{delete_article_url}}">Delete Article</a>
+  </nav>
 {% endblock %}
