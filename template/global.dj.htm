@@ -1,25 +1,16 @@
 {% load tz %}
+{% load compressed %}
 {% get_current_timezone as time_zone %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
 
-    <script type="text/javascript" src="{{STATIC_URL}}js/jquery-2.0.3.js"></script>
-    <script type="text/javascript" src="{{STATIC_URL}}js/jstz.js"></script>
-    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="{{STATIC_URL}}js/notify-combined.js"></script>
-    <script type="text/javascript" src="{{STATIC_URL}}js/highlight.pack.js"></script>
-    <script type="text/javascript" src="{{STATIC_URL}}js/soverflow_like_highlight.js"></script>
-    <script type="text/javascript" src="{{STATIC_URL}}js/global.js"></script>
+    {% compressed_js "global" %}
+    {% compressed_css "global" %}
 
     <!-- Licenses for software used in this page. -->
     <link rel="license" type="text/plain" href="{{STATIC_URL}}text/highlight_license" title="Licence for hightlight.js" />
-
-    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/droidsans.css" />
-    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/inconsolata.css" />
-    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/highlight_obsidian.css" />
-    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/base.css" />
 
     {% block head %}{% endblock %}
   </head>
