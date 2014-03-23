@@ -127,6 +127,9 @@
     }
 
     section.documentation .declaration > .individual > .template_constraint {
+        display: block;
+
+        margin-top: 0.25em;
         font-style: italic;
     }
 
