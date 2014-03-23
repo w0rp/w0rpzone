@@ -87,7 +87,7 @@ pre {
 }
 
 code {
-    font-family: "Inconsolata", monospace;
+    font-family: "Source Code Pro", monospace;
     font-weight: normal;
 
     /*
@@ -243,7 +243,7 @@ form > ul > li > ul.errorlist > li {
         float: left;
 
         text-shadow: black 5px 5px 10px;
-        font-family: "Inconsolata", monospace;
+        font-family: "Source Code Pro", monospace;
         font-size: 40pt;
 
         -moz-user-select: none;

@@ -1,7 +1,7 @@
 /* Tiny screens and up. */
 @media screen {
     #main > nav > aside > ol {
-        font-family: "Inconsolata", monospace;
+        font-family: "Source Code Pro", monospace;
     }
 
     #main > nav > menu  {
@@ -60,14 +60,13 @@
     }
 
     section.documentation > h1 {
-        font-family: "Inconsolata", monospace;
+        font-family: "Source Code Pro", monospace;
     }
 
     section.documentation .declaration {
-        font-family: "Inconsolata", monospace;
+        font-family: "Source Code Pro", monospace;
 
         font-size: 12pt;
-        font-weight: normal;
 
         color: #eee;
     }

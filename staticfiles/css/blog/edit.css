@@ -1,7 +1,7 @@
 /* Tiny screens and up. */
 @media screen {
     #id_content {
-        font-family: "Inconsolata", monospace;
+        font-family: "Source Code Pro", monospace;
     }
 
     article.preview {
