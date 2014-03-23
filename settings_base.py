@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     "django.contrib.admindocs",
     "gunicorn",
     "south",
+    "pipeline",
     "w0rplib",
     "misc",
     "blog",
@@ -128,6 +129,10 @@ INSTALLED_APPS = (
 )
 
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
+
+# Use django-pipeline for handling static files.
+# yuglify will be used for all compression by default.
+STATICFILES_STORAGE = "pipeline.storage.PipelineCachedStorage"
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

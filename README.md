@@ -16,4 +16,5 @@ Installation
 
 * Install postgres and a database.
 * Install virtualenv, Python 3.3, and pip for 3.3.
-* Run `tool/mkenv` to create the virtualenv with all required modules.
+* Install NodeJS so you can use npm. (Required for CSS and JavaScript compression)
+* Run `tool/mkenv` to create the virtualenv with all required modules and programs.
