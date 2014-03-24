@@ -1,13 +1,11 @@
 from html import escape as html_escape
 
-from django.core.urlresolvers import reverse as url_reverse
 from django.contrib.admin import site as admin_site
 from django.utils import timezone
 
 from django.contrib.admin import (
     ModelAdmin,
     StackedInline,
-    TabularInline,
 )
 
 from .models import (
@@ -19,17 +17,22 @@ from .models import (
     ArticleComment,
 )
 
+
 class BlogAuthorAdmin (ModelAdmin):
-    list_display = ("author", )
+    list_display = ("author",)
+
 
 class ArticleTagInline (StackedInline):
     model = ArticleTag
 
+
 class ArticleFileInline (StackedInline):
     model = ArticleFile
 
+
 class ArticleCommentInline (StackedInline):
     model = ArticleComment
+
 
 class ArticleAdmin (ModelAdmin):
     list_display = (
@@ -45,21 +48,13 @@ class ArticleAdmin (ModelAdmin):
         ArticleCommentInline,
     ]
 
-class CommenterAdmin (ModelAdmin):
-    list_display = (
-        "ip_address",
-        "time_banned",
-    )
-
-    inlines = [
-        ArticleCommentInline,
-    ]
 
 class ArticleTagAdmin (ModelAdmin):
     list_display = (
         "tag",
         "article",
     )
+
 
 class CommenterAdmin (ModelAdmin):
     actions = (
@@ -78,8 +73,8 @@ class CommenterAdmin (ModelAdmin):
         """
         (
             queryset
-            .filter(time_banned__isnull= True)
-            .update(time_banned= timezone.now())
+            .filter(time_banned__isnull=True)
+            .update(time_banned=timezone.now())
         )
 
     ban_all.short_description = "Ban all selected commenters."
@@ -88,9 +83,10 @@ class CommenterAdmin (ModelAdmin):
         """
         Unban all commenters.
         """
-        queryset.update(time_banned= None)
+        queryset.update(time_banned=None)
 
     unban_all.short_description = "Unban all selected commenters."
+
 
 class ArticleCommentAdmin (ModelAdmin):
     fields = (
@@ -128,4 +124,3 @@ admin_site.register(Article, ArticleAdmin)
 admin_site.register(ArticleTag, ArticleTagAdmin)
 admin_site.register(Commenter, CommenterAdmin)
 admin_site.register(ArticleComment, ArticleCommentAdmin)
-

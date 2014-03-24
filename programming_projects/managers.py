@@ -1,5 +1,6 @@
 from django.db.models import Manager
 
+
 class ProjectManager (Manager):
     def active_projects_for_user(self, user):
         """
@@ -8,7 +9,7 @@ class ProjectManager (Manager):
         queryset = self.get_queryset().all()
 
         if not user.is_staff:
-            queryset = queryset.filter(active= True)
+            queryset = queryset.filter(active=True)
 
         return queryset
 
@@ -17,5 +18,4 @@ class ProjectManager (Manager):
         Try to load a project. raise DoesNotExist if the project
         cannot be loaded.
         """
-        return self.active_projects_for_user(user).get(slug= slug)
-
+        return self.active_projects_for_user(user).get(slug=slug)

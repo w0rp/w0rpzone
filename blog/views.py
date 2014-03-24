@@ -1,13 +1,9 @@
-import datetime
 from functools import partial
 
 from django.views.generic import ListView
 from django.views.generic.base import ContextMixin
 from django.views.generic.dates import MonthArchiveView
-from django.views.generic.detail import DetailView
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse as url_reverse
 from django.db import transaction
@@ -15,8 +11,6 @@ from django.views.generic.edit import DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.http import Http404
 from django.utils import timezone
-
-from w0rplib.templatetags.markdown import unsafe_markdown, markdown
 
 from .models import (
     Article,
@@ -30,8 +24,10 @@ from .forms import (
     ArticleCommentForm,
 )
 
+
 def response_403(request):
-    return render(request, "403.html", {}, status= 403)
+    return render(request, "403.html", {}, status=403)
+
 
 class NavigationMixin(ContextMixin):
     def get_context_data(self, *args, **kwargs):
@@ -43,19 +39,22 @@ class NavigationMixin(ContextMixin):
 
         return context
 
+
 class ArticleListMixin:
     queryset = (
         Article.objects.all()
-        .filter(active= True)
+        .filter(active=True)
         .defer("content")
         .select_related("author")
     )
 
     context_object_name = "article_list"
 
+
 class ArticlePageView (ArticleListMixin, ListView, NavigationMixin):
     template_name = "blog/page.dj.htm"
     paginate_by = 10
+
 
 class ArticleEditPageView(ListView):
     queryset = (
@@ -69,11 +68,13 @@ class ArticleEditPageView(ListView):
 
 HONEYPOT_STRING = str(347 * 347)
 
+
 def honeypot_ok(request, missing_name):
     return (
         not request.POST.get(missing_name)
         and request.POST.get("verify") == HONEYPOT_STRING
     )
+
 
 def comment_on_article(article, request):
     """
@@ -98,7 +99,7 @@ def comment_on_article(article, request):
 
     if comment_form.is_valid():
         # Add this comment.
-        comment = comment_form.save(commit= False)
+        comment = comment_form.save(commit=False)
 
         comment.commenter = commenter
         comment.article = article
@@ -106,14 +107,16 @@ def comment_on_article(article, request):
 
     return comment_form
 
+
 def article_or_404(slug):
     try:
         return (
             Article.objects
-            .get(slug= slug)
+            .get(slug=slug)
         )
     except Article.DoesNotExist:
         raise Http404
+
 
 def article_detail_view(request, slug):
     article = article_or_404(slug)
@@ -134,6 +137,7 @@ def article_detail_view(request, slug):
         "comment_form": comment_form,
     })
 
+
 @login_required
 def change_article_object_view(request, slug, pk, model, action, message):
     """
@@ -144,10 +148,10 @@ def change_article_object_view(request, slug, pk, model, action, message):
     the action, supposing the request is a post request and contains
     the key "apply_action", a confirmation page will be generated otherwise.
     """
-    article = article_or_404(slug)
+    article_or_404(slug)
 
     try:
-        obj = model.objects.get(pk= pk)
+        obj = model.objects.get(pk=pk)
     except model.DoesNotExist:
         raise Http404
 
@@ -163,10 +167,11 @@ def change_article_object_view(request, slug, pk, model, action, message):
 
 article_delete_comment_view = partial(
     change_article_object_view,
-    model= ArticleComment,
-    action= lambda obj: obj.delete(),
-    message= "Really delete this comment? (%s)",
+    model=ArticleComment,
+    action=lambda obj: obj.delete(),
+    message="Really delete this comment? (%s)",
 )
+
 
 def ban_commenter(commenter):
     if commenter.time_banned is None:
@@ -175,10 +180,11 @@ def ban_commenter(commenter):
 
 article_ban_commenter_view = partial(
     change_article_object_view,
-    model= Commenter,
-    action= ban_commenter,
-    message= "Really ban this commenter? (%s)",
+    model=Commenter,
+    action=ban_commenter,
+    message="Really ban this commenter? (%s)",
 )
+
 
 def unban_commenter(commenter):
     if commenter.time_banned is not None:
@@ -187,16 +193,18 @@ def unban_commenter(commenter):
 
 article_unban_commenter_view = partial(
     change_article_object_view,
-    model= Commenter,
-    action= unban_commenter,
-    message= "Really unban this commenter? (%s)",
+    model=Commenter,
+    action=unban_commenter,
+    message="Really unban this commenter? (%s)",
 )
+
 
 class ArticleMonthArchiveView (ArticleListMixin, MonthArchiveView,
 NavigationMixin):
     date_field = "creation_date"
-    make_object_list= True
+    make_object_list = True
     template_name = "blog/date.dj.htm"
+
 
 @login_required
 @transaction.atomic
@@ -212,13 +220,14 @@ def edit_article_view(request, slug):
 
         # When an edit works, reload the form to get the values
         # as they are set.
-        form = EditArticleForm(instance= article)
+        form = EditArticleForm(instance=article)
 
     return render(request, "blog/post_edit.dj.htm", {
         "article": article,
         "form": form,
         "updated": updated,
     })
+
 
 @login_required
 @transaction.atomic
@@ -227,12 +236,13 @@ def new_article_view(request):
 
     if not form.is_valid():
         return render(request, "blog/post_edit.dj.htm", {
-            "form" : form
+            "form": form
         })
 
-    article = form.save(author= request.user)
+    article = form.save(author=request.user)
 
     return redirect(url_reverse(edit_article_view, args=[article.slug]))
+
 
 class DeleteArticleView(DeleteView):
     model = Article
@@ -245,14 +255,15 @@ class DeleteArticleView(DeleteView):
         }
     )
 
+
 def bounce_view(request, url):
     return render(request, "blog/bounce.dj.htm", {
         "url": url() if callable(url) else url,
     })
 
+
 def article_bounce_view(request, slug):
     return bounce_view(request, url_reverse(
         article_detail_view,
-        kwargs= {"slug": slug},
+        kwargs={"slug": slug},
     ) + "#last_comment")
-

@@ -2,6 +2,7 @@ from django.contrib.syndication.views import Feed
 
 from . import models
 
+
 class LatestArticleFeed(Feed):
     title = "w0rpzone Articles"
     link = "/blog/"
@@ -9,7 +10,7 @@ class LatestArticleFeed(Feed):
     def items(self):
         return (
             models.Article.objects
-            .filter(active= True)
+            .filter(active=True)
             .order_by("-creation_date")[:20]
         )
 
@@ -18,4 +19,3 @@ class LatestArticleFeed(Feed):
 
     def item_description(self, item):
         return ""
-

@@ -1,10 +1,10 @@
 import pytz
 from pytz.exceptions import UnknownTimeZoneError
 
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -14,18 +14,20 @@ from .forms import (
     SettingsForm,
 )
 
+
 def set_timezone_cookie(response, timezone_string):
     response.set_cookie(
-        key= "timezone",
-        value= timezone_string,
+        key="timezone",
+        value=timezone_string,
         # Expire roughly a year from now.
-        expires= datetime.now() + timedelta(days= 365)
+        expires=datetime.now() + timedelta(days=365)
     )
+
 
 def settings_view(request):
     form = SettingsForm(
         request.POST or None,
-        initial= {
+        initial={
             "timezone": timezone.get_current_timezone_name()
         }
     )
@@ -43,6 +45,7 @@ def settings_view(request):
         set_timezone_cookie(response, form.cleaned_data["timezone"])
 
     return response
+
 
 @csrf_exempt
 @json_view
@@ -63,4 +66,3 @@ def ajax_settings_view(request):
         set_timezone_cookie(response, timezone_string)
 
     return response
-

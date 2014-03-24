@@ -10,4 +10,3 @@ def navigation(request):
     return {
         "main_nav": main_nav,
     }
-
