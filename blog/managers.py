@@ -1,5 +1,6 @@
 from django.db.models import Manager
 
+
 class ArticleManager (Manager):
     def active_months(self):
         """
@@ -8,9 +9,10 @@ class ArticleManager (Manager):
         """
         return (
             self.get_queryset()
-            .filter(active= True)
+            .filter(active=True)
             .datetimes("creation_date", "month", order="DESC")
         )
+
 
 class CommenterManager (Manager):
     def create_for_ip(self, ip_address):
@@ -20,14 +22,13 @@ class CommenterManager (Manager):
         """
         commenter_list = tuple(
             self.get_queryset()
-            .filter(ip_address= ip_address)
+            .filter(ip_address=ip_address)
         )
 
         if len(commenter_list) > 0:
             return commenter_list[0]
 
-        instance = self.model(ip_address= ip_address)
+        instance = self.model(ip_address=ip_address)
         instance.save()
 
         return instance
-

@@ -2,7 +2,6 @@ from django.contrib.admin import site as admin_site
 
 from django.contrib.admin import (
     ModelAdmin,
-    StackedInline,
     TabularInline,
 )
 
@@ -12,8 +11,10 @@ from .models import (
     DDoc,
 )
 
+
 class ExtraSourceInline (TabularInline):
     model = ExtraSource
+
 
 class ProjectAdmin (ModelAdmin):
     list_display = (
@@ -25,6 +26,7 @@ class ProjectAdmin (ModelAdmin):
     inlines = (
         ExtraSourceInline,
     )
+
 
 class DDocAdmin (ModelAdmin):
     list_display = (
@@ -40,4 +42,3 @@ class DDocAdmin (ModelAdmin):
 
 admin_site.register(Project, ProjectAdmin)
 admin_site.register(DDoc, DDocAdmin)
-

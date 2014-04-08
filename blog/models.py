@@ -1,7 +1,5 @@
-import os.path
 import time
 import datetime
-from django.utils import timezone
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse as url_reverse
@@ -24,6 +22,7 @@ from .managers import (
     CommenterManager,
 )
 
+
 class BlogAuthor(Model):
     """
     Users which can edit the blog posts.
@@ -36,6 +35,7 @@ class BlogAuthor(Model):
 
     def __str__(self):
         return str(self.author)
+
 
 class Article(Model):
     """
@@ -51,8 +51,8 @@ class Article(Model):
     author = ForeignKey(User)
     active = BooleanField(default=False)
     creation_date = DateTimeField()
-    slug = SlugField(max_length= 55)
-    title = CharField(max_length= 55)
+    slug = SlugField(max_length=55)
+    title = CharField(max_length=55)
     content = TextField()
 
     objects = ArticleManager()
@@ -69,13 +69,14 @@ class Article(Model):
 
         Duplicates will be ignored. Tags not in the sequence will be removed.
         """
-        ArticleTag.objects.filter(article= self).delete()
+        ArticleTag.objects.filter(article=self).delete()
 
         ArticleTag.objects.bulk_create([
-            ArticleTag(article= self, tag= tag)
+            ArticleTag(article=self, tag=tag)
             for tag in
             set(tag_seq)
         ])
+
 
 class ArticleTag(Model):
     """
@@ -85,12 +86,13 @@ class ArticleTag(Model):
         db_table = "blog_articletag"
         unique_together = ("article", "tag")
 
-    article = ForeignKey(Article, related_name= "tags")
+    article = ForeignKey(Article, related_name="tags")
     # The tag is indexed for fast lookup.
     tag = CharField(max_length=255, db_index=True)
 
     def __str__(self):
         return "{} - {}".format(self.tag, self.article)
+
 
 def file_extension(filename):
     """
@@ -111,10 +113,11 @@ def file_extension(filename):
 
 def article_file_path(article, filename):
     return "upload/article/{}/{:d}{}".format(
-        aritcle.slug,
+        article.slug,
         int(time.time() * 1000),
         file_extension(filename)
     )
+
 
 class ArticleFile(Model):
     """
@@ -126,8 +129,9 @@ class ArticleFile(Model):
     article = ForeignKey(Article)
     file = FileField(upload_to=article_file_path)
 
+
 class Commenter(Model):
-    ip_address = GenericIPAddressField(unique= True)
+    ip_address = GenericIPAddressField(unique=True)
     time_banned = DateTimeField(null=True, blank=True)
 
     objects = CommenterManager()
@@ -176,6 +180,7 @@ class Commenter(Model):
             and (timestamp - last_post_time).total_seconds() < 30
         )
 
+
 class ArticleComment(Model):
     """
     A comment on an article.
@@ -191,12 +196,12 @@ class ArticleComment(Model):
     article = ForeignKey(Article, related_name="comments")
     creation_date = DateTimeField(auto_now_add=True)
     poster_name = CharField(
-        verbose_name= "Name",
+        verbose_name="Name",
         max_length=255,
         blank=True,
     )
     content = TextField(
-        verbose_name= "Comment",
+        verbose_name="Comment",
     )
 
     def __str__(self):
@@ -216,4 +221,3 @@ class ArticleComment(Model):
             if self.poster_name.strip() else
             self.DEFAULT_NAME
         )
-

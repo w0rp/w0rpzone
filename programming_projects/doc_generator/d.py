@@ -2,7 +2,6 @@ import re
 import os
 import subprocess
 import tempfile
-import subprocess
 
 from itertools import chain
 from functools import partial
@@ -11,12 +10,9 @@ from django.conf import settings
 
 import lxml.html
 
-from programming_projects.models import (
-    Project,
-    DDoc,
-)
+from programming_projects.models import DDoc
 
-p_sub = lambda x, y : partial(re.compile(x).sub, y)
+p_sub = lambda x, y: partial(re.compile(x).sub, y)
 
 sub_this = p_sub(r"> +this", r'>this')
 
@@ -30,10 +26,13 @@ remove_br = p_sub(r"(?:<br */?>)+", "")
 # Regex is never a perfect solution for HTML, but this will do.
 SPLIT_RE = re.compile("^([^>]+>)(.*)(</[^<]+)$", re.MULTILINE | re.DOTALL)
 
+
 class NullDDoc:
-    def save(self): pass
+    def save(self):
+        pass
 
 NULL_DDOC = NullDDoc()
+
 
 def html_tag_split(html_text):
     """
@@ -41,6 +40,7 @@ def html_tag_split(html_text):
     of (<start_tag>, <content>, <end_tag>)
     """
     return SPLIT_RE.search(html_text).groups()
+
 
 def wrap_individual_declarations(html_text):
     """
@@ -60,6 +60,7 @@ def wrap_individual_declarations(html_text):
         )
 
     return "".join((start, wrapped_inner, end))
+
 
 def post_process_ddoc(html):
     root = lxml.html.fromstring(html)
@@ -101,6 +102,7 @@ def post_process_ddoc(html):
 
     return lxml.html.tostring(root)
 
+
 def find_d_files(project):
     """
     Given a Project, which defines a source directory, yield
@@ -122,7 +124,7 @@ def find_d_files(project):
 
             full_filename = os.path.join(root, filename)
             module_location = full_filename[
-                len(top_dir) + 1 : -extension_length
+                len(top_dir) + 1:-extension_length
             ]
 
             if os.path.sep != "/":
@@ -133,6 +135,7 @@ def find_d_files(project):
                 )
 
             yield (full_filename, module_location)
+
 
 def prepare_dmd_commandline(project):
     """
@@ -158,6 +161,7 @@ def prepare_dmd_commandline(project):
             settings.DDOC_TEMPLATE,
         )
     ))
+
 
 def generate_ddoc_html(project, dmd_commandline, source_filename):
     """
@@ -190,6 +194,7 @@ def generate_ddoc_html(project, dmd_commandline, source_filename):
         if os.path.isfile(temp_filename):
             os.remove(temp_filename)
 
+
 def generate_d_doc_tasks(project):
     """
     Generate a bunch of tasks each yield DDoc models for saving
@@ -198,7 +203,7 @@ def generate_d_doc_tasks(project):
     dmd_commandline = prepare_dmd_commandline(project)
 
     def doc_worker(filename, module_path):
-        html= generate_ddoc_html(project, dmd_commandline, filename)
+        html = generate_ddoc_html(project, dmd_commandline, filename)
 
         # Check the text content.
         text_content = lxml.html.fromstring(html).text_content()
@@ -208,10 +213,9 @@ def generate_d_doc_tasks(project):
             return NULL_DDOC
 
         return DDoc(
-            project= project,
-            location= module_path,
-            html= html
+            project=project,
+            location=module_path,
+            html=html
         )
 
     yield from (partial(doc_worker, *args) for args in find_d_files(project))
-

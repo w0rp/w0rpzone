@@ -1,6 +1,5 @@
-import datetime
-
 from django.db import connection
+
 
 def query(sql):
     """
@@ -11,8 +10,7 @@ def query(sql):
     try:
         cursor.execute(sql)
 
-        for i in range(cursor.rowcount):
+        for _ in range(cursor.rowcount):
             yield cursor.fetchone()
     finally:
         cursor.close()
-

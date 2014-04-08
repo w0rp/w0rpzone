@@ -9,6 +9,7 @@ from .models import (
 
 load_project = Project.objects.load_project
 
+
 def project_list_view(request):
     projects = (
         Project.objects.
@@ -23,6 +24,7 @@ def project_list_view(request):
         "projects": projects,
     })
 
+
 def project_summary_view(request, project_slug):
     try:
         project = load_project(request.user, project_slug)
@@ -33,10 +35,11 @@ def project_summary_view(request, project_slug):
         "project": project,
     })
 
+
 def doc_view(request, project_slug, location):
     try:
         project = load_project(request.user, project_slug)
-        doc = project.load_documentation(location= location)
+        doc = project.load_documentation(location=location)
     except ObjectDoesNotExist:
         raise Http404("Doc not found!")
 
@@ -45,4 +48,3 @@ def doc_view(request, project_slug, location):
         "module": doc,
         "doc_body": mark_safe(doc.html),
     })
-
