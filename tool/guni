@@ -14,6 +14,8 @@ sock_file="$guni_dir/site.sock"
 pid_file="$guni_dir/site.pid"
 
 stop_guni() {
+    cd "$project_dir"
+
     if [ -f "$pid_file" ]; then
         kill `cat -- "$pid_file"`
         rm -f -- "$pid_file"
@@ -25,6 +27,8 @@ stop_guni() {
 }
 
 start_guni() {
+    cd "$project_dir"
+
     if [ ! -d "$guni_dir" ]; then
         mkdir -- "$guni_dir"
     fi
