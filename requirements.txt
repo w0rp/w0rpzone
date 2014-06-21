@@ -4,5 +4,6 @@ psycopg2==2.5.1
 markdown2==2.1.0
 django==1.6.2
 django-pipeline
+pytz==2014.4
 south==0.8.4
 gunicorn

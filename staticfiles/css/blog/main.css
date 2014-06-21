@@ -99,6 +99,8 @@
 
     ul.post_metadata > li.author > .name {
         font-style: normal;
+        text-decoration: none;
+        color: #4CBE79;
     }
 
     ul.post_metadata > li.author > .name:before {
