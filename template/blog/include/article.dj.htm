@@ -18,8 +18,8 @@
     {% endif %}
     <ul class="post_metadata">
       {% spaceless %}
-      <li class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <a class="name" itemprop="name"{% if article.author.email %} href="mailto:{{article.author.email}}"{% endif %}>{{ article.author }}</a>
+      <li class="author">
+        <a class="name" itemprop="author" {% if article.author.email %} href="mailto:{{article.author.email}}"{% endif %}>{{ article.author }}</a>
       </li>
       <li class="creation_time" itemprop="datePublished" content="{{article.creation_date.isoformat}}">
         {{article.creation_date|localtime|date:"SHORT_DATETIME_FORMAT"}}
