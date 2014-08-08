@@ -134,13 +134,15 @@
         color: #4C8E79;
 
         font-family: "Source Code Pro", monospace;
-
-        font-size: 1.5em;
     }
 
     ul.post_metadata > li {
         display: inline-block;
         margin: 0;
+    }
+
+    ul.post_metadata > li.author {
+        margin-right: 16px;
     }
 
     ul.post_metadata > li.author > .name {
@@ -158,7 +160,6 @@
 
     ul.post_metadata > li.creation_time:before {
         content: "on ";
-        margin-left: 16px;
     }
 
     section.comment_list > h2 {
