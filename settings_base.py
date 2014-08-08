@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     "django.contrib.admindocs",
     "gunicorn",
     "south",
+    "pipeline",
     "w0rplib",
     "misc",
     "blog",
@@ -155,5 +156,59 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+
+# django-pipeline settings
+
+PIPELINE_CSS_COMPRESSOR = None
+PIPELINE_JS_COMPRESSOR = None
+
+# Disable JavaScript wrapping. Just copy it across.
+PIPELINE_DISABLE_WRAPPER = True
+
+# Use the versioned cached storage for cache killing.
+STATICFILES_STORAGE = "pipeline.storage.PipelineCachedStorage"
+
+# Use pipeline for finding files.
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "pipeline.finders.PipelineFinder",
+    "pipeline.finders.CachedFileFinder",
+)
+
+PIPELINE_CSS = {
+    "main-site": {
+        "source_filenames": (
+            "css/droidsans.css",
+            "css/source_code_pro.css",
+            "css/highlight_obsidian.css",
+            "css/base.css",
+            "css/blog/main.css",
+            "css/blog/public.css",
+            "css/blog/edit.css",
+        ),
+        "output_filename": "css/combined.css"
+    },
+}
+
+PIPELINE_JS = {
+    "main-site": {
+        "source_filenames": (
+            "js/jquery-2.0.3.min.js",
+            "js/jstz.min.js",
+            "js/notify-combined.min.js",
+            "js/jquery.cookie.js",
+            "js/highlight.pack.js",
+            "js/soverflow_like_highlight.js",
+            "js/marked.js",
+            "js/global.js",
+            "js/blog/main.js",
+            "js/blog/edit.js",
+            "js/blog/comment.js",
+        ),
+        "output_filename": "css/combined.js"
+    },
 }
 

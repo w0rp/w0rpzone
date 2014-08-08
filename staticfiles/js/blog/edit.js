@@ -1,5 +1,11 @@
+/* global HighlightCode, marked */
 $(function() {
     "use strict";
+
+    if (!$(document.body).hasClass("article_edit")) {
+        // Only apply this script to article edit pages.
+        return;
+    }
 
     var $form = $('.post_edit form:first');
     var $article = $('.post_edit article.preview');
@@ -90,7 +96,7 @@ $(function() {
         }
     });
 
-    $(window).resize(function(event) {
+    $(window).resize(function() {
         clearTimeout(resize_timeout_handle);
 
         resize_timeout_handle = setTimeout(function() {

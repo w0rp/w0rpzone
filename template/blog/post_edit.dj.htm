@@ -3,13 +3,10 @@
 {% block head %}
   {{ block.super }}
 
-  <script src="{{STATIC_URL}}js/marked.js"></script>
-  <script src="{{STATIC_URL}}js/blog/edit.js"></script>
-
-  <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/blog/edit.css" />
-
   <title>Edit Post - w0rpzone</title>
 {% endblock %}
+
+{% block bodyclass %}article_edit{% endblock %}
 
 {% block main %}
   <section class="post_edit content">
@@ -34,7 +31,7 @@
 
     </form>
   </section>
-  <nav>
+  <nav class="article_edit_nav">
     {% if article.active %}
       {% url "article-detail" slug=article.slug as article_url %}
       <a class="button" href="{{article_url}}">View Live Article</a>
