@@ -61,16 +61,16 @@
 }
 
 /* Small size screens and up */
-@media screen and (min-width: 48em) {
+@media screen and (min-width: 768px) {
 }
 
 /* Medium size screens and up */
-@media screen and (min-width: 62em) {
+@media screen and (min-width: 960px) {
     #main > nav > aside.article_archive > ol {
         font-size: 1em;
     }
 }
 
 /* Large screens */
-@media screen and (min-width: 75em) {
+@media screen and (min-width: 1200px) {
 }

@@ -113,5 +113,5 @@
 }
 
 /* Medium size screens and up */
-@media screen and (min-width: 62em) {
+@media screen and (min-width: 960px) {
 }

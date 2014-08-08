@@ -390,9 +390,13 @@ form > ul > li > ul.errorlist > li {
     }
 }
 
+/* Small size screens and up */
+@media screen and (min-width: 768px) {
+}
+
 /* Keep the title above the social nav up to a very particular pixel size. */
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 784px) {
     body > header .site_title,
     body > header > nav {
         display: block;
@@ -405,7 +409,7 @@ form > ul > li > ul.errorlist > li {
 }
 
 /* Introduce the settings text just after the break on nav alignment. */
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 785px) {
     body > header > menu > .settings:before {
         content: "Settings: ";
 
@@ -418,18 +422,14 @@ form > ul > li > ul.errorlist > li {
     }
 }
 
-
-/* Small size screens and up */
-@media screen and (min-width: 48em) {
-}
-
 /* Medium size screens and up */
-@media screen and (min-width: 62em) {
+@media screen and (min-width: 960px) {
     /* Set the size of the pages in general. */
     body > header,
     #main,
     body > footer {
-        width: 60em;
+        width: 100%;
+        max-width: 1200px;
         min-height: 1em;
 
         margin: 0 auto;
@@ -438,15 +438,15 @@ form > ul > li > ul.errorlist > li {
     #main > .content {
         float: left;
 
-        width: 44em;
+        width: 75%;
     }
 
     /* Main site navigation as a sidebar */
     #main > nav {
         float: right;
 
-        width: 14em;
-        margin: 0 0 0 1em;
+        width: 24%;
+        margin: 0;
     }
 
     body > header > nav > ul > li > a > img {
@@ -492,20 +492,5 @@ form > ul > li > ul.errorlist > li {
 }
 
 /* Large screens */
-@media screen and (min-width: 75em) {
-    /* Increase sizes on larger screens. */
-    body > header,
-    #main,
-    body > footer {
-        width: 73em;
-    }
-
-    #main > .content {
-        width: 53em;
-    }
-
-    #main > nav {
-        width: 18em;
-        margin: 0 0 0 1em;
-    }
+@media screen and (min-width: 1200px) {
 }
