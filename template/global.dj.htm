@@ -22,52 +22,38 @@
         <ul>
           <li>
             <a href="https://github.com/w0rp">
-              <img src="{{STATIC_URL}}image/simpleicons/github.png" alt="GitHub"
-              title="View, run, or modify my code (including this website)"
-              />
+              <span class="icon github" title="View, run, or modify my code (including this website)"></span>
             </a>
           </li>
           <li>
             <a href="https://twitter.com/w0rp">
-              <img src="{{STATIC_URL}}image/simpleicons/twitter.png" alt="Twitter"
-              title="Follow me on Twitter!"
-              />
+              <span class="icon twitter" title="Follow me on Twitter!"></span>
             </a>
           </li>
           <li>
             <a href="https://www.youtube.com/hyperw0rp/videos">
-              <img src="{{STATIC_URL}}image/simpleicons/youtube.png" alt="YouTube"
-              title="Watch my videos on YouTube"
-              />
+              <span class="icon youtube" title="Watch my videos on YouTube"></span>
             </a>
           </li>
           <li>
             <a href="https://steamcommunity.com/id/w0rp">
-              <img src="{{STATIC_URL}}image/simpleicons/steam.png" alt="Steam"
-              title="Play video games with me on Steam"
-              />
+              <span class="icon steam" title="Play video games with me on Steam"></span>
             </a>
           </li>
           <li>
             <a href="https://soundcloud.com/w0rp">
-              <img src="{{STATIC_URL}}image/simpleicons/soundcloud.png" alt="Sound Cloud"
-              title="Listen to my free music and spoken word tracks"
-              />
+              <span class="icon soundcloud" title="Listen to my free music and spoken word tracks"></span>
             </a>
           </li>
         <!-- Additional email icon by dAKirby309 - http://www.iconarchive.com/artist/dakirby309.html -->
           <li>
             <a href="mailto:devw0rp@gmail.com">
-              <img src="{{STATIC_URL}}image/email.png" alt="Email"
-              title="Send me an email"
-              />
+              <span class="icon email" title="Send me an email"></span>
             </a>
           </li>
           <li>
             <a href="{% url "article-feed" %}">
-              <img src="{{STATIC_URL}}image/simpleicons/rss.png" alt="Sound Cloud"
-              title="Subscribe to my articles"
-              />
+              <span class="icon rss" title="Subscribe to my articles"></span>
             </a>
           </li>
         </ul>
@@ -77,7 +63,7 @@
         <a class="site_nav_link{% if main_nav == 'project' %} active{% endif %}" href="{% url "project-list" %}">Projects</a>
 
         <!-- Settings Icon by dAKirby309 - http://www.iconarchive.com/artist/dakirby309.html -->
-        <a class="settings" href="{% url "settings" %}"><img src="{{STATIC_URL}}image/settings.png" alt="Settings" title="Settings" /></a>
+        <a class="settings" href="{% url "settings" %}"><span class="icon settings" title="Settings"></span></a>
       </menu>
       {% block root_nav %}{% endblock %}
     </header>

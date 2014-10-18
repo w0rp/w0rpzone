@@ -279,9 +279,44 @@ form > ul > li > ul.errorlist > li {
         margin-right: 0;
     }
 
-    body > header > nav > ul > li > a > img {
+    body > header .icon {
+        display: inline-block;
         width: 64px;
         height: 64px;
+
+        background-image: url("../image/icons.png");
+    }
+
+    body > header .icon.github {
+        background-position: 0 0;
+    }
+
+    body > header .icon.twitter {
+        background-position: -64px 0;
+    }
+
+    body > header .icon.youtube {
+        background-position: -128px 0;
+    }
+
+    body > header .icon.steam {
+        background-position: -192px 0;
+    }
+
+    body > header .icon.soundcloud {
+        background-position: -256px 0;
+    }
+
+    body > header .icon.email {
+        background-position: -320px 0;
+    }
+
+    body > header .icon.rss {
+        background-position: -384px 0;
+    }
+
+    body > header .icon.settings {
+        background-position: -448px 0;
     }
 
     body > header > menu {
@@ -331,9 +366,9 @@ form > ul > li > ul.errorlist > li {
         height: 64px;
     }
 
-    body > header > menu > .settings > img {
-        width: 100%;
-        height: 100%;
+    body > header > menu > .settings > .icon {
+        width: 64px;
+        height: 64px;
     }
 
     /* Main site navigation. */
@@ -476,6 +511,14 @@ form > ul > li > ul.errorlist > li {
         right: 64px;
 
         font-size: 16px;
+    }
+
+    body > header > menu > .settings > .icon {
+        width: 48px;
+        height: 48px;
+
+        background-size: 384px 48px;
+        background-position: -336px 0;
     }
 
     #main > nav.fixed_when_big {
