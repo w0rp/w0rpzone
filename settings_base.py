@@ -120,7 +120,6 @@ INSTALLED_APPS = (
     # Enable admin docs.
     "django.contrib.admindocs",
     "gunicorn",
-    "south",
     "pipeline",
     "w0rplib",
     "misc",
@@ -158,6 +157,7 @@ LOGGING = {
     }
 }
 
+TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
 # django-pipeline settings
 
