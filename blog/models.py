@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import (
     Model,
     ForeignKey,
+    OneToOneField,
     TextField,
     CharField,
     BooleanField,
@@ -27,7 +28,7 @@ class BlogAuthor(Model):
     """
     Users which can edit the blog posts.
     """
-    author = ForeignKey(User, unique=True)
+    author = OneToOneField(User)
 
     class Meta:
         # Tables are named explicitly to make direct SQL more predictable.
