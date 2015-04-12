@@ -10,6 +10,6 @@ ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = ("127.0.0.1",)
 MANAGERS = ADMINS = ()
 
-SECRET_KEY = 'thisisntverysecretnowisit?'
+SECRET_KEY = "thisisntverysecretnowisit?"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
