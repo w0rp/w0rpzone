@@ -2,7 +2,36 @@
 function HighlightCode() {
     "use strict";
 
+    // Escape a string for use in a regular expression.
+    function escape_regex(string) {
+        return string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    }
+
+    // Creates an OR regex from a list of strings.
+    // The strings will be escaped.
+    function regex_from_list(list) {
+        var new_list = new Array(list.length);
+
+        for (var i = 0; i < list.length; ++i) {
+            new_list[i] = escape_regex(list[i]);
+        }
+
+        return new RegExp(new_list.join("|"));
+    }
+
     var module = HighlightCode;
+
+    // Build a list of symbols to look for to match a language as D.
+    var d_regex = regex_from_list([
+        "@safe",
+        "@system",
+        "@trusted",
+        "nothrow",
+        "pure",
+        "@nogc",
+        "Exception",
+        "Error",
+    ]);
 
     var lang_re = /^\s*language: *([^ *]+) */;
 
@@ -28,7 +57,21 @@ function HighlightCode() {
                 }
             }
 
+            $(this).addClass("highlight");
+
             // Now apply the highlight after attempting to set the language.
+            hljs.highlightBlock(this);
+        });
+
+        $root.find("p code").each(function() {
+            var text = $(this).text();
+
+            if (text.match(d_regex)) {
+                $(this).addClass("d");
+            }
+
+            $(this).addClass("highlight");
+
             hljs.highlightBlock(this);
         });
     };
