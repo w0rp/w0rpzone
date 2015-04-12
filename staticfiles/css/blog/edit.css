@@ -110,6 +110,10 @@
     #main > .post_edit > ul > li > h2 {
         margin: 0;
     }
+
+    #main > .post_edit form {
+        max-width: 100%;
+    }
 }
 
 /* Medium size screens and up */

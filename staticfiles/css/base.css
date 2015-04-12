@@ -156,6 +156,13 @@ form > ul > li > textarea {
     height: 6.5em;
 }
 
+/* Give taller screens a taller initial textarea size */
+@media screen and (min-height: 30em) {
+    form > ul > li > textarea {
+        height: 20em;
+    }
+}
+
 form > ul > li > .helptext {
     display: block;
     margin-top: 0.5em;
