@@ -73,7 +73,6 @@ LOGOUT_REDIRECT_URL = "/"
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -143,7 +142,7 @@ LOGGING = {
         }
     },
     'handlers': {
-        "syslog" : {
+        "syslog": {
             "address": "/dev/log",
             "class": "logging.handlers.SysLogHandler"
         }
