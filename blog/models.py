@@ -18,6 +18,10 @@ from django.db.models import (
     GenericIPAddressField,
 )
 
+from django.db.models.signals import post_save
+
+from django.conf import settings
+
 from .managers import (
     ArticleManager,
     CommenterManager,
@@ -212,6 +216,12 @@ class ArticleComment(Model):
             self.creation_date.strftime("%Y-%m-%d %H:%M:%S"),
         )
 
+    def get_absolute_url(self):
+        """
+        Return A URL pointing to this comment on an article page.
+        """
+        return "{}#comment_{}".format(self.article.get_absolute_url(), self.id)
+
     @property
     def poster_name_or_default(self):
         """
@@ -222,3 +232,33 @@ class ArticleComment(Model):
             if self.poster_name.strip() else
             self.DEFAULT_NAME
         )
+
+
+def notify_for_new_comment(sender, instance, created, *args, **kwargs):
+    """
+    Notify admins by email when a new comment is received.
+    """
+    from django.core.mail import mail_admins
+
+    if not created:
+        return
+
+    mail_admins(
+        subject="w0rp.com: New Comment",
+        message="\n".join((
+            "A new comment has been posted.",
+            "",
+            "Article: {}".format(instance.article.title),
+            "Link: {}{}".format(
+                settings.EXTERNAL_SITE_URL,
+                instance.get_absolute_url()
+            ),
+            "Name: {}".format(instance.poster_name_or_default),
+            "",
+            "-" * 79,
+            "",
+            instance.content
+        ))
+    )
+
+post_save.connect(notify_for_new_comment, sender=ArticleComment)

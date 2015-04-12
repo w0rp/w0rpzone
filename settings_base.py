@@ -14,8 +14,7 @@ MANAGERS = ADMINS
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = [
-]
+ALLOWED_HOSTS = []
 
 # Being in INTERNAL_IPS enables the debug flag for templates.
 # This turns non-minified JS on, etc.
@@ -212,3 +211,6 @@ PIPELINE_JS = {
 }
 
 DDOC_TEMPLATE = "programming_projects/doc.ddoc"
+
+NO_REPLY_EMAIL = "no-reply@w0rp.com"
+EXTERNAL_SITE_URL = "https://w0rp.com"

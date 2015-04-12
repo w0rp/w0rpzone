@@ -8,7 +8,9 @@ PIPELINE_ENABLED = False
 
 ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = ("127.0.0.1",)
-MANAGERS = ADMINS = ()
+MANAGERS = ADMINS = (
+    ("w0rp", "devw0rp@gmail.com"),
+)
 
 SECRET_KEY = "thisisntverysecretnowisit?"
 

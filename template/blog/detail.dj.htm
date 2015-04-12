@@ -83,7 +83,7 @@ def square(x):
     {% if article.comments.all %}
       <h2>Comments</h2>
       {% for comment in article.comments.all %}
-        <section class="comment {% if forloop.first %}first{% endif %}" id="comment_{{forloop.counter}}">
+        <section class="comment {% if forloop.first %}first{% endif %}" id="comment_{{comment.id}}">
           {% if forloop.last %}<a id="last_comment"></a>{% endif %}
           <header>
             {% if user.is_authenticated %}{% spaceless %}
