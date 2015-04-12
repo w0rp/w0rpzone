@@ -212,3 +212,4 @@ PIPELINE_JS = {
     },
 }
 
+DDOC_TEMPLATE = "programming_projects/doc.ddoc"
