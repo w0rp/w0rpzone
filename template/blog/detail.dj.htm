@@ -14,7 +14,7 @@
 
   <section class="comment_list">
     <h2>Post Your Comment</h2>
-    <form action="" method="post" id="comment_form">
+    <form action="" method="post" id="comment_form"{% if request.method == "POST" and not comment_form.is_valid %} class="has_errors"{% endif %}>
       {% csrf_token %}
       <p class="markdown_help brief active">Need <a href="#" class="show_help">help</a> with comment formatting?</p>
       <div class="markdown_help full">

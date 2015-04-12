@@ -81,4 +81,9 @@ $(function() {
         $new_tab.addClass("active");
         $new_topic.addClass("active");
     });
+
+    if ($form.hasClass("has_errors")) {
+        // Scroll to the form when there are errors in it.
+        $(window).scrollTop($form.closest('section').offset().top);
+    }
 });
