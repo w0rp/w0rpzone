@@ -536,4 +536,7 @@ form > ul > li > ul.errorlist > li {
 
 /* Large screens */
 @media screen and (min-width: 1200px) {
+    #main > nav.fixed_when_big {
+        width: 288px;
+    }
 }
