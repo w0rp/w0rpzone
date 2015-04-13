@@ -108,7 +108,7 @@ def square(x):
             </ul>
           </header>
           <section class="comment_body">
-            {{comment.content|markdown}}
+            {{comment.content|markdown|urlize}}
           </section>
         </section>
       {% endfor %}
