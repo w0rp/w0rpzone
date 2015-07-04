@@ -194,6 +194,8 @@ PIPELINE_CSS = {
     },
 }
 
+PIPELINE_CSS_COMPRESSOR = "w0rplib.compiler.CSSCompressor"
+
 PIPELINE_JS = {
     "main-site": {
         "source_filenames": (

@@ -1,5 +1,5 @@
 {% load tz %}
-{% load compressed %}
+{% load pipeline %}
 {% get_current_timezone as time_zone %}
 <!DOCTYPE html>
 <html lang="en">
@@ -9,8 +9,8 @@
     <!-- Licenses for software used in this page. -->
     <link rel="license" type="text/plain" href="{{STATIC_URL}}text/highlight_license" title="Licence for hightlight.js" />
 
-    {% compressed_css "main-site" %}
-    {% compressed_js "main-site" %}
+    {% stylesheet "main-site" %}
+    {% javascript "main-site" %}
 
     {% block head %}{% endblock %}
   </head>
