@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+
+# Figure out paths automatically.
+script_dir="$(dirname "$(realpath "$0")")"
+
+if (( $? )); then
+    echo 'Failed to determine script path!' 1>&2
+    exit 1
+fi
+
+project_dir="$(dirname "$script_dir")"
+
+# Create the virtualenv if needed.
+test -f env/bin/activate || virtualenv --no-site-packages -p python3.4 env
+
+source env/bin/activate
+
+# Stop the application server.
+tool/guni stop
+
+# Pull down the latest code.
+echo 'Pulling git...' 1>&2
+git pull origin master
+
+# Delete all of the .pyc files.
+echo 'Deleting .pyc files...' 1>&2
+find . -not -path './.git*' -type f -name '*.pyc' -delete
+
+# Update packages.
+pip install -r requirements.txt
+
+# Apply migrations
+./manage.py migrate --noinput
+
+# Collect static files again.
+./manage.py collectstatic --noinput
+
+# Start the application server.
+tool/guni start
