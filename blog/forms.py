@@ -1,5 +1,7 @@
 import datetime
 
+import pytz
+
 from django import forms as dj_form
 
 from django.forms import (
@@ -52,7 +54,7 @@ class NewArticleForm(ArticleForm):
         if author is not None:
             article.author = author
 
-        article.creation_date = datetime.datetime.utcnow()
+        article.creation_date = datetime.datetime.now(pytz.utc)
 
         article.save()
 
