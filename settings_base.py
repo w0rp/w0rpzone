@@ -215,6 +215,8 @@ PIPELINE_JS = {
     },
 }
 
+PIPELINE_JS_COMPRESSOR = "w0rplib.compiler.RJSMinCompressor"
+
 DDOC_TEMPLATE = "programming_projects/doc.ddoc"
 
 NO_REPLY_EMAIL = "no-reply@w0rp.com"
