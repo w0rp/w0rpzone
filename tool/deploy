@@ -12,6 +12,9 @@ fi
 
 project_dir="$(dirname "$script_dir")"
 
+# Move to the project directory.
+cd "$project_dir"
+
 # Create the virtualenv if needed.
 test -f env/bin/activate || virtualenv --no-site-packages -p python3.4 env
 
