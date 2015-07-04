@@ -18,57 +18,58 @@ from .managers import (
     ProjectManager,
 )
 
+
 class Project (Model):
     SUPPORTED_LANGUAGES = (
         ("d", "D"),
     )
 
     active = BooleanField(
-        default= False,
-        help_text= "Switch this on to make the project public.",
+        default=False,
+        help_text="Switch this on to make the project public.",
     )
 
     time_updated = DateTimeField()
 
     name = CharField(
-        max_length= 255,
-        verbose_name= "Project Name",
-        help_text= "Set the name for this project, for display.",
+        max_length=255,
+        verbose_name="Project Name",
+        help_text="Set the name for this project, for display.",
     )
 
     slug = SlugField(
-        max_length= 255,
-        help_text= "A slug for the project, used in generated output.",
+        max_length=255,
+        help_text="A slug for the project, used in generated output.",
     )
 
     language = CharField(
-        max_length= 255,
-        choices= SUPPORTED_LANGUAGES,
-        verbose_name= "Programming Language",
-        help_text= (
+        max_length=255,
+        choices=SUPPORTED_LANGUAGES,
+        verbose_name="Programming Language",
+        help_text=(
             "This field will be used to decide the method used "
             "for generating documentation"
         ),
     )
 
-    source_directory= CharField(
-        max_length= 65535,
-        verbose_name= "Source Directory",
+    source_directory = CharField(
+        max_length=65535,
+        verbose_name="Source Directory",
     )
 
     source_url = URLField(
-        max_length= 255,
-        verbose_name= "Source URL",
-        help_text= "Set this to a URL for the project's source code.",
+        max_length=255,
+        verbose_name="Source URL",
+        help_text="Set this to a URL for the project's source code.",
     )
 
     summary_line = CharField(
-        max_length= 255,
+        max_length=255,
     )
 
     description = TextField(
-        default= "",
-        help_text= "Input Markdown here to describe the project.",
+        default="",
+        help_text="Input Markdown here to describe the project.",
     )
 
     objects = ProjectManager()
@@ -109,8 +110,8 @@ class Project (Model):
         """
         if self.language == "d":
             return DDoc.objects.get(
-                project= self,
-                location= location,
+                project=self,
+                location=location,
             )
         else:
             assert False
@@ -125,7 +126,7 @@ class Project (Model):
             # Cache the result.
             self.__source_list = (
                 self.extra_sources.all()
-                .values_list("source_directory", flat= True)
+                .values_list("source_directory", flat=True)
             )
 
         return self.__source_list
@@ -139,13 +140,15 @@ class Project (Model):
         else:
             assert False
 
+
 class ExtraSource (Model):
     project = ForeignKey(Project, related_name="extra_sources")
 
-    source_directory= CharField(
-        max_length= 65535,
-        verbose_name= "Source Directory",
+    source_directory = CharField(
+        max_length=65535,
+        verbose_name="Source Directory",
     )
+
 
 class DDoc (Model):
     class Meta:
@@ -156,10 +159,9 @@ class DDoc (Model):
         ordering = ("location", )
 
     project = ForeignKey(Project, related_name="ddocs")
-    location = CharField(max_length= 255)
+    location = CharField(max_length=255)
     html = TextField()
 
     @property
     def namespace(self):
         return self.location.replace("/", ".")
-

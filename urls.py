@@ -16,48 +16,58 @@ from misc.views import (
     ajax_settings_view,
 )
 
+
 def templ(regex, template):
-    return (regex, TemplateView.as_view(template_name= template + ".dj.htm"))
+    return (regex, TemplateView.as_view(template_name=template + ".dj.htm"))
 
 admin.autodiscover()
 
-urlpatterns = patterns("",
+urlpatterns = patterns(
+    "",
     (settings.ADMIN_REGEX, include(admin.site.urls)),
-    url(settings.LOGIN_REGEX, login_view, {
-        "template_name": "registration/login.dj.htm",
-    }),
-    url(settings.LOGOUT_REGEX, logout_view, {
-        "next_page": settings.LOGOUT_REDIRECT_URL,
-    }),
+    url(
+        settings.LOGIN_REGEX,
+        login_view,
+        {"template_name": "registration/login.dj.htm"}
+    ),
+    url(
+        settings.LOGOUT_REGEX,
+        logout_view,
+        {"next_page": settings.LOGOUT_REDIRECT_URL}
+    ),
     (r"^blog/", include("blog.urls")),
     (r"^project/", include("programming_projects.urls")),
     url(
         r"^settings/$",
         settings_view,
-        name= "settings",
+        name="settings",
     ),
     url(
         r"^ajax-settings/$",
         ajax_settings_view,
-        name= "ajax-settings",
+        name="ajax-settings",
     )
 )
 
-urlpatterns += patterns("",
+urlpatterns += patterns(
+    "",
     # TODO: Implement a more meaningful homepage.
     # templ(r"^$", "index"),
     (r"^$", RedirectView.as_view(
-        url= "/blog/",
-        permanent= False,
+        url="/blog/",
+        permanent=False,
     )),
 )
 
 if settings.DEBUG:
     # Serve media files via Django in DEBUG mode.
-    urlpatterns += static(settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
 
     # Serve static files via Django in DEBUG mode.
-    urlpatterns += static(settings.STATIC_URL,
-        document_root=settings.STATIC_ROOT)
-
+    urlpatterns += static(
+        settings.STATIC_URL,
+        document_root=settings.STATIC_ROOT
+    )

@@ -1,15 +1,17 @@
 from django.views.generic.base import RedirectView
 from django.conf.urls import url
 
+
 def redir(regex, redirect_url, name=None):
     """
     A shorter wrapper around RedirectView for 301 redirects.
     """
     return url(
         regex,
-        RedirectView.as_view(url= redirect_url),
-        name= name,
+        RedirectView.as_view(url=redirect_url),
+        name=name,
     )
+
 
 def redir_temp(regex, redirect_url, name=None):
     """
@@ -17,7 +19,6 @@ def redir_temp(regex, redirect_url, name=None):
     """
     return url(
         regex,
-        RedirectView.as_view(url= redirect_url, permanent= False),
-        name= name,
+        RedirectView.as_view(url=redirect_url, permanent=False),
+        name=name,
     )
-

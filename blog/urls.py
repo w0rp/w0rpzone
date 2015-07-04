@@ -19,9 +19,13 @@ from .views import (
 
 from .feed import LatestArticleFeed
 
-urlpatterns = patterns("blog.views",
+urlpatterns = patterns(
+    "blog.views",
     # Loading the main site gets you page 1.
-    url(r"^$", ArticlePageView.as_view(), {"page": "1"},
+    url(
+        r"^$",
+        ArticlePageView.as_view(),
+        {"page": "1"},
         name="blog-home",
     ),
     # Redirect the first page back to the blog main page, for SEO.

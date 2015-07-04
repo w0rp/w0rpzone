@@ -199,8 +199,9 @@ article_unban_commenter_view = partial(
 )
 
 
-class ArticleMonthArchiveView (ArticleListMixin, MonthArchiveView,
-NavigationMixin):
+class ArticleMonthArchiveView (
+    ArticleListMixin, MonthArchiveView, NavigationMixin
+):
     date_field = "creation_date"
     make_object_list = True
     template_name = "blog/date.dj.htm"

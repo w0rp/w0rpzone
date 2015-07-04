@@ -116,6 +116,7 @@ def file_extension(filename):
 
     return "." + ".".join(split[1:])
 
+
 def article_file_path(article, filename):
     return "upload/article/{}/{:d}{}".format(
         article.slug,

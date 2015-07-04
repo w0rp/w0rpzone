@@ -76,7 +76,8 @@ def parallel(iterator):
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
-        make_option("--all",
+        make_option(
+            "--all",
             action="store_true",
             dest="generate_all",
             default=False,

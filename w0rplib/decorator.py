@@ -2,6 +2,7 @@ import sys
 
 from functools import wraps
 
+
 def print_return_value(func):
     """
     This decorator prints the repr of the return value of any given function to
@@ -16,4 +17,3 @@ def print_return_value(func):
         return result
 
     return inner
-

@@ -16,6 +16,7 @@ from .models import (
     ArticleComment,
 )
 
+
 class ArticleForm(ModelForm):
     tags = CharField(required=False)
 
@@ -30,8 +31,9 @@ class ArticleForm(ModelForm):
             self.fields["tags"].initial = " ".join(
                 article.tags.all()
                 .order_by("tag")
-                .values_list("tag", flat= True)
+                .values_list("tag", flat=True)
             )
+
 
 class NewArticleForm(ArticleForm):
     class Meta:
@@ -59,6 +61,7 @@ class NewArticleForm(ArticleForm):
 
         return article
 
+
 class EditArticleForm(ArticleForm):
     class Meta:
         model = Article
@@ -84,6 +87,7 @@ class EditArticleForm(ArticleForm):
 
         return article
 
+
 class ArticleCommentForm (ModelForm):
     class Meta:
         model = ArticleComment
@@ -91,4 +95,3 @@ class ArticleCommentForm (ModelForm):
             "poster_name",
             "content",
         )
-

@@ -2,12 +2,14 @@ from django.http import HttpResponse, StreamingHttpResponse
 from django.template.response import TemplateResponse
 from django.shortcuts import render
 
+
 def is_response(value):
     return isinstance(value, (
         HttpResponse,
         StreamingHttpResponse,
         TemplateResponse,
     ))
+
 
 def using_template(template_name):
     """
@@ -20,12 +22,16 @@ def using_template(template_name):
     """
     def outer(func):
         def inner(request, *args, **kwargs):
-            return render(request, template_name,
-                func(request, *args, **kwargs))
+            return render(
+                request,
+                template_name,
+                func(request, *args, **kwargs)
+            )
 
         return inner
 
     return outer
+
 
 def json_response(obj):
     """
@@ -36,9 +42,10 @@ def json_response(obj):
 
     return HttpResponse(
         json.dumps(obj),
-        status= 200,
-        content_type= "application/json",
+        status=200,
+        content_type="application/json",
     )
+
 
 def json_error_response(obj):
     """
@@ -49,9 +56,10 @@ def json_error_response(obj):
 
     return HttpResponse(
         json.dumps(obj),
-        status= 400,
-        content_type= "application/json",
+        status=400,
+        content_type="application/json",
     )
+
 
 class ClientError (Exception):
     """
@@ -59,6 +67,7 @@ class ClientError (Exception):
     by the client, not the server.
     """
     pass
+
 
 def json_view(func):
     """
@@ -89,4 +98,3 @@ def json_view(func):
         return json_success_response(result)
 
     return inner
-

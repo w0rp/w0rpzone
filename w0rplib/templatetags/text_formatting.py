@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
+
 @register.filter(is_safe=True)
 @stringfilter
 def word_break_on(value, split_value):
@@ -22,4 +23,3 @@ def word_break_on(value, split_value):
             value.split(split_value)
         )
     )
-
