@@ -1,6 +1,6 @@
 # This settings file contains most of the settings needed for a dev machine.
 
-from settings_base import *
+from settings_base import *  # nopep8
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

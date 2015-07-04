@@ -8,7 +8,7 @@ def redir(regex, redirect_url, name=None):
     """
     return url(
         regex,
-        RedirectView.as_view(url=redirect_url),
+        RedirectView.as_view(url=redirect_url, permanent=True),
         name=name,
     )
 

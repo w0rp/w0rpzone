@@ -20,6 +20,7 @@ ALLOWED_HOSTS = []
 # This turns non-minified JS on, etc.
 INTERNAL_IPS = (
     "127.0.0.1",
+    "::1",
 )
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -102,6 +103,7 @@ MIDDLEWARE_CLASSES = (
     "django.middleware.gzip.GZipMiddleware",
     "pipeline.middleware.MinifyHTMLMiddleware",
     "misc.middleware.LocaleMiddleware",
+    "w0rplib.middleware.StartupTimeMiddleware",
 )
 
 ROOT_URLCONF = "urls"
