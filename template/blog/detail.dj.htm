@@ -6,7 +6,7 @@
   {{ block.super }}
 
   <title>{{ article.title }} - w0rpzone</title>
-  <meta name="description" content="{{ article.content|slice:":160" }}" />
+  <meta name="description" content="{{article.html_content|striptags|slice:":160"}}" />
 {% endblock %}
 
 {% block content %}
@@ -80,38 +80,37 @@ def square(x):
       <section class="comment_body"></section>
     </section>
 
-    {% if article.comments.all %}
-      <h2>Comments</h2>
-      {% for comment in article.comments.all %}
-        <section class="comment {% if forloop.first %}first{% endif %}" id="comment_{{comment.id}}">
-          {% if forloop.last %}<a id="last_comment"></a>{% endif %}
-          <header>
-            {% if user.is_authenticated %}{% spaceless %}
-              <div class="buttons">
-                <a class="button" href="{% url "delete-comment" article.slug comment.id %}">
-                  Delete Comment
+    {% for comment in article.comments.all %}
+      {% if forloop.first %}<h2>Comments</h2>{% endif %}
+
+      <section class="comment {% if forloop.first %}first{% endif %}" id="comment_{{comment.id}}">
+        {% if forloop.last %}<a id="last_comment"></a>{% endif %}
+        <header>
+          {% if user.is_authenticated %}{% spaceless %}
+            <div class="buttons">
+              <a class="button" href="{% url "delete-comment" article.slug comment.id %}">
+                Delete Comment
+              </a>
+              {% if comment.commenter.is_banned %}
+                <a class="button" href="{% url "unban-comment" article.slug comment.commenter.id %}">
+                  Unban Commenter
                 </a>
-                {% if comment.commenter.is_banned %}
-                  <a class="button" href="{% url "unban-comment" article.slug comment.commenter.id %}">
-                    Unban Commenter
-                  </a>
-                {% else %}
-                  <a class="button" href="{% url "ban-comment" article.slug comment.commenter.id %}">
-                    Ban Commenter
-                  </a>
-                {% endif %}
-              </div>
-            {% endspaceless %}{% endif %}
-            <ul class="post_metadata">
-              <li class="author"><a class="name">{{comment.poster_name_or_default}}</a></li>
-              <li class="creation_time">{{comment.creation_date|localtime|date:"SHORT_DATETIME_FORMAT"}}</li>
-            </ul>
-          </header>
-          <section class="comment_body">
-            {{comment.content|markdown|urlize}}
-          </section>
+              {% else %}
+                <a class="button" href="{% url "ban-comment" article.slug comment.commenter.id %}">
+                  Ban Commenter
+                </a>
+              {% endif %}
+            </div>
+          {% endspaceless %}{% endif %}
+          <ul class="post_metadata">
+            <li class="author"><a class="name">{{comment.poster_name_or_default}}</a></li>
+            <li class="creation_time">{{comment.creation_date|localtime|date:"SHORT_DATETIME_FORMAT"}}</li>
+          </ul>
+        </header>
+        <section class="comment_body">
+          {{comment.html_content|safe}}
         </section>
-      {% endfor %}
-    {% endif %}
+      </section>
+    {% endfor %}
   </section>
 {% endblock %}

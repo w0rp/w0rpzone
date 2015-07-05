@@ -3,7 +3,9 @@ import datetime
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse as url_reverse
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.cache import cache
+from django.utils.functional import cached_property
+from django.utils.html import urlize
 
 from django.db.models import (
     Model,
@@ -22,10 +24,39 @@ from django.db.models.signals import post_save
 
 from django.conf import settings
 
+from w0rplib.templatetags.markdown import unsafe_markdown, markdown
+
 from .managers import (
     ArticleManager,
     CommenterManager,
 )
+
+
+class ContentMixin:
+    """
+    A mixin which takes produces cached HTML output for a model from
+    the ``content`` field. The ``pk`` and ``modified_date`` will be used
+    to differentiate the cache.
+
+    A method ``compile_content`` must be defined for producing the compiled
+    content when the cache is missed.
+    """
+    @cached_property
+    def html_content(self):
+        key = "{}.content{}-{}".format(
+            self._meta.db_table,
+            self.pk,
+            time.mktime(self.modified_date.timetuple())
+        )
+
+        value = cache.get(key)
+
+        if value is None:
+            value = self.compile_content(self.content)
+
+            cache.set(key, value)
+
+        return value
 
 
 class BlogAuthor(Model):
@@ -42,7 +73,7 @@ class BlogAuthor(Model):
         return str(self.author)
 
 
-class Article(Model):
+class Article(Model, ContentMixin):
     """
     An article on the blog.
     """
@@ -56,6 +87,7 @@ class Article(Model):
     author = ForeignKey(User)
     active = BooleanField(default=False)
     creation_date = DateTimeField()
+    modified_date = DateTimeField(auto_now=True)
     slug = SlugField(max_length=55)
     title = CharField(max_length=55)
     content = TextField()
@@ -81,6 +113,9 @@ class Article(Model):
             for tag in
             set(tag_seq)
         ])
+
+    def compile_content(self, content):
+        return unsafe_markdown(content)
 
 
 class ArticleTag(Model):
@@ -152,34 +187,22 @@ class Commenter(Model):
         """
         return bool(self.pk and self.time_banned is not None)
 
-    def last_comment_time_or_none(self):
-        """
-        Return the last creation date for all comments tied to this object.
-
-        This time is None when the commenter doesn't yet exist in the database
-        or no comments exist for the commenter.
-        """
-        if not self.pk:
-            return None
-
-        try:
-            latest_comment = (
-                self.comments
-                .only("creation_date")
-                .latest()
-            )
-
-            return latest_comment.creation_date
-        except ObjectDoesNotExist:
-            return None
-
     def is_comment_too_soon(self, timestamp):
         """
         Return True if this commenter is making another comment too soon.
         """
         assert isinstance(timestamp, datetime.datetime)
 
-        last_post_time = self.last_comment_time_or_none()
+        last_post_time = (
+            (
+                self.comments
+                .order_by("creation_date")
+                .values_list("creation_date", flat=True)
+                .last()
+            )
+            if self.pk else
+            None
+        )
 
         return (
             last_post_time is not None
@@ -187,7 +210,7 @@ class Commenter(Model):
         )
 
 
-class ArticleComment(Model):
+class ArticleComment(Model, ContentMixin):
     """
     A comment on an article.
     """
@@ -201,6 +224,7 @@ class ArticleComment(Model):
     commenter = ForeignKey(Commenter, related_name="comments")
     article = ForeignKey(Article, related_name="comments")
     creation_date = DateTimeField(auto_now_add=True)
+    modified_date = DateTimeField(auto_now=True)
     poster_name = CharField(
         verbose_name="Name",
         max_length=255,
@@ -233,6 +257,9 @@ class ArticleComment(Model):
             if self.poster_name.strip() else
             self.DEFAULT_NAME
         )
+
+    def compile_content(self, content):
+        return urlize(markdown(content))
 
 
 def notify_for_new_comment(sender, instance, created, *args, **kwargs):

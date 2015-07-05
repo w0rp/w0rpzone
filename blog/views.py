@@ -1,4 +1,7 @@
+import datetime
 from functools import partial
+
+import pytz
 
 from django.views.generic import ListView
 from django.views.generic.base import ContextMixin
@@ -9,8 +12,6 @@ from django.core.urlresolvers import reverse as url_reverse
 from django.db import transaction
 from django.views.generic.edit import DeleteView
 from django.core.urlresolvers import reverse_lazy
-from django.http import Http404
-from django.utils import timezone
 
 from .models import (
     Article,
@@ -94,7 +95,7 @@ def comment_on_article(article, request):
         comment_form.add_error("__all__", "You are probably a spammer.")
     elif commenter.is_banned:
         comment_form.add_error("__all__", "You have been banned from posting.")
-    elif commenter.is_comment_too_soon(timezone.now()):
+    elif commenter.is_comment_too_soon(datetime.datetime.now(pytz.utc)):
         comment_form.add_error("__all__", "You cannot comment again so soon.")
 
     if comment_form.is_valid():
@@ -108,18 +109,14 @@ def comment_on_article(article, request):
     return comment_form
 
 
-def article_or_404(slug):
-    try:
-        return (
-            Article.objects
-            .get(slug=slug)
-        )
-    except Article.DoesNotExist:
-        raise Http404
-
-
 def article_detail_view(request, slug):
-    article = article_or_404(slug)
+    article = get_object_or_404(
+        (
+            Article.objects
+            .select_related("author")
+        ),
+        slug=slug
+    )
 
     comment_form = comment_on_article(article, request)
 
@@ -148,12 +145,7 @@ def change_article_object_view(request, slug, pk, model, action, message):
     the action, supposing the request is a post request and contains
     the key "apply_action", a confirmation page will be generated otherwise.
     """
-    article_or_404(slug)
-
-    try:
-        obj = model.objects.get(pk=pk)
-    except model.DoesNotExist:
-        raise Http404
+    obj = get_object_or_404(model, pk=pk, article__slug=slug)
 
     if "apply_action" in request.POST:
         action(obj)
@@ -175,8 +167,8 @@ article_delete_comment_view = partial(
 
 def ban_commenter(commenter):
     if commenter.time_banned is None:
-        commenter.time_banned = timezone.now()
-        commenter.save()
+        commenter.time_banned = datetime.datetime.now(pytz.utc)
+        commenter.save(update_fields=["time_banned"])
 
 article_ban_commenter_view = partial(
     change_article_object_view,
@@ -189,7 +181,7 @@ article_ban_commenter_view = partial(
 def unban_commenter(commenter):
     if commenter.time_banned is not None:
         commenter.time_banned = None
-        commenter.save()
+        commenter.save(update_fields=["time_banned"])
 
 article_unban_commenter_view = partial(
     change_article_object_view,

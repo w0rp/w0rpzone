@@ -29,7 +29,7 @@
   </header>
   {% if full_article %}
     <section class="post" itemprop="articleBody">
-      {{ article.content | unsafe_markdown }}
+      {{article.html_content}}
     </section>
   {% endif %}
 </article>
