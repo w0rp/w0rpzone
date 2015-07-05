@@ -1,8 +1,7 @@
 import pytz
 
-from w0rplib.form import Form
-
 from django.forms import (
+    Form,
     ChoiceField,
 )
 

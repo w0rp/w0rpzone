@@ -12,7 +12,6 @@ from .models import (
     BlogAuthor,
     Article,
     ArticleTag,
-    ArticleFile,
     Commenter,
     ArticleComment,
 )
@@ -24,10 +23,6 @@ class BlogAuthorAdmin (ModelAdmin):
 
 class ArticleTagInline (StackedInline):
     model = ArticleTag
-
-
-class ArticleFileInline (StackedInline):
-    model = ArticleFile
 
 
 class ArticleCommentInline (StackedInline):
@@ -44,7 +39,6 @@ class ArticleAdmin (ModelAdmin):
 
     inlines = [
         ArticleTagInline,
-        ArticleFileInline,
         ArticleCommentInline,
     ]
 

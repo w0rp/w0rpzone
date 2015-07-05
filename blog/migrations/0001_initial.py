@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import blog.models
 from django.conf import settings
 
 
@@ -50,7 +49,7 @@ class Migration(migrations.Migration):
             name='ArticleFile',
             fields=[
                 ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
-                ('file', models.FileField(upload_to=blog.models.article_file_path)),
+                ('file', models.FileField(upload_to="%Y-%m-%dT%H:%M:%SZ/")),
                 ('article', models.ForeignKey(to='blog.Article')),
             ],
             options={

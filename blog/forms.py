@@ -2,24 +2,21 @@ import datetime
 
 import pytz
 
-from django import forms as dj_form
-
 from django.forms import (
+    ModelForm,
     CharField,
-    HiddenInput,
 )
-
-from django.core.exceptions import ValidationError
-
-from w0rplib.form import ModelForm
 
 from .models import (
     Article,
     ArticleComment,
+    Upload,
 )
 
 
 class ArticleForm(ModelForm):
+    error_css_class = "error"
+
     tags = CharField(required=False)
 
     def __init__(self, *args, **kwargs):
@@ -64,7 +61,7 @@ class NewArticleForm(ArticleForm):
         return article
 
 
-class EditArticleForm(ArticleForm):
+class EditArticleForm (ArticleForm):
     class Meta:
         model = Article
         fields = (
@@ -97,3 +94,13 @@ class ArticleCommentForm (ModelForm):
             "poster_name",
             "content",
         )
+
+    error_css_class = "error"
+
+
+class UploadForm (ModelForm):
+    class Meta:
+        model = Upload
+        fields = ("file",)
+
+    error_css_class = "error"

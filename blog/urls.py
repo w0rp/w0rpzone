@@ -10,6 +10,7 @@ from .views import (
     ArticleMonthArchiveView,
     edit_article_view,
     new_article_view,
+    upload_file_view,
     article_delete_comment_view,
     article_ban_commenter_view,
     article_unban_commenter_view,
@@ -89,4 +90,5 @@ urlpatterns = patterns(
         edit_article_view,
         name="edit-article"
     ),
+    url(r"^upload/$", upload_file_view, name="upload-file"),
 )

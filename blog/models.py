@@ -21,15 +21,13 @@ from django.db.models import (
 )
 
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from django.conf import settings
 
 from w0rplib.templatetags.markdown import unsafe_markdown, markdown
 
-from .managers import (
-    ArticleManager,
-    CommenterManager,
-)
+from .managers import ArticleManager
 
 
 class ContentMixin:
@@ -152,30 +150,20 @@ def file_extension(filename):
     return "." + ".".join(split[1:])
 
 
-def article_file_path(article, filename):
-    return "upload/article/{}/{:d}{}".format(
-        article.slug,
-        int(time.time() * 1000),
-        file_extension(filename)
-    )
-
-
-class ArticleFile(Model):
+class Upload(Model):
     """
-    A file uploaded for an article.
+    This model represents an upload for the site.
     """
     class Meta:
-        db_table = "blog_articlefile"
+        db_table = "blog_upload"
 
-    article = ForeignKey(Article)
-    file = FileField(upload_to=article_file_path)
+    author = ForeignKey(User)
+    file = FileField(upload_to="%Y-%m-%dT%H:%M:%SZ/")
 
 
 class Commenter(Model):
     ip_address = GenericIPAddressField(unique=True)
     time_banned = DateTimeField(null=True, blank=True)
-
-    objects = CommenterManager()
 
     def __str__(self):
         return self.ip_address if self.ip_address is not None else "NULL"
@@ -262,6 +250,7 @@ class ArticleComment(Model, ContentMixin):
         return urlize(markdown(content))
 
 
+@receiver(post_save, sender=ArticleComment)
 def notify_for_new_comment(sender, instance, created, *args, **kwargs):
     """
     Notify admins by email when a new comment is received.
@@ -288,5 +277,3 @@ def notify_for_new_comment(sender, instance, created, *args, **kwargs):
             instance.content
         ))
     )
-
-post_save.connect(notify_for_new_comment, sender=ArticleComment)

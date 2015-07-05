@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from django.views.generic.base import ContextMixin
 from django.views.generic.dates import MonthArchiveView
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse as url_reverse
 from django.db import transaction
@@ -23,6 +24,7 @@ from .forms import (
     EditArticleForm,
     NewArticleForm,
     ArticleCommentForm,
+    UploadForm,
 )
 
 
@@ -34,9 +36,7 @@ class NavigationMixin(ContextMixin):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
-        context.update({
-            "article_months": Article.objects.active_months()
-        })
+        context["article_months"] = Article.objects.active_months()
 
         return context
 
@@ -58,11 +58,7 @@ class ArticlePageView (ArticleListMixin, ListView, NavigationMixin):
 
 
 class ArticleEditPageView(ListView):
-    queryset = (
-        Article.objects.all()
-        .defer("content")
-    )
-
+    queryset = Article.objects.all().defer("content")
     context_object_name = "article_list"
     template_name = "blog/article_edit_list.dj.htm"
     paginate_by = 20
@@ -89,14 +85,16 @@ def comment_on_article(article, request):
 
     comment_form = ArticleCommentForm(request.POST)
 
-    commenter = Commenter.objects.create_for_ip(request.META["REMOTE_ADDR"])
+    commenter, _ = Commenter.objects.get_or_create(
+        ip_address=request.META["REMOTE_ADDR"],
+    )
 
     if not honeypot_ok(request, "title"):
-        comment_form.add_error("__all__", "You are probably a spammer.")
+        comment_form.add_error(None, "You are probably a spammer.")
     elif commenter.is_banned:
-        comment_form.add_error("__all__", "You have been banned from posting.")
+        comment_form.add_error(None, "You have been banned from posting.")
     elif commenter.is_comment_too_soon(datetime.datetime.now(pytz.utc)):
-        comment_form.add_error("__all__", "You cannot comment again so soon.")
+        comment_form.add_error(None, "You cannot comment again so soon.")
 
     if comment_form.is_valid():
         # Add this comment.
@@ -111,10 +109,7 @@ def comment_on_article(article, request):
 
 def article_detail_view(request, slug):
     article = get_object_or_404(
-        (
-            Article.objects
-            .select_related("author")
-        ),
+        Article.objects.select_related("author"),
         slug=slug
     )
 
@@ -228,25 +223,35 @@ def new_article_view(request):
     form = NewArticleForm(request.POST or None)
 
     if not form.is_valid():
-        return render(request, "blog/post_edit.dj.htm", {
-            "form": form
-        })
+        return render(request, "blog/post_edit.dj.htm", {"form": form})
 
     article = form.save(author=request.user)
 
     return redirect(url_reverse(edit_article_view, args=[article.slug]))
 
 
+@login_required
+def upload_file_view(request):
+    """
+    This view manages uploading a file to a site.
+    """
+    form = UploadForm(request.POST or None)
+
+    if form.is_valid():
+        upload = form.save(commit=False)
+        upload.author = request.user
+        upload.save()
+
+        return JsonResponse(upload, safe=True, status_code=201)
+
+    return JsonResponse(None, status_code=400)
+
+
 class DeleteArticleView(DeleteView):
     model = Article
     context_object_name = "article"
     template_name = "blog/article_delete.dj.htm"
-    success_url = reverse_lazy(
-        "article-edit-list",
-        kwargs={
-            "page": 1,
-        }
-    )
+    success_url = reverse_lazy("article-edit-list", kwargs={"page": 1})
 
 
 def bounce_view(request, url):
