@@ -1,8 +1,7 @@
-import datetime
 from functools import partial
 
-import pytz
-
+from django.conf import settings
+from django.utils import timezone
 from django.views.generic import ListView
 from django.views.generic.base import ContextMixin
 from django.views.generic.dates import MonthArchiveView
@@ -13,6 +12,7 @@ from django.core.urlresolvers import reverse as url_reverse
 from django.db import transaction
 from django.views.generic.edit import DeleteView
 from django.core.urlresolvers import reverse_lazy
+from django.core.mail import mail_admins
 
 from .models import (
     Article,
@@ -73,6 +73,29 @@ def honeypot_ok(request, missing_name):
     )
 
 
+def notify_for_new_comment(comment):
+    """
+    Notify admins by email when a new comment is received.
+    """
+    mail_admins(
+        subject="New Comment",
+        message="\n".join((
+            "A new comment has been posted.",
+            "",
+            "Article: {}".format(comment.article.title),
+            "Link: {}{}".format(
+                settings.EXTERNAL_SITE_URL,
+                comment.get_absolute_url()
+            ),
+            "Name: {}".format(comment.poster_name_or_default),
+            "",
+            "-" * 79,
+            "",
+            comment.content
+        ))
+    )
+
+
 def comment_on_article(article, request):
     """
     Given an article and a request object, process the request and add an
@@ -93,7 +116,7 @@ def comment_on_article(article, request):
         comment_form.add_error(None, "You are probably a spammer.")
     elif commenter.is_banned:
         comment_form.add_error(None, "You have been banned from posting.")
-    elif commenter.is_comment_too_soon(datetime.datetime.now(pytz.utc)):
+    elif commenter.is_comment_too_soon(timezone.now()):
         comment_form.add_error(None, "You cannot comment again so soon.")
 
     if comment_form.is_valid():
@@ -103,6 +126,8 @@ def comment_on_article(article, request):
         comment.commenter = commenter
         comment.article = article
         comment.save()
+
+        notify_for_new_comment(comment)
 
     return comment_form
 
@@ -162,7 +187,7 @@ article_delete_comment_view = partial(
 
 def ban_commenter(commenter):
     if commenter.time_banned is None:
-        commenter.time_banned = datetime.datetime.now(pytz.utc)
+        commenter.time_banned = timezone.now()
         commenter.save(update_fields=["time_banned"])
 
 article_ban_commenter_view = partial(

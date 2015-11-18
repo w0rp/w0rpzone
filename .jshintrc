@@ -20,5 +20,8 @@
     "laxbreak": true,
     "devel": true,
     "browser": true,
-    "jquery": true
+    "jquery": true,
+    "globals": {
+        "marked": true
+    }
 }

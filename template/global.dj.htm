@@ -10,7 +10,6 @@
     <link rel="license" type="text/plain" href="{{STATIC_URL}}text/highlight_license" title="Licence for hightlight.js" />
 
     {% stylesheet "main-site" %}
-    {% javascript "main-site" %}
 
     {% block head %}{% endblock %}
   </head>
@@ -75,5 +74,7 @@
       {% block footer %}{% endblock %}
     </footer>
     {% endblock %}
+    {% javascript "main-site" %}
+    {% block script %}{% endblock %}
   </body>
 </html>

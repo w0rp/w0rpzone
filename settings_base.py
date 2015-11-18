@@ -69,6 +69,8 @@ LOGOUT_URL = "/logout/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
+EMAIL_SUBJECT_PREFIX = "w0rp.com: "
+
 # Use the cached template loader for Django templates.
 TEMPLATES = [{
     "BACKEND": "django.template.backends.django.DjangoTemplates",

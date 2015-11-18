@@ -1,33 +1,50 @@
-import time
 import datetime
+import time
 
+from django.utils import timezone
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse as url_reverse
 from django.core.cache import cache
+from django.core.urlresolvers import reverse as url_reverse
+from django.db.models import (
+    BooleanField,
+    CharField,
+    DateTimeField,
+    FileField,
+    ForeignKey,
+    GenericIPAddressField,
+    Model,
+    OneToOneField,
+    SlugField,
+    TextField,
+)
 from django.utils.functional import cached_property
 from django.utils.html import urlize
 
-from django.db.models import (
-    Model,
-    ForeignKey,
-    OneToOneField,
-    TextField,
-    CharField,
-    BooleanField,
-    DateTimeField,
-    SlugField,
-    FileField,
-    GenericIPAddressField,
-)
-
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
-from django.conf import settings
-
-from w0rplib.templatetags.markdown import unsafe_markdown, markdown
+from w0rplib.templatetags.markdown import markdown, unsafe_markdown
 
 from .managers import ArticleManager
+
+
+class TimestampModel(Model):
+    """
+    A model providing ``creation_date`` and ``modified_date`` fields for
+    the time an object was created and modified.
+
+    The ``save`` method has been overridden to take a special keyword argument
+    ``no_timestamp``. If set to ``True``, the modified_date will not be
+    set when the model is saved.
+    """
+    class Meta:
+        abstract = True
+
+    creation_date = DateTimeField(default=timezone.now)
+    modified_date = DateTimeField()
+
+    def save(self, *args, **kwargs):
+        if not kwargs.pop('no_timestamp', False):
+            self.modified_date = timezone.now()
+
+        return super().save(*args, **kwargs)
 
 
 class ContentMixin:
@@ -71,7 +88,7 @@ class BlogAuthor(Model):
         return str(self.author)
 
 
-class Article(Model, ContentMixin):
+class Article(TimestampModel, ContentMixin):
     """
     An article on the blog.
     """
@@ -84,8 +101,6 @@ class Article(Model, ContentMixin):
 
     author = ForeignKey(User)
     active = BooleanField(default=False)
-    creation_date = DateTimeField()
-    modified_date = DateTimeField(auto_now=True)
     slug = SlugField(max_length=55)
     title = CharField(max_length=55)
     content = TextField()
@@ -198,7 +213,7 @@ class Commenter(Model):
         )
 
 
-class ArticleComment(Model, ContentMixin):
+class ArticleComment(TimestampModel, ContentMixin):
     """
     A comment on an article.
     """
@@ -211,8 +226,6 @@ class ArticleComment(Model, ContentMixin):
 
     commenter = ForeignKey(Commenter, related_name="comments")
     article = ForeignKey(Article, related_name="comments")
-    creation_date = DateTimeField(auto_now_add=True)
-    modified_date = DateTimeField(auto_now=True)
     poster_name = CharField(
         verbose_name="Name",
         max_length=255,
@@ -248,32 +261,3 @@ class ArticleComment(Model, ContentMixin):
 
     def compile_content(self, content):
         return urlize(markdown(content))
-
-
-@receiver(post_save, sender=ArticleComment)
-def notify_for_new_comment(sender, instance, created, *args, **kwargs):
-    """
-    Notify admins by email when a new comment is received.
-    """
-    from django.core.mail import mail_admins
-
-    if not created:
-        return
-
-    mail_admins(
-        subject="w0rp.com: New Comment",
-        message="\n".join((
-            "A new comment has been posted.",
-            "",
-            "Article: {}".format(instance.article.title),
-            "Link: {}{}".format(
-                settings.EXTERNAL_SITE_URL,
-                instance.get_absolute_url()
-            ),
-            "Name: {}".format(instance.poster_name_or_default),
-            "",
-            "-" * 79,
-            "",
-            instance.content
-        ))
-    )

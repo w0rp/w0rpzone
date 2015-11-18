@@ -1,4 +1,5 @@
 /env/
+.directory
 __pycache__
 /settings.py
 /guni
