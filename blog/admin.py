@@ -9,16 +9,11 @@ from django.contrib.admin import (
 )
 
 from .models import (
-    BlogAuthor,
     Article,
     ArticleTag,
     Commenter,
     ArticleComment,
 )
-
-
-class BlogAuthorAdmin (ModelAdmin):
-    list_display = ("author",)
 
 
 class ArticleTagInline (StackedInline):
@@ -113,7 +108,6 @@ class ArticleCommentAdmin (ModelAdmin):
     commenter_link.short_description = "Commenter"
     commenter_link.allow_tags = True
 
-admin_site.register(BlogAuthor, BlogAuthorAdmin)
 admin_site.register(Article, ArticleAdmin)
 admin_site.register(ArticleTag, ArticleTagAdmin)
 admin_site.register(Commenter, CommenterAdmin)

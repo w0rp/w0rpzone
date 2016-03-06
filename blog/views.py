@@ -1,18 +1,19 @@
-from functools import partial
-
 from django.conf import settings
 from django.utils import timezone
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView, UpdateView
 from django.views.generic.base import ContextMixin
 from django.views.generic.dates import MonthArchiveView
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse as url_reverse
 from django.db import transaction
 from django.views.generic.edit import DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.core.mail import mail_admins
+from django.utils.decorators import method_decorator
+
+view_decorator = lambda *a: method_decorator(a, name="dispatch")
 
 from .models import (
     Article,
@@ -22,13 +23,12 @@ from .models import (
 
 from .forms import (
     EditArticleForm,
-    NewArticleForm,
     ArticleCommentForm,
     UploadForm,
 )
 
 
-def response_403(request):
+def response_403(request):  # pragma: no cover
     return render(request, "403.html", {}, status=403)
 
 
@@ -63,15 +63,6 @@ class ArticleEditPageView(ListView):
     template_name = "blog/article_edit_list.dj.htm"
     paginate_by = 20
 
-HONEYPOT_STRING = str(347 * 347)
-
-
-def honeypot_ok(request, missing_name):
-    return (
-        not request.POST.get(missing_name)
-        and request.POST.get("verify") == HONEYPOT_STRING
-    )
-
 
 def notify_for_new_comment(comment):
     """
@@ -96,119 +87,106 @@ def notify_for_new_comment(comment):
     )
 
 
-def comment_on_article(article, request):
+class ArticleDetailView(UpdateView):
     """
-    Given an article and a request object, process the request and add an
-    article comment if needed and possible.
+    A view for looking at articles, which also supports submitting comments
+    to articles.
     """
-    assert isinstance(article, Article)
+    model = ArticleComment
+    form_class = ArticleCommentForm
+    template_name = "blog/detail.dj.htm"
 
-    if "comment" not in request.POST:
-        return ArticleCommentForm()
+    def get_object(self):
+        self.article = get_object_or_404(
+            Article.objects.select_related("author"),
+            slug=self.kwargs["slug"]
+        )
 
-    comment_form = ArticleCommentForm(request.POST)
+        commenter, _ = Commenter.objects.get_or_create(
+            ip_address=self.request.META["REMOTE_ADDR"],
+        )
 
-    commenter, _ = Commenter.objects.get_or_create(
-        ip_address=request.META["REMOTE_ADDR"],
-    )
+        return self.model(article=self.article, commenter=commenter)
 
-    if not honeypot_ok(request, "title"):
-        comment_form.add_error(None, "You are probably a spammer.")
-    elif commenter.is_banned:
-        comment_form.add_error(None, "You have been banned from posting.")
-    elif commenter.is_comment_too_soon(timezone.now()):
-        comment_form.add_error(None, "You cannot comment again so soon.")
-
-    if comment_form.is_valid():
-        # Add this comment.
-        comment = comment_form.save(commit=False)
-
-        comment.commenter = commenter
-        comment.article = article
-        comment.save()
-
-        notify_for_new_comment(comment)
-
-    return comment_form
-
-
-def article_detail_view(request, slug):
-    article = get_object_or_404(
-        Article.objects.select_related("author"),
-        slug=slug
-    )
-
-    comment_form = comment_on_article(article, request)
-
-    if comment_form.is_valid():
+    def get_success_url(self):
         # Redirect away to make it hard to accidentally submit twice.
-        return redirect(url_reverse(
+        return url_reverse(
             "article-comment-bounce",
-            args=[article.slug],
-        ))
+            args=[self.article.slug],
+        )
 
-    return render(request, "blog/detail.dj.htm", {
-        "article": article,
-        "article_months": Article.objects.active_months(),
-        "comment_default_name": ArticleComment.DEFAULT_NAME,
-        "comment_form": comment_form,
-    })
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
 
+        data["article"] = self.article
+        data["article_months"] = Article.objects.active_months()
+        data["comment_form"] = data.pop("form")
 
-@login_required
-def change_article_object_view(request, slug, pk, model, action, message):
-    """
-    A generic view for changing an object related somehow to an article.
+        return data
 
-    An instance of the given model will be retrieved with the given 'pk',
-    and the action function will be called with the instance to perform
-    the action, supposing the request is a post request and contains
-    the key "apply_action", a confirmation page will be generated otherwise.
-    """
-    obj = get_object_or_404(model, pk=pk, article__slug=slug)
+    def form_valid(self, form):
+        response = super().form_valid(form)
 
-    if "apply_action" in request.POST:
-        action(obj)
+        notify_for_new_comment(form.instance)
 
-        return redirect(url_reverse(article_detail_view, args=[slug]))
-
-    return render(request, "blog/confirm_change_article_object.dj.htm", {
-        "message": message % obj,
-        "object": obj,
-    })
-
-article_delete_comment_view = partial(
-    change_article_object_view,
-    model=ArticleComment,
-    action=lambda obj: obj.delete(),
-    message="Really delete this comment? (%s)",
-)
+        return response
 
 
-def ban_commenter(commenter):
-    if commenter.time_banned is None:
-        commenter.time_banned = timezone.now()
-        commenter.save(update_fields=["time_banned"])
+class RelatedArticleObjectMixin:
+    def get_success_url(self):
+        return self.article.get_absolute_url()
 
-article_ban_commenter_view = partial(
-    change_article_object_view,
-    model=Commenter,
-    action=ban_commenter,
-    message="Really ban this commenter? (%s)",
-)
+    def get_object(self):
+        self.article = get_object_or_404(Article, slug=self.kwargs['slug'])
+
+        return get_object_or_404(self.model, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        return {
+            "message": self.get_message(self.object),
+            "object": self.object,
+        }
 
 
-def unban_commenter(commenter):
-    if commenter.time_banned is not None:
-        commenter.time_banned = None
-        commenter.save(update_fields=["time_banned"])
+@view_decorator(login_required)
+class ArticleDeleteCommentView(RelatedArticleObjectMixin, DeleteView):
+    model = ArticleComment
+    template_name = "blog/confirm_change_article_object.dj.htm"
 
-article_unban_commenter_view = partial(
-    change_article_object_view,
-    model=Commenter,
-    action=unban_commenter,
-    message="Really unban this commenter? (%s)",
-)
+    def get_message(self, object):
+        return "Really delete this comment? ({})".format(object)
+
+
+@view_decorator(login_required)
+class BaseArticleCommenterView(RelatedArticleObjectMixin, UpdateView):
+    model = Commenter
+    template_name = "blog/confirm_change_article_object.dj.htm"
+    fields = ()
+
+    def form_valid(self, form):
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class ArticleBanCommenterView(BaseArticleCommenterView):
+    def get_message(self, object):
+        return "Really ban this commenter? ({})".format(object)
+
+    def form_valid(self, form):
+        self.object.time_banned = timezone.now()
+        self.object.save(update_fields=["time_banned"])
+
+        return super().form_valid(form)
+
+
+class ArticleUnbanCommenterView(BaseArticleCommenterView):
+    def get_message(self, object):
+        return "Really unban this commenter? ({})".format(object)
+
+    def form_valid(self, form):
+        self.object.time_banned = None
+        self.object.save(update_fields=["time_banned"])
+
+        return super().form_valid(form)
 
 
 class ArticleMonthArchiveView (
@@ -219,40 +197,26 @@ class ArticleMonthArchiveView (
     template_name = "blog/date.dj.htm"
 
 
-@login_required
-@transaction.atomic
-def edit_article_view(request, slug):
-    article = get_object_or_404(Article, slug=slug)
+class ArticleEditMixin:
+    model = Article
+    form_class = EditArticleForm
+    template_name = "blog/post_edit.dj.htm"
 
-    form = EditArticleForm(request.POST or None, instance=article)
-    updated = False
-
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        updated = True
-
-        # When an edit works, reload the form to get the values
-        # as they are set.
-        form = EditArticleForm(instance=article)
-
-    return render(request, "blog/post_edit.dj.htm", {
-        "article": article,
-        "form": form,
-        "updated": updated,
-    })
+    def get_success_url(self):
+        return self.object.edit_url()
 
 
-@login_required
-@transaction.atomic
-def new_article_view(request):
-    form = NewArticleForm(request.POST or None)
+@view_decorator(login_required, transaction.atomic)
+class EditArticleView(ArticleEditMixin, UpdateView):
+    pass
 
-    if not form.is_valid():
-        return render(request, "blog/post_edit.dj.htm", {"form": form})
 
-    article = form.save(author=request.user)
+@view_decorator(login_required, transaction.atomic)
+class NewArticleView(ArticleEditMixin, CreateView):
+    def form_valid(self, form):
+        form.instance.author = self.request.user
 
-    return redirect(url_reverse(edit_article_view, args=[article.slug]))
+        return super().form_valid(form)
 
 
 @login_required
@@ -287,6 +251,6 @@ def bounce_view(request, url):
 
 def article_bounce_view(request, slug):
     return bounce_view(request, url_reverse(
-        article_detail_view,
+        "article-detail",
         kwargs={"slug": slug},
     ) + "#last_comment")

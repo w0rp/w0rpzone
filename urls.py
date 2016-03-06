@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
 
 from django.contrib.auth.views import (
@@ -22,9 +22,8 @@ def templ(regex, template):
 
 admin.autodiscover()
 
-urlpatterns = patterns(
-    "",
-    (settings.ADMIN_REGEX, include(admin.site.urls)),
+urlpatterns = [
+    url(settings.ADMIN_REGEX, include(admin.site.urls)),
     url(
         settings.LOGIN_REGEX,
         login_view,
@@ -35,8 +34,8 @@ urlpatterns = patterns(
         logout_view,
         {"next_page": settings.LOGOUT_REDIRECT_URL}
     ),
-    (r"^blog/", include("blog.urls")),
-    (r"^project/", include("programming_projects.urls")),
+    url(r"^blog/", include("blog.urls")),
+    url(r"^project/", include("programming_projects.urls")),
     url(
         r"^settings/$",
         settings_view,
@@ -46,18 +45,15 @@ urlpatterns = patterns(
         r"^ajax-settings/$",
         ajax_settings_view,
         name="ajax-settings",
-    )
-)
-
-urlpatterns += patterns(
-    "",
-    # TODO: Implement a more meaningful homepage.
-    # templ(r"^$", "index"),
-    (r"^$", RedirectView.as_view(
-        url="/blog/",
-        permanent=False,
-    )),
-)
+    ),
+    url(
+        r"^$",
+        RedirectView.as_view(
+            url="/blog/",
+            permanent=False,
+        )
+    ),
+]
 
 if settings.DEBUG:
     # Serve media files via Django in DEBUG mode.

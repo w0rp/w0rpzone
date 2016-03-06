@@ -61,8 +61,6 @@ def square(x):
       </div>
       <ul>
         {{comment_form.as_ul}}
-        <input type="text" id="id_title" name="title" class="ningen" value="" />
-        <input type="hidden" id="id_verify" name="verify" value="" />
         <li class="buttons">
           <button type="button" class="show_preview">Preview</button>
           <button name="comment">Comment</button>
@@ -73,7 +71,7 @@ def square(x):
       <header>
         <div class="buttons"><button type="button" class="hide_preview">I'm Done Previewing</a></div>
         <ul class="post_metadata">
-          <li class="author"><a class="name" data-default-name="{{comment_default_name}}"></a></li>
+          <li class="author"><a class="name"></a></li>
           <li class="creation_time">{% now "SHORT_DATETIME_FORMAT" %}</li>
         </ul>
       </header>
@@ -88,15 +86,15 @@ def square(x):
         <header>
           {% if user.is_authenticated %}{% spaceless %}
             <div class="buttons">
-              <a class="button" href="{% url "delete-comment" article.slug comment.id %}">
+              <a class="button" href="comment.delete_url">
                 Delete Comment
               </a>
               {% if comment.commenter.is_banned %}
-                <a class="button" href="{% url "unban-comment" article.slug comment.commenter.id %}">
+                <a class="button" href="{% url "unban-commenter" article.slug comment.commenter.id %}">
                   Unban Commenter
                 </a>
               {% else %}
-                <a class="button" href="{% url "ban-comment" article.slug comment.commenter.id %}">
+                <a class="button" href="{% url "ban-commenter" article.slug comment.commenter.id %}">
                   Ban Commenter
                 </a>
               {% endif %}

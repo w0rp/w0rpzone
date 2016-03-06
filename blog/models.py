@@ -13,7 +13,6 @@ from django.db.models import (
     ForeignKey,
     GenericIPAddressField,
     Model,
-    OneToOneField,
     SlugField,
     TextField,
 )
@@ -31,8 +30,8 @@ class TimestampModel(Model):
     the time an object was created and modified.
 
     The ``save`` method has been overridden to take a special keyword argument
-    ``no_timestamp``. If set to ``True``, the modified_date will not be
-    set when the model is saved.
+    ``timestamp``. If set to ``False``, the modified_date will be left
+    unchanged.
     """
     class Meta:
         abstract = True
@@ -41,7 +40,7 @@ class TimestampModel(Model):
     modified_date = DateTimeField()
 
     def save(self, *args, **kwargs):
-        if not kwargs.pop('no_timestamp', False):
+        if kwargs.pop('timestamp', True):
             self.modified_date = timezone.now()
 
         return super().save(*args, **kwargs)
@@ -74,20 +73,6 @@ class ContentMixin:
         return value
 
 
-class BlogAuthor(Model):
-    """
-    Users which can edit the blog posts.
-    """
-    author = OneToOneField(User)
-
-    class Meta:
-        # Tables are named explicitly to make direct SQL more predictable.
-        db_table = "blog_blogauthor"
-
-    def __str__(self):
-        return str(self.author)
-
-
 class Article(TimestampModel, ContentMixin):
     """
     An article on the blog.
@@ -112,6 +97,12 @@ class Article(TimestampModel, ContentMixin):
 
     def get_absolute_url(self):
         return url_reverse("article-detail", args=(self.slug,))
+
+    def edit_url(self):
+        return url_reverse("edit-article", args=(self.slug,))
+
+    def delete_url(self):
+        return url_reverse("delete-article", args=(self.slug,))
 
     def replace_all_tags(self, tag_seq):
         """
@@ -147,24 +138,6 @@ class ArticleTag(Model):
         return "{} - {}".format(self.tag, self.article)
 
 
-def file_extension(filename):
-    """
-    Get the file extension including the leading dot for a filename.
-
-    Examples
-    =========
-    "file.jpg" -> ".jpg"
-    "file.tar.gz" -> ".tar.gz"
-    "file" -> ""
-    """
-    split = filename.split(".")
-
-    if len(split) == 1:
-        return ""
-
-    return "." + ".".join(split[1:])
-
-
 class Upload(Model):
     """
     This model represents an upload for the site.
@@ -181,7 +154,13 @@ class Commenter(Model):
     time_banned = DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.ip_address if self.ip_address is not None else "NULL"
+        return str(self.ip_address)
+
+    def ban_url(self, article):
+        return url_reverse("ban-commenter", args=(article.slug, self.id))
+
+    def unban_url(self, article):
+        return url_reverse("unban-commenter", args=(article.slug, self.id))
 
     @property
     def is_banned(self):
@@ -230,6 +209,7 @@ class ArticleComment(TimestampModel, ContentMixin):
         verbose_name="Name",
         max_length=255,
         blank=True,
+        default=DEFAULT_NAME,
     )
     content = TextField(
         verbose_name="Comment",
@@ -247,6 +227,9 @@ class ArticleComment(TimestampModel, ContentMixin):
         Return A URL pointing to this comment on an article page.
         """
         return "{}#comment_{}".format(self.article.get_absolute_url(), self.id)
+
+    def delete_url(self):
+        return url_reverse("delete-comment", args=(self.article.slug, self.id))
 
     @property
     def poster_name_or_default(self):

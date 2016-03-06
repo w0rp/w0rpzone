@@ -1,10 +1,9 @@
-import datetime
-
-import pytz
-
+from django.utils import timezone
 from django.forms import (
+    ValidationError,
     ModelForm,
     CharField,
+    HiddenInput,
 )
 
 from .models import (
@@ -12,6 +11,15 @@ from .models import (
     ArticleComment,
     Upload,
 )
+
+HONEYPOT_STRING = str(347 * 347)
+
+
+def honeypot_ok(cleaned_data, missing_name):
+    return (
+        cleaned_data.get("verify") == HONEYPOT_STRING
+        and not cleaned_data.get(missing_name)
+    )
 
 
 class ArticleForm(ModelForm):
@@ -34,33 +42,6 @@ class ArticleForm(ModelForm):
             )
 
 
-class NewArticleForm(ArticleForm):
-    class Meta:
-        model = Article
-        fields = (
-            "title",
-            "slug",
-            "content",
-            "tags",
-            "active",
-        )
-
-    def save(self, author=None):
-        article = super().save(commit=False)
-
-        if author is not None:
-            article.author = author
-
-        article.creation_date = datetime.datetime.now(pytz.utc)
-
-        article.save()
-
-        # Now use all of the tags set to replace the tags.
-        article.replace_all_tags(self.cleaned_data["tags"].split())
-
-        return article
-
-
 class EditArticleForm (ArticleForm):
     class Meta:
         model = Article
@@ -73,13 +54,8 @@ class EditArticleForm (ArticleForm):
             "active",
         )
 
-    def save(self, author=None):
-        article = super().save(commit=False)
-
-        if author is not None:
-            article.author = author
-
-        article.save()
+    def save(self):
+        article = super().save()
 
         # Now use all of the tags set to replace the tags.
         article.replace_all_tags(self.cleaned_data["tags"].split())
@@ -95,7 +71,29 @@ class ArticleCommentForm (ModelForm):
             "content",
         )
 
+    title = CharField(
+        required=False,
+        widget=HiddenInput(attrs={"class": "ningen"}),
+    )
+    verify = CharField(widget=HiddenInput())
+
     error_css_class = "error"
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        commenter = self.instance.commenter
+
+        if not honeypot_ok(cleaned_data, "title"):
+            raise ValidationError("You are probably a spammer.")
+
+        if commenter.is_banned:
+            raise ValidationError("You have been banned from posting.")
+
+        if commenter.is_comment_too_soon(timezone.now()):
+            raise ValidationError("You cannot comment again so soon.")
+
+        return cleaned_data
 
 
 class UploadForm (ModelForm):

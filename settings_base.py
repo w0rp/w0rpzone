@@ -3,9 +3,6 @@
 import os
 
 DEBUG = False
-TEMPLATE_DEBUG = DEBUG
-
-PIPELINE_ENABLED = True
 
 PROJECT_ROOT = os.path.dirname(__file__)
 
@@ -84,13 +81,13 @@ TEMPLATES = [{
         ],
         "context_processors": (
             "django.contrib.auth.context_processors.auth",
-            "django.core.context_processors.debug",
-            "django.core.context_processors.i18n",
-            "django.core.context_processors.media",
-            "django.core.context_processors.static",
-            "django.core.context_processors.tz",
+            "django.template.context_processors.debug",
+            "django.template.context_processors.i18n",
+            "django.template.context_processors.media",
+            "django.template.context_processors.static",
+            "django.template.context_processors.tz",
             "django.contrib.messages.context_processors.messages",
-            "django.core.context_processors.request",
+            "django.template.context_processors.request",
             "misc.context_processors.navigation",
         ),
     },
@@ -168,12 +165,43 @@ LOGGING = {
 TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
 # django-pipeline settings
-
-PIPELINE_CSS_COMPRESSOR = None
-PIPELINE_JS_COMPRESSOR = None
-
-# Disable JavaScript wrapping. Just copy it across.
-PIPELINE_DISABLE_WRAPPER = True
+PIPELINE = {
+    "PIPELINE_ENABLED": True,
+    # Disable JavaScript wrapping. Just copy it across.
+    "DISABLE_WRAPPER": True,
+    "CSS_COMPRESSOR": "w0rplib.compiler.CSSCompressor",
+    "JS_COMPRESSOR": "w0rplib.compiler.RJSMinCompressor",
+    "JAVASCRIPT": {
+        "source_filenames": (
+            "js/third-party/jquery-2.0.3.min.js",
+            "js/third-party/jstz.min.js",
+            "js/third-party/notify-combined.min.js",
+            "js/third-party/jquery.cookie.js",
+            "js/third-party/highlight.pack.js",
+            "js/soverflow_like_highlight.js",
+            "js/third-party/marked.js",
+            "js/global.js",
+            "js/blog/main.js",
+            "js/blog/edit.js",
+            "js/blog/comment.js",
+        ),
+        "output_filename": "css/combined.js"
+    },
+    "STYLESHEETS": {
+        "main-site": {
+            "source_filenames": (
+                "css/droidsans.css",
+                "css/source_code_pro.css",
+                "css/highlight_obsidian.css",
+                "css/base.css",
+                "css/blog/main.css",
+                "css/blog/public.css",
+                "css/blog/edit.css",
+            ),
+            "output_filename": "css/combined.css"
+        },
+    },
+}
 
 # Use the versioned cached storage for cache killing.
 STATICFILES_STORAGE = "pipeline.storage.PipelineCachedStorage"
@@ -185,44 +213,6 @@ STATICFILES_FINDERS = (
     "pipeline.finders.PipelineFinder",
     "pipeline.finders.CachedFileFinder",
 )
-
-PIPELINE_CSS = {
-    "main-site": {
-        "source_filenames": (
-            "css/droidsans.css",
-            "css/source_code_pro.css",
-            "css/highlight_obsidian.css",
-            "css/base.css",
-            "css/blog/main.css",
-            "css/blog/public.css",
-            "css/blog/edit.css",
-        ),
-        "output_filename": "css/combined.css"
-    },
-}
-
-PIPELINE_CSS_COMPRESSOR = "w0rplib.compiler.CSSCompressor"
-
-PIPELINE_JS = {
-    "main-site": {
-        "source_filenames": (
-            "js/jquery-2.0.3.min.js",
-            "js/jstz.min.js",
-            "js/notify-combined.min.js",
-            "js/jquery.cookie.js",
-            "js/highlight.pack.js",
-            "js/soverflow_like_highlight.js",
-            "js/marked.js",
-            "js/global.js",
-            "js/blog/main.js",
-            "js/blog/edit.js",
-            "js/blog/comment.js",
-        ),
-        "output_filename": "css/combined.js"
-    },
-}
-
-PIPELINE_JS_COMPRESSOR = "w0rplib.compiler.RJSMinCompressor"
 
 DDOC_TEMPLATE = "programming_projects/doc.ddoc"
 

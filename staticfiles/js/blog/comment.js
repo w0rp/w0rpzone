@@ -1,6 +1,8 @@
 $(function() {
     "use strict";
 
+    /* global HighlightCode */
+
     // Markdown previews.
     var $form = $('.comment_list form');
     var $preview_comment = $('.comment_list .comment.preview');
@@ -27,10 +29,7 @@ $(function() {
             sanitize: true
         });
 
-        $name_field.text(
-            $("#id_poster_name").val()
-            || $name_field.data("default-name")
-        );
+        $name_field.text($("#id_poster_name").val());
 
         $comment_body.html(html);
 
@@ -70,7 +69,7 @@ $(function() {
     var $help_topics = $full_help.find(".help_topic");
 
     // Switch between help topics by clicking the tabs.
-    $help_tabs.click(function(event) {
+    $help_tabs.click(function() {
         var $last_tab = $help_tabs.filter(".active");
         var $last_topic = $help_topics.filter("." + $last_tab.data("topic"));
         var $new_tab = $(this);

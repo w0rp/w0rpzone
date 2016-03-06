@@ -1,7 +1,6 @@
 from settings_base import *  # nopep8
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 MANAGERS = ADMINS = (
     ("test-admin", "test@fake.com"),

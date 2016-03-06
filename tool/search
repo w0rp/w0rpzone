@@ -1,0 +1,11 @@
+#!/bin/bash
+
+grep -Pr \
+    --exclude-dir=.git \
+    --exclude-dir=env \
+    --exclude-dir=htmlcov \
+    --exclude-dir=migrations \
+    --exclude-dir=static \
+    --exclude-dir=third-party \
+    --exclude='*.pyc' \
+    "$1"

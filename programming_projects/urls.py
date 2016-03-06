@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from .views import (
     project_list_view,
@@ -6,7 +6,7 @@ from .views import (
     doc_view,
 )
 
-urlpatterns = patterns("",
+urlpatterns = [
     url(
         r"^$",
         project_list_view,
@@ -22,4 +22,4 @@ urlpatterns = patterns("",
         doc_view,
         name="doc-single"
     ),
-)
+]

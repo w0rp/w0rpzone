@@ -1,27 +1,26 @@
 from django.contrib.auth.decorators import login_required
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from w0rplib.url import redir
 
 from .views import (
     ArticlePageView,
     ArticleEditPageView,
-    article_detail_view,
+    ArticleDetailView,
     ArticleMonthArchiveView,
-    edit_article_view,
-    new_article_view,
+    EditArticleView,
+    NewArticleView,
     upload_file_view,
-    article_delete_comment_view,
-    article_ban_commenter_view,
-    article_unban_commenter_view,
+    ArticleDeleteCommentView,
+    ArticleBanCommenterView,
+    ArticleUnbanCommenterView,
     DeleteArticleView,
     article_bounce_view,
 )
 
 from .feed import LatestArticleFeed
 
-urlpatterns = patterns(
-    "blog.views",
+urlpatterns = [
     # Loading the main site gets you page 1.
     url(
         r"^$",
@@ -51,7 +50,7 @@ urlpatterns = patterns(
     ),
     url(
         r"^post/(?P<slug>[\w-]+)/$",
-        article_detail_view,
+        ArticleDetailView.as_view(),
         name="article-detail"
     ),
     url(
@@ -61,18 +60,18 @@ urlpatterns = patterns(
     ),
     url(
         r"^post/(?P<slug>[\w-]+)/delete-comment/(?P<pk>\d+)/$",
-        article_delete_comment_view,
+        ArticleDeleteCommentView.as_view(),
         name="delete-comment"
     ),
     url(
         r"^post/(?P<slug>[\w-]+)/ban-comment/(?P<pk>\d+)/$",
-        article_ban_commenter_view,
-        name="ban-comment"
+        ArticleBanCommenterView.as_view(),
+        name="ban-commenter"
     ),
     url(
         r"^post/(?P<slug>[\w-]+)/unban-comment/(?P<pk>\d+)/$",
-        article_unban_commenter_view,
-        name="unban-comment"
+        ArticleUnbanCommenterView.as_view(),
+        name="unban-commenter"
     ),
     url(
         r"^date/(?P<year>\d{4})/(?P<month>1[0-2]|0[1-9])/$",
@@ -84,11 +83,15 @@ urlpatterns = patterns(
         LatestArticleFeed(),
         name="article-feed"
     ),
-    url(r"^new/$", new_article_view),
+    url(
+        r"^new/$",
+        NewArticleView.as_view(),
+        name="new-article",
+    ),
     url(
         r"^edit/(?P<slug>[\w-]+)/$",
-        edit_article_view,
+        EditArticleView.as_view(),
         name="edit-article"
     ),
     url(r"^upload/$", upload_file_view, name="upload-file"),
-)
+]

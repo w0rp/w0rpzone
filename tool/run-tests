@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+source env/bin/activate
+
+coverage run --branch --omit '*/migrations/*' --source=blog \
+    manage.py test --settings=settings_test --noinput blog
