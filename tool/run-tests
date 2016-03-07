@@ -2,6 +2,20 @@
 
 source env/bin/activate
 
-coverage run --branch --omit '*/migrations/*' \
-    --source=w0rplib,blog,misc \
-    manage.py test --settings=settings_test --noinput w0rplib blog misc
+function join { local IFS="$1"; shift; echo "$*"; }
+
+module_list=(
+    w0rplib
+    blog
+    misc
+    programming_projects
+)
+
+# Build comma separated values for the coverage report.
+csv=$(join , "${module_list[@]}")
+# Find all empty __init__.py files so we can exclude them.
+empty_init_csv=$(join , $(find . -type f -empty -name __init__.py))
+
+coverage run --branch --omit "*/migrations/*,$empty_init_csv" \
+    --source="$csv" \
+    manage.py test --settings=settings_test --noinput "${module_list[@]}"
