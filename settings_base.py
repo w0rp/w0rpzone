@@ -172,20 +172,22 @@ PIPELINE = {
     "CSS_COMPRESSOR": "w0rplib.compiler.CSSCompressor",
     "JS_COMPRESSOR": "w0rplib.compiler.RJSMinCompressor",
     "JAVASCRIPT": {
-        "source_filenames": (
-            "js/third-party/jquery-2.0.3.min.js",
-            "js/third-party/jstz.min.js",
-            "js/third-party/notify-combined.min.js",
-            "js/third-party/jquery.cookie.js",
-            "js/third-party/highlight.pack.js",
-            "js/soverflow_like_highlight.js",
-            "js/third-party/marked.js",
-            "js/global.js",
-            "js/blog/main.js",
-            "js/blog/edit.js",
-            "js/blog/comment.js",
-        ),
-        "output_filename": "css/combined.js"
+        "main-site": {
+            "source_filenames": (
+                "js/third-party/jquery-2.0.3.min.js",
+                "js/third-party/jstz.min.js",
+                "js/third-party/notify-combined.min.js",
+                "js/third-party/jquery.cookie.js",
+                "js/third-party/highlight.pack.js",
+                "js/soverflow_like_highlight.js",
+                "js/third-party/marked.js",
+                "js/global.js",
+                "js/blog/main.js",
+                "js/blog/edit.js",
+                "js/blog/comment.js",
+            ),
+            "output_filename": "css/combined.js",
+        },
     },
     "STYLESHEETS": {
         "main-site": {
@@ -198,7 +200,7 @@ PIPELINE = {
                 "css/blog/public.css",
                 "css/blog/edit.css",
             ),
-            "output_filename": "css/combined.css"
+            "output_filename": "css/combined.css",
         },
     },
 }

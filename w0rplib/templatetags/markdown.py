@@ -4,8 +4,6 @@ from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 
-from w0rplib.decorator import print_return_value
-
 register = template.Library()
 
 

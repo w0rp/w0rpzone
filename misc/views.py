@@ -1,68 +1,65 @@
-import pytz
-from pytz.exceptions import UnknownTimeZoneError
-
-from datetime import datetime, timedelta
-
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+from django.http import HttpResponse
 from django.utils import timezone
-from django.views.decorators.http import require_POST
+from django.views.generic.edit import FormMixin, FormView
+from django.core.urlresolvers import reverse_lazy
 
-from w0rplib.view import json_view, json_response, ClientError
+import datetime
 
-from .forms import (
-    SettingsForm,
-)
-
-
-def set_timezone_cookie(response, timezone_string):
-    response.set_cookie(
-        key="timezone",
-        value=timezone_string,
-        # Expire roughly a year from now.
-        expires=datetime.now() + timedelta(days=365)
-    )
+from .forms import SettingsForm
 
 
-def settings_view(request):
-    form = SettingsForm(
-        request.POST or None,
-        initial={
+class JSONFormMixin(FormMixin):
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        if self.request.is_ajax():
+            return HttpResponse(
+                "{}",
+                content_type="application/json",
+                status=200,
+            )
+
+        return response
+
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+
+        if self.request.is_ajax():
+            return HttpResponse(
+                form.errors.as_json(),
+                content_type="application/json",
+                status=400,
+            )
+
+        return response
+
+
+class JSONFormView(JSONFormMixin, FormView):
+    pass
+
+
+class SettingsView(JSONFormView):
+    form_class = SettingsForm
+    template_name = "settings.dj.htm"
+    success_url = reverse_lazy("settings")
+
+    def get_initial(self):
+        return {
             "timezone": timezone.get_current_timezone_name()
         }
-    )
 
-    if form.is_valid() and request.method == "POST":
+    def form_valid(self, form):
         # Activate the new timezone first before rendering the template.
-        timezone.activate(pytz.timezone(form.cleaned_data["timezone"]))
+        timezone.activate(form.cleaned_data["timezone"])
 
-    response = render(request, "settings.dj.htm", {
-        "form": form,
-    })
+        response = super().form_valid(form)
 
-    if form.is_valid() and request.method == "POST":
         # Set the timezone in a cookie.
-        set_timezone_cookie(response, form.cleaned_data["timezone"])
+        response.set_cookie(
+            key="timezone",
+            value=form.cleaned_data["timezone"].zone,
+            # Expire roughly a year from now.
+            expires=timezone.now() + datetime.timedelta(days=365)
+        )
 
-    return response
-
-
-@csrf_exempt
-@json_view
-@require_POST
-def ajax_settings_view(request):
-    timezone_string = request.POST.get("timezone")
-
-    if timezone_string:
-        # Assert on the timezone.
-        try:
-            pytz.timezone(timezone_string)
-        except UnknownTimeZoneError:
-            raise ClientError("Invalid timezone!")
-
-    response = json_response({})
-
-    if timezone_string:
-        set_timezone_cookie(response, timezone_string)
-
-    return response
+        return response

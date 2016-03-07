@@ -2,7 +2,7 @@ from django.views.generic.base import RedirectView
 from django.conf.urls import url
 
 
-def redir(regex, redirect_url, name=None):
+def redir(regex, redirect_url, name=None):  # pragma: no cover
     """
     A shorter wrapper around RedirectView for 301 redirects.
     """
@@ -13,7 +13,7 @@ def redir(regex, redirect_url, name=None):
     )
 
 
-def redir_temp(regex, redirect_url, name=None):
+def redir_temp(regex, redirect_url, name=None):  # pragma: no cover
     """
     A shorter wrapper around RedirectView for 302 redirects.
     """

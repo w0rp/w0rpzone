@@ -2,5 +2,6 @@
 
 source env/bin/activate
 
-coverage run --branch --omit '*/migrations/*' --source=blog \
-    manage.py test --settings=settings_test --noinput blog
+coverage run --branch --omit '*/migrations/*' \
+    --source=w0rplib,blog,misc \
+    manage.py test --settings=settings_test --noinput w0rplib blog misc

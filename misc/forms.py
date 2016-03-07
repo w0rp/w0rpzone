@@ -1,9 +1,6 @@
 import pytz
 
-from django.forms import (
-    Form,
-    ChoiceField,
-)
+from django.forms import Form, ChoiceField
 
 
 class SettingsForm (Form):
@@ -12,3 +9,6 @@ class SettingsForm (Form):
         label="Time Zone",
         help_text="Set your current time zone here.",
     )
+
+    def clean_timezone(self):
+        return pytz.timezone(self.cleaned_data["timezone"])
