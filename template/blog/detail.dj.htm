@@ -86,7 +86,7 @@ def square(x):
         <header>
           {% if user.is_authenticated %}{% spaceless %}
             <div class="buttons">
-              <a class="button" href="comment.delete_url">
+              <a class="button" href="{{comment.delete_url}}">
                 Delete Comment
               </a>
               {% if comment.commenter.is_banned %}
