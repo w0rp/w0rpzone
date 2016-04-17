@@ -186,7 +186,19 @@ PIPELINE = {
                 "js/blog/edit.js",
                 "js/blog/comment.js",
             ),
-            "output_filename": "css/combined.js",
+            "output_filename": "js/combined.js",
+        },
+        "presentation": {
+            "source_filenames": (
+                "js/third-party/jquery-2.0.3.min.js",
+                "js/third-party/reveal.js/reveal.js",
+                "js/third-party/marked.js",
+                "js/third-party/reveal.js/plugin/markdown.js",
+                "js/third-party/highlight.pack.js",
+                "js/reveal-js-init.js",
+                "js/soverflow_like_highlight.js",
+            ),
+            "output_filename": "js/presentation-combined.js",
         },
     },
     "STYLESHEETS": {
@@ -201,6 +213,15 @@ PIPELINE = {
                 "css/blog/edit.css",
             ),
             "output_filename": "css/combined.css",
+        },
+        "presentation": {
+            "source_filenames": (
+                "css/third-party/reveal.js/reveal.css",
+                "css/droidsans.css",
+                "css/third-party/reveal.js/theme/black.css",
+                "css/highlight_obsidian.css",
+            ),
+            "output_filename": "css/presentation-combined.css",
         },
     },
 }

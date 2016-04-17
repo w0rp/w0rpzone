@@ -3,152 +3,86 @@
  * ported by Alexander Marenin (http://github.com/ioncreature)
  */
 
-pre code.highlight {
-    display: block;
-    padding: 0.5em;
-    background: #282B2E;
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #282b2e;
 }
 
-code.highlight .keyword,
-code.highlight .literal,
-code.highlight .change,
-code.highlight .winutils,
-code.highlight .flow,
-code.highlight .lisp .title,
-code.highlight .clojure .built_in,
-code.highlight .nginx .title,
-code.highlight .css .id,
-code.highlight .tex .special {
-    color: #93C763;
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-selector-id {
+  color: #93c763;
 }
 
-code.highlight .number {
-    color: #FFCD22;
+.hljs-number {
+  color: #ffcd22;
 }
 
-code.highlight code {
-    color: #E0E2E4;
+.hljs {
+  color: #e0e2e4;
 }
 
-code.highlight .css .tag,
-code.highlight .css .pseudo {
-    color: #D0D2B5;
+.hljs-attribute {
+  color: #668bb0;
 }
 
-code.highlight .attribute,
-code.highlight code .constant {
-    color: #668BB0;
+.hljs-code,
+.hljs-class .hljs-title,
+.hljs-section {
+  color: white;
 }
 
-code.highlight .xml .attribute {
-    color: #B3B689;
+.hljs-regexp,
+.hljs-link {
+  color: #d39745;
 }
 
-code.highlight .xml .tag .value {
-    color: #E8E2B7;
+.hljs-meta {
+  color: #557182;
 }
 
-code.highlight .code,
-code.highlight .class .title,
-code.highlight .header {
-    color: white;
+.hljs-tag,
+.hljs-name,
+.hljs-bullet,
+.hljs-subst,
+.hljs-emphasis,
+.hljs-type,
+.hljs-built_in,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: #8cbbad;
 }
 
-code.highlight .class,
-code.highlight .hexcolor {
-    color: #93C763;
+.hljs-string,
+.hljs-symbol {
+  color: #ec7600;
 }
 
-code.highlight .regexp {
-    color: #D39745;
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion {
+  color: #818e96;
 }
 
-code.highlight .at_rule,
-code.highlight .at_rule .keyword {
-    color: #A082BD;
+.hljs-selector-class {
+  color: #A082BD
 }
 
-code.highlight .doctype {
-    color: #557182;
-}
-
-code.highlight .link_url,
-code.highlight .tag,
-code.highlight .tag .title,
-code.highlight .bullet,
-code.highlight .subst,
-code.highlight .emphasis,
-code.highlight .haskell .type,
-code.highlight .preprocessor,
-code.highlight .ruby .class .parent,
-code.highlight .built_in,
-code.highlight .sql .aggregate,
-code.highlight .django .template_tag,
-code.highlight .django .variable,
-code.highlight .smalltalk .class,
-code.highlight .javadoc,
-code.highlight .django .filter .argument,
-code.highlight .smalltalk .localvars,
-code.highlight .smalltalk .array,
-code.highlight .attr_selector,
-code.highlight .pseudo,
-code.highlight .addition,
-code.highlight .stream,
-code.highlight .envvar,
-code.highlight .apache .tag,
-code.highlight .apache .cbracket,
-code.highlight .tex .command,
-code.highlight .prompt {
-    color: #8CBBAD;
-}
-
-code.highlight .string {
-    color: #EC7600;
-}
-
-code.highlight .comment,
-code.highlight .java .annotation,
-code.highlight .blockquote,
-code.highlight .horizontal_rule,
-code.highlight .python .decorator,
-code.highlight .template_comment,
-code.highlight .pi,
-code.highlight .deletion,
-code.highlight .shebang,
-code.highlight .apache .sqbracket,
-code.highlight .tex .formula {
-    color: #818E96;
-}
-
-code.highlight .keyword,
-code.highlight .literal,
-code.highlight .css .id,
-code.highlight .phpdoc,
-code.highlight .title,
-code.highlight .header,
-code.highlight .haskell .type,
-code.highlight .vbscript .built_in,
-code.highlight .sql .aggregate,
-code.highlight .rsl .built_in,
-code.highlight .smalltalk .class,
-code.highlight .diff .header,
-code.highlight .chunk,
-code.highlight .winutils,
-code.highlight .bash .variable,
-code.highlight .apache .tag,
-code.highlight .tex .special,
-code.highlight .request,
-code.highlight .at_rule .keyword,
-code.highlight .status {
-    font-weight: bold;
-}
-
-code.highlight .coffeescript .javascript,
-code.highlight .javascript .xml,
-code.highlight .tex .formula,
-code.highlight .xml .javascript,
-code.highlight .xml .vbscript,
-code.highlight .xml .css,
-code.highlight .xml .cdata {
-    opacity: 0.5;
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag,
+.hljs-title,
+.hljs-section,
+.hljs-type,
+.hljs-name,
+.hljs-strong {
+  font-weight: bold;
 }
