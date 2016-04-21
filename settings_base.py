@@ -220,6 +220,7 @@ PIPELINE = {
                 "css/droidsans.css",
                 "css/third-party/reveal.js/theme/black.css",
                 "css/highlight_obsidian.css",
+                "css/reveal-custom.css",
             ),
             "output_filename": "css/presentation-combined.css",
         },
