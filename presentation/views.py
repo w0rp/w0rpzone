@@ -9,7 +9,7 @@ def view_presentation(request, filename):
     # Find the file in staticfiles.
     full_path = finders.find(os.path.join("presentation", filename + ".htm"))
 
-    if not os.path.exists(full_path):
+    if not full_path or not os.path.exists(full_path):
         return HttpResponseNotFound("Unknown presentation name: " + filename)
 
     with open(full_path) as presentation_file:
@@ -18,3 +18,4 @@ def view_presentation(request, filename):
     return render(request, "presentation/view.dj.htm", {
         "presentation_html": presentation_html,
     })
+
