@@ -1,3 +1,5 @@
+from smtplib import SMTPException
+
 from django.conf import settings
 from django.utils import timezone
 from django.views.generic import ListView, CreateView, UpdateView
@@ -102,8 +104,13 @@ class ArticleDetailView(UpdateView):
             slug=self.kwargs["slug"]
         )
 
+        ip_address = (
+            self.request.META.get('HTTP_X_FORWARDED_FOR')
+            or self.request.META["REMOTE_ADDR"]
+        )
+
         commenter, _ = Commenter.objects.get_or_create(
-            ip_address=self.request.META["REMOTE_ADDR"],
+            ip_address=ip_address,
         )
 
         return self.model(article=self.article, commenter=commenter)
@@ -127,7 +134,11 @@ class ArticleDetailView(UpdateView):
     def form_valid(self, form):
         response = super().form_valid(form)
 
-        notify_for_new_comment(form.instance)
+        try:
+            notify_for_new_comment(form.instance)
+        except SMTPException:
+            # Allow email sending to fail.
+            pass
 
         return response
 
@@ -254,3 +265,4 @@ def article_bounce_view(request, slug):
         "article-detail",
         kwargs={"slug": slug},
     ) + "#last_comment")
+
