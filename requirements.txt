@@ -4,7 +4,7 @@ psycopg2==2.6
 markdown2==2.1.0
 django==1.9.4
 csscompressor==0.9.3
-rjsmin==1.0.10
+rjsmin==1.0.12
 django-pipeline==1.6.6
 pytz==2015.2
 gunicorn
