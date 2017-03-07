@@ -238,7 +238,5 @@ STATICFILES_FINDERS = (
     "pipeline.finders.CachedFileFinder",
 )
 
-DDOC_TEMPLATE = "programming_projects/doc.ddoc"
-
 NO_REPLY_EMAIL = "no-reply@w0rp.com"
 EXTERNAL_SITE_URL = "https://w0rp.com"

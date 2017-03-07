@@ -8,7 +8,6 @@ module_list=(
     w0rplib
     blog
     misc
-    programming_projects
 )
 
 # Build comma separated values for the coverage report.

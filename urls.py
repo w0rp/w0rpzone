@@ -32,7 +32,6 @@ urlpatterns = [
         {"next_page": settings.LOGOUT_REDIRECT_URL}
     ),
     url(r"^blog/", include("blog.urls")),
-    url(r"^project/", include("programming_projects.urls")),
     url(r"^presentation/", include("presentation.urls")),
     url(r"^settings/$", SettingsView.as_view(), name="settings"),
     url(
