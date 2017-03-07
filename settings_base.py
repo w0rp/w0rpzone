@@ -126,7 +126,6 @@ INSTALLED_APPS = (
     "w0rplib",
     "misc",
     "blog",
-    "programming_projects",
 )
 
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.JSONSerializer"
