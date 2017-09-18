@@ -14,6 +14,8 @@ csv=$(join , "${module_list[@]}")
 # shellcheck disable=SC2046
 empty_init_csv=$(join , $(find . -type f -empty -name __init__.py))
 
+# Tests can fail if we don't collect static files first.
+env/bin/python manage.py collectstatic --noinput > /dev/null
 env/bin/coverage run --branch --omit "*/migrations/*,$empty_init_csv" \
     --source="$csv" \
     manage.py test --settings=settings_test --noinput "${module_list[@]}"
