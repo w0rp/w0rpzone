@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-source env/bin/activate
-
 function join { local IFS="$1"; shift; echo "$*"; }
 
 module_list=(
@@ -13,8 +11,9 @@ module_list=(
 # Build comma separated values for the coverage report.
 csv=$(join , "${module_list[@]}")
 # Find all empty __init__.py files so we can exclude them.
+# shellcheck disable=SC2046
 empty_init_csv=$(join , $(find . -type f -empty -name __init__.py))
 
-coverage run --branch --omit "*/migrations/*,$empty_init_csv" \
+env/bin/coverage run --branch --omit "*/migrations/*,$empty_init_csv" \
     --source="$csv" \
     manage.py test --settings=settings_test --noinput "${module_list[@]}"
