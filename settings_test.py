@@ -1,4 +1,4 @@
-from settings_base import *  # nopep8
+from settings_base import *  # noqa
 
 DEBUG = True
 

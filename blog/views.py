@@ -15,19 +15,12 @@ from django.core.urlresolvers import reverse_lazy
 from django.core.mail import mail_admins
 from django.utils.decorators import method_decorator
 
-view_decorator = lambda *a: method_decorator(a, name="dispatch")
+from .forms import ArticleCommentForm, EditArticleForm, UploadForm
+from .models import Article, ArticleComment, Commenter
 
-from .models import (
-    Article,
-    ArticleComment,
-    Commenter,
-)
 
-from .forms import (
-    EditArticleForm,
-    ArticleCommentForm,
-    UploadForm,
-)
+def view_decorator(*args):
+    return method_decorator(args, name="dispatch")
 
 
 def response_403(request):  # pragma: no cover
@@ -265,4 +258,3 @@ def article_bounce_view(request, slug):
         "article-detail",
         kwargs={"slug": slug},
     ) + "#last_comment")
-

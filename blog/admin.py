@@ -108,6 +108,7 @@ class ArticleCommentAdmin (ModelAdmin):
     commenter_link.short_description = "Commenter"
     commenter_link.allow_tags = True
 
+
 admin_site.register(Article, ArticleAdmin)
 admin_site.register(ArticleTag, ArticleTagAdmin)
 admin_site.register(Commenter, CommenterAdmin)

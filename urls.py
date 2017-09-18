@@ -17,6 +17,7 @@ from misc.views import SettingsView
 def templ(regex, template):
     return (regex, TemplateView.as_view(template_name=template + ".dj.htm"))
 
+
 admin.autodiscover()
 
 urlpatterns = [

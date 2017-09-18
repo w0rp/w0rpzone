@@ -18,4 +18,3 @@ def view_presentation(request, filename):
     return render(request, "presentation/view.dj.htm", {
         "presentation_html": presentation_html,
     })
-
