@@ -11,8 +11,6 @@ from django.conf import settings
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 
-from misc.views import SettingsView
-
 
 def templ(regex, template):
     return (regex, TemplateView.as_view(template_name=template + ".dj.htm"))
@@ -25,7 +23,8 @@ urlpatterns = [
     url(
         settings.LOGIN_REGEX,
         login_view,
-        {"template_name": "registration/login.dj.htm"}
+        {"template_name": "registration/login.dj.htm"},
+        name="login",
     ),
     url(
         settings.LOGOUT_REGEX,
@@ -34,7 +33,6 @@ urlpatterns = [
     ),
     url(r"^blog/", include("blog.urls")),
     url(r"^presentation/", include("presentation.urls")),
-    url(r"^settings/$", SettingsView.as_view(), name="settings"),
     url(
         r"^$",
         RedirectView.as_view(

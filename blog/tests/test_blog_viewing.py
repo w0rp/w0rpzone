@@ -1,15 +1,12 @@
-from django.test import TestCase
+import datetime
+
 from django.core.urlresolvers import reverse as url_reverse
+from django.test import TestCase
 
 from blog.feed import LatestArticleFeed
 from blog.models import Article
 
-from .util import (
-    make_time,
-    create_author,
-    create_article,
-    create_sample_article_list,
-)
+from .util import create_article, create_author, create_sample_article_list
 
 
 class ArticleTestCase(TestCase):
@@ -76,11 +73,11 @@ class ArchiveTestCase(TestCase):
         create_sample_article_list(create_author())
 
         self.assertEqual(
-            list(Article.objects.active_months()),
+            [x.date() for x in Article.objects.active_months()],
             [
-                make_time(2015, 6, 1),
-                make_time(2014, 7, 1),
-                make_time(2014, 6, 1),
+                datetime.date(2015, 6, 1),
+                datetime.date(2014, 7, 1),
+                datetime.date(2014, 6, 1),
             ],
             msg="The article months didn't match up!"
         )

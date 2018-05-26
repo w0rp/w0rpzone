@@ -54,9 +54,6 @@
       </nav>
       <menu>
         <a class="site_nav_link{% if main_nav == 'blog' %} active{% endif %}" href="{% url "blog-home" %}">Blog</a>
-
-        <!-- Settings Icon by dAKirby309 - http://www.iconarchive.com/artist/dakirby309.html -->
-        <a class="settings" href="{% url "settings" %}"><span class="icon settings" title="Settings"></span></a>
       </menu>
       {% block root_nav %}{% endblock %}
     </header>

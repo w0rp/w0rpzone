@@ -21,7 +21,7 @@ INTERNAL_IPS = (
 )
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/London'
 
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -101,8 +101,6 @@ MIDDLEWARE_CLASSES = (
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.gzip.GZipMiddleware",
     "pipeline.middleware.MinifyHTMLMiddleware",
-    "misc.middleware.LocaleMiddleware",
-    "w0rplib.middleware.StartupTimeMiddleware",
 )
 
 ROOT_URLCONF = "urls"
@@ -174,7 +172,6 @@ PIPELINE = {
         "main-site": {
             "source_filenames": (
                 "js/third-party/jquery-2.0.3.min.js",
-                "js/third-party/jstz.min.js",
                 "js/third-party/notify-combined.min.js",
                 "js/third-party/jquery.cookie.js",
                 "js/third-party/highlight.pack.js",
