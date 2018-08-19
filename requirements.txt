@@ -1,8 +1,8 @@
-# requirements.txt for w0rpzone, running Python 3.3
+# requirements.txt for w0rpzone, running Python 3.6
 
-Django==1.11.5
-csscompressor==0.9.3
-django-pipeline==1.6.13
+Django==2.1
+csscompressor==0.9.5
+django-pipeline==1.6.14
 gunicorn==19.7.1
 markdown2==2.1.0
 psycopg2==2.7.3.1

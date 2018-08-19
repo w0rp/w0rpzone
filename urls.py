@@ -1,15 +1,10 @@
-from django.conf.urls import include, url
-from django.contrib import admin
-
-from django.contrib.auth.views import (
-    login as login_view,
-    logout as logout_view
-)
-
-from django.conf.urls.static import static
 from django.conf import settings
-from django.views.generic import TemplateView
-from django.views.generic import RedirectView
+from django.conf.urls import include, url
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.views.generic import RedirectView, TemplateView
+
+from w0rplib.views import LoginView, LogoutView
 
 
 def templ(regex, template):
@@ -20,17 +15,8 @@ admin.autodiscover()
 
 urlpatterns = [
     url(settings.ADMIN_REGEX, admin.site.urls),
-    url(
-        settings.LOGIN_REGEX,
-        login_view,
-        {"template_name": "registration/login.dj.htm"},
-        name="login",
-    ),
-    url(
-        settings.LOGOUT_REGEX,
-        logout_view,
-        {"next_page": settings.LOGOUT_REDIRECT_URL}
-    ),
+    url(settings.LOGIN_REGEX, LoginView.as_view(), name="login"),
+    url(settings.LOGOUT_REGEX, LogoutView.as_view()),
     url(r"^blog/", include("blog.urls")),
     url(r"^presentation/", include("presentation.urls")),
     url(
