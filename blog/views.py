@@ -1,19 +1,19 @@
 from smtplib import SMTPException
 
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.core.mail import mail_admins
+from django.db import transaction
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse as url_reverse
+from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import ListView, CreateView, UpdateView
+from django.utils.decorators import method_decorator
+from django.views.generic import CreateView, ListView, UpdateView
 from django.views.generic.base import ContextMixin
 from django.views.generic.dates import MonthArchiveView
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-from django.core.urlresolvers import reverse as url_reverse
-from django.db import transaction
 from django.views.generic.edit import DeleteView
-from django.core.urlresolvers import reverse_lazy
-from django.core.mail import mail_admins
-from django.utils.decorators import method_decorator
 
 from .forms import ArticleCommentForm, EditArticleForm, UploadForm
 from .models import Article, ArticleComment, Commenter

@@ -1,7 +1,7 @@
 import datetime
 
-from django.core.urlresolvers import reverse as url_reverse
 from django.test import TestCase
+from django.urls import reverse as url_reverse
 
 from blog.feed import LatestArticleFeed
 from blog.models import Article

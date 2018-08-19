@@ -1,11 +1,11 @@
 import datetime
 import time
 
-from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.core.urlresolvers import reverse as url_reverse
 from django.db.models import (
+    CASCADE,
+    PROTECT,
     BooleanField,
     CharField,
     DateTimeField,
@@ -16,6 +16,8 @@ from django.db.models import (
     SlugField,
     TextField,
 )
+from django.urls import reverse as url_reverse
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.html import urlize
 
@@ -84,7 +86,7 @@ class Article(TimestampModel, ContentMixin):
             ("creation_date", "active"),
         )
 
-    author = ForeignKey(User)
+    author = ForeignKey(User, PROTECT)
     active = BooleanField(default=False)
     slug = SlugField(max_length=55)
     title = CharField(max_length=55)
@@ -130,7 +132,7 @@ class ArticleTag(Model):
         db_table = "blog_articletag"
         unique_together = ("article", "tag")
 
-    article = ForeignKey(Article, related_name="tags")
+    article = ForeignKey(Article, CASCADE, related_name="tags")
     # The tag is indexed for fast lookup.
     tag = CharField(max_length=255, db_index=True)
 
@@ -145,7 +147,7 @@ class Upload(Model):
     class Meta:
         db_table = "blog_upload"
 
-    author = ForeignKey(User)
+    author = ForeignKey(User, CASCADE)
     file = FileField(upload_to="%Y-%m-%dT%H:%M:%SZ/")
 
 
@@ -203,8 +205,8 @@ class ArticleComment(TimestampModel, ContentMixin):
         ordering = ["creation_date"]
         get_latest_by = "creation_date"
 
-    commenter = ForeignKey(Commenter, related_name="comments")
-    article = ForeignKey(Article, related_name="comments")
+    commenter = ForeignKey(Commenter, CASCADE, related_name="comments")
+    article = ForeignKey(Article, CASCADE, related_name="comments")
     poster_name = CharField(
         verbose_name="Name",
         max_length=255,

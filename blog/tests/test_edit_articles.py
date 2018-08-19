@@ -1,12 +1,9 @@
-from django.core.urlresolvers import reverse as url_reverse
 from django.test import TestCase
+from django.urls import reverse as url_reverse
 
 from blog.models import Article
 
-from .util import (
-    create_article,
-    create_author,
-)
+from .util import create_article, create_author
 
 
 class ArticleEditTestCase(TestCase):

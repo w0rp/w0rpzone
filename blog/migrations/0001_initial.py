@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(max_length=55)),
                 ('title', models.CharField(max_length=55)),
                 ('content', models.TextField()),
-                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['-creation_date'],
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('creation_date', models.DateTimeField(auto_now_add=True)),
                 ('poster_name', models.CharField(blank=True, verbose_name='Name', max_length=255)),
                 ('content', models.TextField(verbose_name='Comment')),
-                ('article', models.ForeignKey(related_name='comments', to='blog.Article')),
+                ('article', models.ForeignKey(related_name='comments', to='blog.Article', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['creation_date'],
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
                 ('file', models.FileField(upload_to="%Y-%m-%dT%H:%M:%SZ/")),
-                ('article', models.ForeignKey(to='blog.Article')),
+                ('article', models.ForeignKey(to='blog.Article', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'blog_articlefile',
@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
                 ('tag', models.CharField(db_index=True, max_length=255)),
-                ('article', models.ForeignKey(related_name='tags', to='blog.Article')),
+                ('article', models.ForeignKey(related_name='tags', to='blog.Article', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'blog_articletag',
@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
             name='BlogAuthor',
             fields=[
                 ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
-                ('author', models.ForeignKey(unique=True, to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(unique=True, to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'blog_blogauthor',
@@ -98,7 +98,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='articlecomment',
             name='commenter',
-            field=models.ForeignKey(related_name='comments', to='blog.Commenter'),
+            field=models.ForeignKey(related_name='comments', to='blog.Commenter', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterIndexTogether(

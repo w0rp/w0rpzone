@@ -19,7 +19,7 @@ def templ(regex, template):
 admin.autodiscover()
 
 urlpatterns = [
-    url(settings.ADMIN_REGEX, include(admin.site.urls)),
+    url(settings.ADMIN_REGEX, admin.site.urls),
     url(
         settings.LOGIN_REGEX,
         login_view,
