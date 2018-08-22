@@ -119,3 +119,34 @@ class MarkdownTestCase(unittest.TestCase):
 
         self.assertEqual(unsafe_markdown(text), html)
         self.assertEqual(markdown(text), html)
+
+    def test_table_formatting(self):
+        text = textwrap.dedent(r"""
+        heading 1 | heading 2
+        ----------|----------
+        col 1     | col 2
+        col 1     | col 2
+        """)
+        html = textwrap.dedent(r"""
+        <table>
+        <thead>
+        <tr>
+          <th>heading 1</th>
+          <th>heading 2</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>col 1</td>
+          <td>col 2</td>
+        </tr>
+        <tr>
+          <td>col 1</td>
+          <td>col 2</td>
+        </tr>
+        </tbody>
+        </table>
+        """).strip() + "\n"
+
+        self.assertEqual(unsafe_markdown(text), html)
+        self.assertEqual(markdown(text), html)

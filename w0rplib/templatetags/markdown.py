@@ -17,6 +17,7 @@ def unsafe_markdown(value):
         extras=[
             "fenced-code-blocks",
             "code-friendly",
+            "tables",
             "highlightjs-lang",
         ],
     ))
@@ -43,6 +44,13 @@ def markdown(value):
             'p',
             'pre',
             'strong',
+            'table',
+            'tbody',
+            'td',
+            'tfoot',
+            'th',
+            'thead',
+            'tr',
             'ul',
         ],
         attributes={
