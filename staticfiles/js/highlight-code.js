@@ -24,7 +24,7 @@ function HighlightCode() {
     module.scan = function(selector) {
         var $root = selector != null ? $(selector) : $(document);
 
-        $root.find("pre code").each(function() {
+        $root.find("pre code:not(.highlight)").each(function() {
             $(this).addClass("highlight");
 
             // Now apply the highlight after attempting to set the language.
