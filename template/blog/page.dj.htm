@@ -4,10 +4,10 @@
   {{ block.super }}
 
   {% if page_obj.number == 1 %}
-    <title>w0rpzone</title>
-    <meta name="description" content="The opinions of a cheery but stubborn programmer called &quot;w0rp.&quot;" />
+    <title>w0rp zone</title>
+    <meta name="description" content="The opinions of &quot;w0rp&quot;, a cheery, but stubborn, programmer." />
   {% else %}
-    <title>w0rpzone - Page {{page_obj.number}} </title>
+    <title>w0rp zone - Page {{page_obj.number}} </title>
     <meta name="description" content="Article archive page {{page_obj.number}}" />
   {% endif %}
 {% endblock %}

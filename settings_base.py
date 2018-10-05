@@ -1,4 +1,4 @@
-# Django settings for w0rpzone project.
+# Django settings for the w0rp zone project.
 
 import os
 

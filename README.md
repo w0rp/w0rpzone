@@ -1,8 +1,9 @@
-The w0rpzone website
+The w0rp zone website
 =====================
 
-This is the source code for my website. With the exception of webserver configuration
-files and a few settings, this is the website's complete source code.
+This is the source code for my website [w0rp zone](https://w0rp.com). With the
+exception of webserver configuration files and a few settings, this is the
+website's complete source code.
 
 As described in the licence directory, the source code of this website is made
 available under a two-clause BSD licence, which can be viewed in that directory.

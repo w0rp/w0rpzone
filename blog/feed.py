@@ -4,7 +4,7 @@ from . import models
 
 
 class LatestArticleFeed(Feed):
-    title = "w0rpzone Articles"
+    title = "w0rp zone Articles"
     link = "/blog/"
 
     def items(self):
