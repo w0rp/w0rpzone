@@ -83,7 +83,7 @@ class ArticleCommentTestCase(TestCase):
         article = create_article(create_author())
 
         comment_response = self.client.post(article.get_absolute_url(), {
-            "comment": None,
+            "comment": '',
             "poster_name": "Bob",
             "content": "**New** text",
             "verify": str(347 * 347),
@@ -111,7 +111,7 @@ class ArticleCommentTestCase(TestCase):
         article = create_article(create_author())
 
         comment_response = self.client.post(article.get_absolute_url(), {
-            "comment": None,
+            "comment": '',
             "poster_name": "Bob",
             "content": "**New** text",
         })
@@ -125,7 +125,7 @@ class ArticleCommentTestCase(TestCase):
         article = create_article(create_author())
 
         comment_response = self.client.post(article.get_absolute_url(), {
-            "comment": None,
+            "comment": '',
             "poster_name": "Bob",
             "content": "**New** text",
             "title": "anything",
@@ -140,14 +140,14 @@ class ArticleCommentTestCase(TestCase):
         article = create_article(create_author())
 
         self.client.post(article.get_absolute_url(), {
-            "comment": None,
+            "comment": '',
             "poster_name": "Bob",
             "content": "**New** text",
             "verify": str(347 * 347),
         })
 
         comment_response = self.client.post(article.get_absolute_url(), {
-            "comment": None,
+            "comment": '',
             "poster_name": "Bob",
             "content": "**New** text",
             "verify": str(347 * 347),
@@ -171,7 +171,7 @@ class ArticleCommentTestCase(TestCase):
         comment_response = self.client.post(
             article.get_absolute_url(),
             {
-                "comment": None,
+                "comment": '',
                 "poster_name": "Bob",
                 "content": "**New** text",
                 "verify": str(347 * 347),
@@ -189,7 +189,7 @@ class ArticleCommentTestCase(TestCase):
         article = create_article(create_author())
 
         comment_response = self.client.post(article.get_absolute_url(), {
-            "comment": None,
+            "comment": '',
             "poster_name": "Bob",
             "content": "**New** text",
             "verify": str(347 * 347),

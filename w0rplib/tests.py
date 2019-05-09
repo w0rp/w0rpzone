@@ -48,7 +48,7 @@ class CompilerTestCase(unittest.TestCase):
 
 class MarkdownTestCase(unittest.TestCase):
     def test_html_escaping(self):
-        # This value was used to demonstrate a flag with the markdown2 library.
+        # This value was used to demonstrate a flaw with the markdown2 library.
         text = '<<svg/onload=prompt(1) x'
 
         self.assertEqual(
@@ -57,8 +57,8 @@ class MarkdownTestCase(unittest.TestCase):
         )
         self.assertEqual(
             markdown(text),
-            '<p>&lt;&lt;svg onload="prompt(1)" p="" x&lt;=""&gt;'
-            + '\n&lt;/svg&gt;</p>'
+            '<p>&lt;&lt;svg/onload=prompt(1) x&lt;/p&gt;'
+            + '\n</p>'
         )
 
     def test_ordered_list_formatting(self):
