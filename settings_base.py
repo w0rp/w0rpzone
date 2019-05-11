@@ -223,7 +223,7 @@ PIPELINE = {
 }
 
 # Use the versioned cached storage for cache killing.
-STATICFILES_STORAGE = "pipeline.storage.PipelineCachedStorage"
+STATICFILES_STORAGE = "w0rplib.storage.Django2PipelineCachedStorage"
 
 # Use pipeline for finding files.
 STATICFILES_FINDERS = (
