@@ -16,6 +16,18 @@ from .util import (
 
 
 class ArticleCommentTestCase(TestCase):
+    def test_commenter_object_not_saved_on_article_read(self):
+        article = create_article(create_author())
+
+        response = self.client.get(article.get_absolute_url())
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertIn('article', response.context)
+        # Commenter objects shouldn't be created until comments are posted.
+        # Otherwise the database gets filled up with crap.
+        self.assertFalse(Commenter.objects.all().exists())
+
     def test_view_comments(self):
         article = create_article(create_author())
 
@@ -81,13 +93,17 @@ class ArticleCommentTestCase(TestCase):
 
     def test_add_comment(self):
         article = create_article(create_author())
-
-        comment_response = self.client.post(article.get_absolute_url(), {
-            "comment": '',
-            "poster_name": "Bob",
-            "content": "**New** text",
-            "verify": str(347 * 347),
-        }, follow=True)
+        comment_response = self.client.post(
+            article.get_absolute_url(),
+            {
+                "comment": '',
+                "poster_name": "Bob",
+                "content": "**New** text",
+                "verify": str(347 * 347),
+            },
+            REMOTE_ADDR='12.12.12.12',
+            follow=True,
+        )
 
         self.assertEqual(comment_response.status_code, 200)
         self.assertContains(
@@ -102,6 +118,10 @@ class ArticleCommentTestCase(TestCase):
         comments = response.context["article"].comments.all()
 
         self.assertEqual([x.poster_name for x in comments], ["Bob"])
+        self.assertEqual(
+            [x.commenter.ip_address for x in comments],
+            ["12.12.12.12"],
+        )
         self.assertContains(
             response,
             "<p><strong>New</strong> text</p>",

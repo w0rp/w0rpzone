@@ -102,9 +102,12 @@ class ArticleDetailView(UpdateView):
             or self.request.META["REMOTE_ADDR"]
         )
 
-        commenter, _ = Commenter.objects.get_or_create(
-            ip_address=ip_address,
-        )
+        if self.request.method == 'POST':
+            commenter, _ = Commenter.objects.get_or_create(
+                ip_address=ip_address,
+            )
+        else:
+            commenter = None
 
         return self.model(article=self.article, commenter=commenter)
 
