@@ -25,9 +25,9 @@ class AdminTestCase(TestCase):
             Commenter(ip_address="10.1.1.3"),
         ])
 
-        queryset = Commenter.objects.filter(ip_address__in=[
-            "10.1.1.1",
-            "10.1.1.2",
+        queryset = Commenter.objects.filter(ip_hash__in=[
+            Commenter.hash_ip("10.1.1.1"),
+            Commenter.hash_ip("10.1.1.2"),
         ])
 
         admin = CommenterAdmin(ArticleComment, None)
@@ -38,9 +38,9 @@ class AdminTestCase(TestCase):
             list(
                 Commenter.objects
                 .filter(time_banned__isnull=True)
-                .values_list("ip_address", flat=True)
+                .values_list("ip_hash", flat=True)
             ),
-            ["10.1.1.3"],
+            ["d13d76c9ec362d97940b9a499cd61b594811c1c88d6512eaabb7f772f1381e7d"],  # noqa
         )
 
     def test_unban_all(self):
@@ -52,9 +52,9 @@ class AdminTestCase(TestCase):
             Commenter(ip_address="10.1.1.3", time_banned=time_banned),
         ])
 
-        queryset = Commenter.objects.filter(ip_address__in=[
-            "10.1.1.1",
-            "10.1.1.2",
+        queryset = Commenter.objects.filter(ip_hash__in=[
+            Commenter.hash_ip("10.1.1.1"),
+            Commenter.hash_ip("10.1.1.2"),
         ])
 
         admin = CommenterAdmin(ArticleComment, None)
@@ -65,9 +65,9 @@ class AdminTestCase(TestCase):
             list(
                 Commenter.objects
                 .filter(time_banned__isnull=False)
-                .values_list("ip_address", flat=True)
+                .values_list("ip_hash", flat=True)
             ),
-            ["10.1.1.3"],
+            ["d13d76c9ec362d97940b9a499cd61b594811c1c88d6512eaabb7f772f1381e7d"],  # noqa
         )
 
     def test_commenter_link_not_saved(self):
@@ -90,5 +90,5 @@ class AdminTestCase(TestCase):
 
         self.assertEqual(
             ArticleCommentAdmin(ArticleComment, None).commenter_link(comment),
-            '<a href="/admin/blog/commenter/1/">10.1.1.1</a>'
+            '<a href="/admin/blog/commenter/1/">0de54994e927634fc113449982dfa9ebe763dbbe67fd39d525aba87a764fdbb4</a>'  # noqa
         )

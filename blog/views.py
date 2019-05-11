@@ -104,7 +104,7 @@ class ArticleDetailView(UpdateView):
 
         if self.request.method == 'POST':
             commenter, _ = Commenter.objects.get_or_create(
-                ip_address=ip_address,
+                ip_hash=Commenter.hash_ip(ip_address),
             )
         else:
             commenter = None

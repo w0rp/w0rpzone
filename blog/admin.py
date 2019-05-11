@@ -52,7 +52,7 @@ class CommenterAdmin (ModelAdmin):
     )
 
     list_display = (
-        "ip_address",
+        "ip_hash",
         "time_banned",
     )
 
@@ -102,7 +102,7 @@ class ArticleCommentAdmin (ModelAdmin):
 
         return '<a href="/admin/blog/commenter/{}/">{}</a>'.format(
             obj.commenter.pk,
-            html_escape(obj.commenter.ip_address),
+            html_escape(obj.commenter.ip_hash),
         )
 
     commenter_link.short_description = "Commenter"

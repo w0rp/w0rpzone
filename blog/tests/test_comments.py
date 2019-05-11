@@ -119,8 +119,8 @@ class ArticleCommentTestCase(TestCase):
 
         self.assertEqual([x.poster_name for x in comments], ["Bob"])
         self.assertEqual(
-            [x.commenter.ip_address for x in comments],
-            ["12.12.12.12"],
+            [x.commenter.ip_hash for x in comments],
+            ["269ee2da6cc9fe3e91a9e6fd342ea899f8bac01fc89fd8efd0332e905043d062"],  # noqa
         )
         self.assertContains(
             response,
@@ -196,7 +196,7 @@ class ArticleCommentTestCase(TestCase):
                 "content": "**New** text",
                 "verify": str(347 * 347),
             },
-            REMOTE_ADDR=commenter.ip_address,
+            REMOTE_ADDR="10.1.1.1",
         )
 
         # This form should be invalid.

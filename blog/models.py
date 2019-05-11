@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 import time
 
 from django.contrib.auth.models import User
@@ -11,7 +12,6 @@ from django.db.models import (
     DateTimeField,
     FileField,
     ForeignKey,
-    GenericIPAddressField,
     Model,
     SlugField,
     TextField,
@@ -152,11 +152,27 @@ class Upload(Model):
 
 
 class Commenter(Model):
-    ip_address = GenericIPAddressField(unique=True)
+    ip_hash = CharField(max_length=64, unique=True)
     time_banned = DateTimeField(null=True, blank=True)
 
+    @staticmethod
+    def hash_ip(ip_address):
+        """
+        Convert an IP address string into a SHA-256 hash.
+        """
+        return hashlib.sha256(ip_address.encode("utf-8")).digest().hex()
+
+    def __init__(self, *args, **kwargs):
+        # Create ip hashes from ip_addresses given to the constructor.
+        ip_address = kwargs.pop("ip_address", None)
+
+        if ip_address:
+            kwargs.setdefault("ip_hash", Commenter.hash_ip(ip_address))
+
+        super().__init__(*args, **kwargs)
+
     def __str__(self):
-        return str(self.ip_address)
+        return str(self.ip_hash)
 
     def ban_url(self, article):
         return url_reverse("ban-commenter", args=(article.slug, self.id))
