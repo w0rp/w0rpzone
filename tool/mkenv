@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if ! [ -d env ]; then
+    python3.6 -m venv env
+fi
+
+set +u
+# shellcheck disable=1091
+source env/bin/activate
+set -u
+
+pip install wheel
+pip install -r requirements.txt
+pip install -r test-requirements.txt

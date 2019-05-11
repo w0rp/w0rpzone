@@ -16,5 +16,6 @@ Installation
 ------------
 
 * Install postgres and a database.
-* Install virtualenv, Python 3.3, and pip for 3.3.
+* Install Python 3.6 with virtualenv and pip.
 * Run `tool/mkenv` to create the virtualenv with all required modules.
+* Create a `settings.py` file with a database configuration.
