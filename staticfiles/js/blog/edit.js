@@ -12,9 +12,11 @@ $(() => {
   var $togglePreviewButton = $('.toggle_preview_button')
   var $main = $('#main')
   var $editNav = $main.children('nav')
-  var originalNavTop = $editNav.offset().top
+  var editNavOffset = $editNav.offset()
+  var originalNavTop = editNavOffset ? editNavOffset.top : 0
   var navFixed = false
-  var resizeTimeoutHandle = null
+  /** @type {number | undefined} */
+  var resizeTimeoutHandle
   var formScrollTop = 0
   var previewScrollTop = 0
 
@@ -44,12 +46,12 @@ $(() => {
 
   function generatePreview() {
     // Generate HTML with the JavaScript markdown parser.
-    var html = marked($('#id_content').val(), {
+    var html = marked(String($('#id_content').val()), {
       gfm: true,
       sanitize: false,
     })
 
-    var title = $('#id_title').val() || '<no title>'
+    var title = String($('#id_title').val() || '<no title>')
     var $post = $article.children('.post')
 
     // Set produced HTML in the preview article.
@@ -67,8 +69,12 @@ $(() => {
       return
     }
 
-    // The left margin is the same size as the right margin.
-    $editNav.css('right', $main.offset().left)
+    const mainOffset = $main.offset()
+
+    if (mainOffset) {
+      // The left margin is the same size as the right margin.
+      $editNav.css('right', mainOffset.left)
+    }
   }
 
   $togglePreviewButton.click(() => {
@@ -80,7 +86,7 @@ $(() => {
   })
 
   $(window).scroll(() => {
-    if ($(window).scrollTop() > originalNavTop - 10) {
+    if (($(window).scrollTop() || 0) > originalNavTop - 10) {
       if (!navFixed) {
         navFixed = true
 
@@ -106,6 +112,7 @@ $(() => {
 
   var textArea = $('textarea[name="content"]')
 
+  /** @type {(file: File, callback: (url: string) => void) => void} */
   function uploadFile(file, callback) {
     var data = new FormData()
     data.append('file', file, file.name)
@@ -121,12 +128,13 @@ $(() => {
     })
   }
 
+  /** @type {(urlList: string[]) => void} */
   function addImages(urlList) {
     var selectionStart = textArea.prop('selectionStart')
     var selectionEnd = textArea.prop('selectionEnd')
 
-    var textBefore = textArea.val().slice(0, selectionStart)
-    var textAfter = textArea.val().slice(selectionEnd)
+    var textBefore = String(textArea.val()).slice(0, selectionStart)
+    var textAfter = String(textArea.val()).slice(selectionEnd)
     var insertText = urlList.map((url) => {
       // The image will be pre-loaded here.
       var image = new Image()
@@ -171,7 +179,8 @@ $(() => {
     textArea.removeClass('drag-over')
   })
 
-  textArea.on('drop', (event) => {
+  // @ts-ignore
+  textArea.on('drop', /** @type {(event: JQueryEventObject & {originalEvent: DragEvent}) => void} */ (event) => {
     event.preventDefault()
     event.stopPropagation()
 
@@ -185,8 +194,9 @@ $(() => {
         || file.type === 'image/gif'
       )
 
+    /** @type {string[]} */
     var urlList = Array(files.length)
-    urlList.fill(undefined)
+    urlList.fill('')
 
     files.forEach((file, index) => {
       uploadFile(file, (url) => {

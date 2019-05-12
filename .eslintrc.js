@@ -14,7 +14,15 @@ module.exports = {
     marked: true,
     Reveal: true,
     hljs: true,
+    HighlightCode: true,
   },
+  // Handle type definition files.
+  overrides: [
+    {
+      files: ['typings/*.d.ts'],
+      parser: '@typescript-eslint/parser',
+    },
+  ],
   rules: {
     /**
      * Rules that go against StandardJS are here.

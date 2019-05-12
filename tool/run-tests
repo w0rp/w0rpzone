@@ -24,6 +24,10 @@ env/bin/coverage run --branch --omit "*/migrations/*,$empty_init_csv" \
 # Check JS code with ESLint
 yarn --silent
 node_modules/.bin/eslint \
+    typings/*.d.ts \
     staticfiles/js/*.js \
     staticfiles/js/blog/**/*.js \
     staticfiles/js/project/**/*.js
+
+# Check for type errors with TypeScript
+node_modules/.bin/tsc --noEmit

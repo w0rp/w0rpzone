@@ -24,12 +24,12 @@ $(() => {
 
   function generatePreview() {
     // Generate HTML with the JavaScript markdown parser.
-    var html = marked($('#id_content').val(), {
+    var html = marked(String($('#id_content').val()), {
       gfm: true,
       sanitize: true,
     })
 
-    $nameField.text($('#id_poster_name').val())
+    $nameField.text(String($('#id_poster_name').val()))
 
     $commentBody.html(html)
 
@@ -82,7 +82,11 @@ $(() => {
   })
 
   if ($form.hasClass('has_errors')) {
+    const offset = $form.closest('section').offset()
+
     // Scroll to the form when there are errors in it.
-    $(window).scrollTop($form.closest('section').offset().top)
+    if (offset) {
+      $(window).scrollTop(offset.top)
+    }
   }
 })
