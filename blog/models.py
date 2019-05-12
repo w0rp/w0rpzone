@@ -10,7 +10,6 @@ from django.db.models import (
     BooleanField,
     CharField,
     DateTimeField,
-    FileField,
     ForeignKey,
     Model,
     SlugField,
@@ -138,17 +137,6 @@ class ArticleTag(Model):
 
     def __str__(self):
         return "{} - {}".format(self.tag, self.article)
-
-
-class Upload(Model):
-    """
-    This model represents an upload for the site.
-    """
-    class Meta:
-        db_table = "blog_upload"
-
-    author = ForeignKey(User, CASCADE)
-    file = FileField(upload_to="%Y-%m-%dT%H:%M:%SZ/")
 
 
 class Commenter(Model):

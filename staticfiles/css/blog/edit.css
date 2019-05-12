@@ -3,6 +3,11 @@
     #id_content {
         font-family: "Source Code Pro", monospace;
         font-size: 10pt;
+        height: 15em;
+    }
+
+    #id_content.drag-over {
+        border: 1px dashed white;
     }
 
     article.preview {

@@ -50,6 +50,24 @@
         content: "\2192\a0";
     }
 
+    article > .post figure {
+        display: block;
+    }
+
+    article > .post figure a.image-link:before  {
+        content: "";
+    }
+
+    article > .post figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    article > .post figure figcaption:empty {
+        display: none;
+    }
+
     article h2,
     article h3,
     article h4,

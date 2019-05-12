@@ -4,12 +4,13 @@ from django.forms import (
     ModelForm,
     CharField,
     HiddenInput,
+    Form,
+    FileField,
 )
 
 from .models import (
     Article,
     ArticleComment,
-    Upload,
 )
 
 HONEYPOT_STRING = str(347 * 347)
@@ -96,9 +97,7 @@ class ArticleCommentForm (ModelForm):
         return cleaned_data
 
 
-class UploadForm (ModelForm):
-    class Meta:
-        model = Upload
-        fields = ("file",)
+class UploadForm(Form):
+    file = FileField()
 
     error_css_class = "error"

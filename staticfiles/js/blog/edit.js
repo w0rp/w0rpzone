@@ -103,4 +103,100 @@ $(function() {
             adjust_fixed_nav_horizontal();
         }, 100);
     });
+
+    var textArea = $('textarea[name="content"]');
+
+    function uploadFile(file, callback) {
+        var data = new FormData();
+        data.append('file', file, file.name);
+
+        $.ajax({
+            url: '/blog/upload/',
+            data: data,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+        }).done(function(data) {
+            callback(data.url);
+        });
+    }
+
+    function addImages(urlList) {
+        var selectionStart = textArea.prop('selectionStart')
+        var selectionEnd = textArea.prop('selectionEnd')
+
+        var textBefore = textArea.val().slice(0, selectionStart)
+        var textAfter = textArea.val().slice(selectionEnd)
+        var insertText = urlList.map(function(url) {
+          // The image will be pre-loaded here.
+          var image = new Image();
+          image.src = url;
+
+          var anchor = document.createElement('a')
+          anchor.className = 'image-link';
+          anchor.href = url;
+          anchor.target = '_blank';
+          anchor.appendChild(image);
+
+          return '\n\n<figure>'
+            + '\n  ' + anchor.outerHTML
+            + '\n  <figcaption></figcaption>'
+            + '\n</figure>';
+        }).join('');
+
+        if (!textBefore) {
+          insertText = insertText.slice(2);
+        }
+
+        textAfter = textAfter.trim();
+
+        if (textAfter) {
+          insertText += '\n\n';
+        }
+
+        textArea.val(textBefore + insertText + textAfter);
+    }
+
+    textArea.on("dragover dragenter", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        textArea.addClass('drag-over');
+    })
+
+    textArea.on("dragleave", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        textArea.removeClass('drag-over');
+    })
+
+    textArea.on("drop", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        textArea.removeClass('drag-over');
+
+        var data = event.originalEvent.dataTransfer;
+        var files = Array.from(data && data.files ? data.files : [])
+            .filter(function(file) {
+                return file.type === 'image/png'
+                    || file.type === 'image/jpeg'
+                    || file.type === 'image/gif';
+            });
+
+        var urlList = Array(files.length);
+        urlList.fill(undefined);
+
+        files.forEach(function(file, index) {
+            uploadFile(file, function(url) {
+                urlList[index] = url;
+
+                // Add images after all files have been uploaded.
+                if (urlList.every(function(x) { return Boolean(x) })) {
+                    addImages(urlList);
+                }
+            });
+        });
+    })
 });

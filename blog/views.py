@@ -1,6 +1,7 @@
 from smtplib import SMTPException
 
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
 from django.db import transaction
@@ -226,21 +227,27 @@ class NewArticleView(ArticleEditMixin, CreateView):
         return super().form_valid(form)
 
 
-@login_required
 def upload_file_view(request):
     """
-    This view manages uploading a file to a site.
+    This view manages uploading a file the site.
     """
-    form = UploadForm(request.POST or None)
+    if not request.user.is_authenticated:
+        return JsonResponse({}, status=403)
+
+    if request.method != "POST":
+        return JsonResponse({}, status=405)
+
+    form = UploadForm(request.POST, request.FILES)
 
     if form.is_valid():
-        upload = form.save(commit=False)
-        upload.author = request.user
-        upload.save()
+        uploaded_file = request.FILES['file']
+        storage = FileSystemStorage()
+        filename = storage.save(uploaded_file.name, uploaded_file)
+        url = storage.url(filename)
 
-        return JsonResponse(upload, safe=True, status_code=201)
+        return JsonResponse({'url': url}, status=201)
 
-    return JsonResponse(None, status_code=400)
+    return JsonResponse({}, status=400)
 
 
 class DeleteArticleView(DeleteView):
