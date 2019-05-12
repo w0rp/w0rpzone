@@ -1,18 +1,13 @@
-from django.test import TestCase
-from django.core import mail
+from smtplib import SMTPException
+from unittest import mock
+
 from django.conf import settings
+from django.core import mail
+from django.test import TestCase
 
-from blog.models import (
-    ArticleComment,
-    Commenter,
-)
+from blog.models import ArticleComment, Commenter
 
-from .util import (
-    make_time,
-    create_article,
-    create_author,
-    create_comment,
-)
+from .util import create_article, create_author, create_comment, make_time
 
 
 class ArticleCommentTestCase(TestCase):
@@ -242,6 +237,23 @@ class ArticleCommentTestCase(TestCase):
                 comment.content
             ))
         )
+
+    @mock.patch('blog.views.mail_admins')
+    def test_email_failure_handled_for_new_comments(self, mail_mock):
+        mail_mock.side_effect = SMTPException
+
+        article = create_article(create_author())
+
+        comment_response = self.client.post(article.get_absolute_url(), {
+            "comment": '',
+            "poster_name": "Bob",
+            "content": "**New** text",
+            "verify": str(347 * 347),
+        })
+
+        self.assertEqual(comment_response.status_code, 302)
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertEqual(article.comments.count(), 1)
 
     def test_load_delete_comment_view(self):
         author = create_author()

@@ -24,7 +24,7 @@ def view_decorator(*args):
     return method_decorator(args, name="dispatch")
 
 
-def response_403(request):  # pragma: no cover
+def response_403(request):
     return render(request, "403.html", {}, status=403)
 
 
