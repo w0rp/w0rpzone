@@ -6,5 +6,7 @@ __pycache__
 /.coverage
 /htmlcov
 /staticfiles/presentation
+node_modules
+yarn-error.log
 *.pyc
 *.db

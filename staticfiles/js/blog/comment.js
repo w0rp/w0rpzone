@@ -1,88 +1,88 @@
-$(function() {
-    "use strict";
+$(() => {
+  'use strict'
 
-    /* global HighlightCode */
+  /* global HighlightCode */
 
-    // Markdown previews.
-    var $form = $('.comment_list form');
-    var $preview_comment = $('.comment_list .comment.preview');
-    var $name_field = $preview_comment.find(".post_metadata .name");
-    var $comment_body = $preview_comment.children(".comment_body");
+  // Markdown previews.
+  var $form = $('.comment_list form')
+  var $previewComment = $('.comment_list .comment.preview')
+  var $nameField = $previewComment.find('.post_metadata .name')
+  var $commentBody = $previewComment.children('.comment_body')
 
-    var $show_preview_button = $form.find('button.show_preview');
-    var $hide_preview_button = $preview_comment.find('button.hide_preview');
+  var $showPreviewButton = $form.find('button.show_preview')
+  var $hidePreviewButton = $previewComment.find('button.hide_preview')
 
-    function switch_to_preview() {
-        $form.hide();
-        $preview_comment.show();
-    }
+  function switchToPreview() {
+    $form.hide()
+    $previewComment.show()
+  }
 
-    function switch_to_form() {
-        $preview_comment.hide();
-        $form.show();
-    }
+  function switchToForm() {
+    $previewComment.hide()
+    $form.show()
+  }
 
-    function generate_preview() {
-        // Generate HTML with the JavaScript markdown parser.
-        var html = marked($("#id_content").val(), {
-            gfm: true,
-            sanitize: true
-        });
+  function generatePreview() {
+    // Generate HTML with the JavaScript markdown parser.
+    var html = marked($('#id_content').val(), {
+      gfm: true,
+      sanitize: true,
+    })
 
-        $name_field.text($("#id_poster_name").val());
+    $nameField.text($('#id_poster_name').val())
 
-        $comment_body.html(html);
+    $commentBody.html(html)
 
-        // Apply code highlighting to the generated text.
-        HighlightCode.scan($comment_body);
+    // Apply code highlighting to the generated text.
+    HighlightCode.scan($commentBody)
 
-        switch_to_preview();
-    }
+    switchToPreview()
+  }
 
-    $show_preview_button.click(function() {
-        generate_preview();
-    });
+  $showPreviewButton.click(() => {
+    generatePreview()
+  })
 
-    $hide_preview_button.click(function() {
-        switch_to_form();
-    });
+  $hidePreviewButton.click(() => {
+    switchToForm()
+  })
 
-    var $brief_help = $(".markdown_help.brief");
-    var $full_help = $(".markdown_help.full");
+  var $briefHelp = $('.markdown_help.brief')
+  var $fullHelp = $('.markdown_help.full')
 
-    // Show and hide help information.
-    $brief_help.find(".show_help").click(function(event) {
-        event.preventDefault();
+  // Show and hide help information.
+  $briefHelp.find('.show_help').click((event) => {
+    event.preventDefault()
 
-        $full_help.addClass("active");
-        $brief_help.removeClass("active");
-    });
+    $fullHelp.addClass('active')
+    $briefHelp.removeClass('active')
+  })
 
-    $full_help.find(".hide_help").click(function(event) {
-        event.preventDefault();
+  $fullHelp.find('.hide_help').click((event) => {
+    event.preventDefault()
 
-        $brief_help.addClass("active");
-        $full_help.removeClass("active");
-    });
+    $briefHelp.addClass('active')
+    $fullHelp.removeClass('active')
+  })
 
-    var $help_tabs = $full_help.find(".help_tabs > .tab");
-    var $help_topics = $full_help.find(".help_topic");
+  var $helpTabs = $fullHelp.find('.helpTabs > .tab')
+  var $helpTopics = $fullHelp.find('.help_topic')
 
-    // Switch between help topics by clicking the tabs.
-    $help_tabs.click(function() {
-        var $last_tab = $help_tabs.filter(".active");
-        var $last_topic = $help_topics.filter("." + $last_tab.data("topic"));
-        var $new_tab = $(this);
-        var $new_topic = $help_topics.filter("." + $new_tab.data("topic"));
+  // Switch between help topics by clicking the tabs.
+  $helpTabs.click(function() {
+    var $lastTab = $helpTabs.filter('.active')
+    var $lastTopic = $helpTopics.filter('.' + $lastTab.data('topic'))
+    var $newTab = $(this)
+    var $newTopic = $helpTopics.filter('.' + $newTab.data('topic'))
 
-        $last_tab.removeClass("active");
-        $last_topic.removeClass("active");
-        $new_tab.addClass("active");
-        $new_topic.addClass("active");
-    });
+    $lastTab.removeClass('active')
+    $lastTopic.removeClass('active')
+    $newTab.addClass('active')
+    $newTopic.addClass('active')
+  })
 
-    if ($form.hasClass("has_errors")) {
-        // Scroll to the form when there are errors in it.
-        $(window).scrollTop($form.closest('section').offset().top);
-    }
-});
+  if ($form.hasClass('has_errors')) {
+    // Scroll to the form when there are errors in it.
+    $(window).scrollTop($form.closest('section').offset().top)
+  }
+})

@@ -1,70 +1,70 @@
-$(function() {
-    "use strict";
+$(() => {
+  'use strict'
 
-    var $menu = $("#main > nav > menu");
-    var $doc = $("#main > .documentation");
+  var $menu = $('#main > nav > menu')
+  var $doc = $('#main > .documentation')
 
-    var $toggle_constraint_button = $menu.find(".constraint_toggle");
+  var $toggleConstraintButton = $menu.find('.constraint_toggle')
 
-    var $expandables = $("h2.declaration:not(.enum)").filter(function() {
-        var $decl = $(this);
+  var $expandables = $('h2.declaration:not(.enum)').filter(function() {
+    var $decl = $(this)
 
-        var $def = $decl.next(".definition");
+    var $def = $decl.next('.definition')
 
-        if ($def.length === 0) {
-            // No definition, so this doesn't expand.
-            return false;
-        }
-
-        if ($def.children(":not(.summary)").length === 0) {
-            // The defition is there, but has nothing but a summary.
-            // Don't expand it.
-            return false;
-        }
-
-        return true;
-    });
-
-    function toggle_constraints_on() {
-        localStorage.setItem("constraints_on", "true");
-        $toggle_constraint_button.addClass("toggled");
-
-        $doc.removeClass("hide_template_constraints");
+    if ($def.length === 0) {
+      // No definition, so this doesn't expand.
+      return false
     }
 
-    function toggle_constraints_off() {
-        localStorage.setItem("constraints_on", "false");
-        $toggle_constraint_button.removeClass("toggled");
-
-        $doc.addClass("hide_template_constraints");
+    if ($def.children(':not(.summary)').length === 0) {
+      // The defition is there, but has nothing but a summary.
+      // Don't expand it.
+      return false
     }
 
-    $toggle_constraint_button.click(function() {
-        if (localStorage.getItem("constraints_on") === "false") {
-            toggle_constraints_on();
-        } else {
-            toggle_constraints_off();
-        }
-    });
+    return true
+  })
 
-    $expandables.click(function() {
-        var $elem = $(this);
-        var $elem_def = $elem.next(".definition");
+  function toggleConstraintsOn() {
+    localStorage.setItem('constraints_on', 'true')
+    $toggleConstraintButton.addClass('toggled')
 
-        if ($elem.hasClass("open")) {
-            // Close this and all children.
-            $elem.add($elem_def.find(".declaration")).removeClass("open");
-            $elem_def.add($elem_def.find(".definition")).removeClass("open");
-        } else {
-            // Open just this one up.
-            $elem.addClass("open");
-            $elem_def.addClass("open");
-        }
-    });
+    $doc.removeClass('hide_template_constraints')
+  }
 
-    $expandables.addClass("expandable");
+  function toggleConstraintsOff() {
+    localStorage.setItem('constraints_on', 'false')
+    $toggleConstraintButton.removeClass('toggled')
 
-    if (localStorage.getItem("constraints_on") === "false") {
-        toggle_constraints_off();
+    $doc.addClass('hide_template_constraints')
+  }
+
+  $toggleConstraintButton.click(() => {
+    if (localStorage.getItem('constraints_on') === 'false') {
+      toggleConstraintsOn()
+    } else {
+      toggleConstraintsOff()
     }
-});
+  })
+
+  $expandables.click(function() {
+    var $elem = $(this)
+    var $elemDef = $elem.next('.definition')
+
+    if ($elem.hasClass('open')) {
+      // Close this and all children.
+      $elem.add($elemDef.find('.declaration')).removeClass('open')
+      $elemDef.add($elemDef.find('.definition')).removeClass('open')
+    } else {
+      // Open just this one up.
+      $elem.addClass('open')
+      $elemDef.addClass('open')
+    }
+  })
+
+  $expandables.addClass('expandable')
+
+  if (localStorage.getItem('constraints_on') === 'false') {
+    toggleConstraintsOff()
+  }
+})

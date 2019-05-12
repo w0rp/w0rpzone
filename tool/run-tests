@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
 
 function join { local IFS="$1"; shift; echo "$*"; }
 
@@ -20,3 +20,10 @@ export PYTHONWARNINGS=always
 env/bin/coverage run --branch --omit "*/migrations/*,$empty_init_csv" \
     --source="$csv" \
     manage.py test --settings=settings_test --noinput "${module_list[@]}"
+
+# Check JS code with ESLint
+yarn --silent
+node_modules/.bin/eslint \
+    staticfiles/js/*.js \
+    staticfiles/js/blog/**/*.js \
+    staticfiles/js/project/**/*.js

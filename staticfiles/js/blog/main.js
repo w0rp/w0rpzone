@@ -1,6 +1,6 @@
-$(function() {
-    "use strict";
+$(() => {
+  'use strict'
 
-    $("#id_" + "verify")
-    .val("" + (347 * 347));
-});
+  $('#id_' + 'verify')
+    .val('' + (347 * 347))
+})
