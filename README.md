@@ -10,7 +10,7 @@ available under a two-clause BSD licence, which can be viewed in that directory.
 
 Feel free to distribute and modify this website, and if you do evolve software
 from this website or learn from parts of it, feel free to drop me an email at
-devw0rp@gmail.com and tell me about it.
+dev@w0rp.com and tell me about it.
 
 Installation
 ------------
