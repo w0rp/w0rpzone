@@ -1,5 +1,4 @@
-The w0rp zone website
-=====================
+# w0rpzone [![Travis CI Build Status](https://travis-ci.com/w0rp/w0rpzone.svg?branch=master)](https://travis-ci.com/w0rp/w0rpzone)
 
 This is the source code for my website [w0rp zone](https://w0rp.com). With the
 exception of webserver configuration files and a few settings, this is the
@@ -12,8 +11,7 @@ Feel free to distribute and modify this website, and if you do evolve software
 from this website or learn from parts of it, feel free to drop me an email at
 dev@w0rp.com and tell me about it.
 
-Installation
-------------
+## Installation
 
 * Install postgres and a database.
 * Install Python 3.6 with virtualenv and pip.
