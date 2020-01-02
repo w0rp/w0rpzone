@@ -16,9 +16,14 @@ csv=$(join , "${module_list[@]}")
 # shellcheck disable=SC2046
 empty_init_csv=$(join , $(find . -type f -empty -name __init__.py))
 
+if [ -f env/bin/activate ]; then
+    # shellcheck disable=SC1091
+    source env/bin/activate
+fi
+
 # Tests can fail if we don't collect static files first.
-env/bin/python manage.py collectstatic --settings=settings_test --noinput > /dev/null
+python manage.py collectstatic --settings=settings_test --noinput > /dev/null
 export PYTHONWARNINGS=always
-env/bin/coverage run --branch --omit "*/migrations/*,$empty_init_csv" \
+coverage run --branch --omit "*/migrations/*,$empty_init_csv" \
     --source="$csv" \
     manage.py test --settings=settings_test --noinput "${module_list[@]}"
