@@ -19,3 +19,4 @@ Installation
 * Install Python 3.6 with virtualenv and pip.
 * Run `tool/mkenv` to create the virtualenv with all required modules.
 * Create a `settings.py` file with a database configuration.
+* If you want to run JS tests and work on JS code, run `yarn`.

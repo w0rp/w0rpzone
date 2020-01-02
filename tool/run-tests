@@ -1,33 +1,7 @@
 #!/usr/bin/env bash
 
-function join { local IFS="$1"; shift; echo "$*"; }
+# A script for running all of the tests locally.
+# See the other script files for more details.
 
-module_list=(
-    w0rplib
-    blog
-    misc
-)
-
-# Build comma separated values for the coverage report.
-csv=$(join , "${module_list[@]}")
-# Find all empty __init__.py files so we can exclude them.
-# shellcheck disable=SC2046
-empty_init_csv=$(join , $(find . -type f -empty -name __init__.py))
-
-# Tests can fail if we don't collect static files first.
-env/bin/python manage.py collectstatic --settings=settings_test --noinput > /dev/null
-export PYTHONWARNINGS=always
-env/bin/coverage run --branch --omit "*/migrations/*,$empty_init_csv" \
-    --source="$csv" \
-    manage.py test --settings=settings_test --noinput "${module_list[@]}"
-
-# Check JS code with ESLint
-yarn --silent
-node_modules/.bin/eslint \
-    typings/*.d.ts \
-    staticfiles/js/*.js \
-    staticfiles/js/blog/**/*.js \
-    staticfiles/js/project/**/*.js
-
-# Check for type errors with TypeScript
-node_modules/.bin/tsc --noEmit
+tool/run-python-tests
+tool/run-javascript-tests
