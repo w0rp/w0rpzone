@@ -5,7 +5,7 @@ bleach==3.1.4
 csscompressor==0.9.5
 django-pipeline==1.6.14
 gunicorn==19.9.0
-markdown2==2.3.7
+markdown2==2.3.9
 psycopg2-binary==2.7.5
 pytz==2019.1
 rjsmin==1.0.12
