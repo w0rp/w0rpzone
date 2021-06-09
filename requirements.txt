@@ -1,6 +1,6 @@
 # requirements.txt for w0rp zone, running Python 3.6
 
-Django==2.2.20
+Django==2.2.22
 bleach==3.3.0
 csscompressor==0.9.5
 django-pipeline==1.6.14
