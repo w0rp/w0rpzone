@@ -73,7 +73,7 @@ class MarkdownTestCase(unittest.TestCase):
         const x = 1
         ```
         """)
-        html = '<pre><code class="js">const x = 1\n</code></pre>\n'
+        html = '<pre><code class="js language-js">const x = 1\n</code></pre>\n'
 
         self.assertEqual(unsafe_markdown(text), html)
         self.assertEqual(markdown(text), html)

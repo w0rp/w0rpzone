@@ -1,7 +1,7 @@
-from django.conf.urls import url
+from django.conf.urls import re_path
 
 from .views import view_presentation
 
 urlpatterns = [
-    url(r"(?P<filename>[a-z0-9\-]+)", view_presentation),
+    re_path(r"(?P<filename>[a-z0-9\-]+)", view_presentation),
 ]

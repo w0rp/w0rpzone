@@ -107,6 +107,8 @@ ROOT_URLCONF = "urls"
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = "wsgi.application"
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 INSTALLED_APPS = (
     "django.contrib.auth",
     "django.contrib.contenttypes",

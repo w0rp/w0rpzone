@@ -1,0 +1,12 @@
+{
+  "venvPath": "./",
+  "venv": "env",
+  "pythonVersion": "3.7",
+  "exclude": [
+    "./env"
+  ],
+  "reportUnusedVariable": false,
+  "reportUnusedClass": false,
+  "reportUnusedFunction": false,
+  "typeCheckingMode": "off"
+}

@@ -5,6 +5,7 @@ set -e
 # Figure out paths automatically.
 script_dir="$(dirname "$(realpath "$0")")"
 
+# shellcheck disable=SC2181
 if (( $? )); then
     echo 'Failed to determine script path!' 1>&2
     exit 1
@@ -16,8 +17,10 @@ project_dir="$(dirname "$script_dir")"
 cd "$project_dir"
 
 # Create the virtualenv if needed.
-test -f env/bin/activate || python3.6 -m venv env
+test -f env/bin/activate || python3.7 -m venv env
 
+# shellcheck disable=SC1073
+# shellcheck disable=SC1091
 source env/bin/activate
 
 # Stop the application server.

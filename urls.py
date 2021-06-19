@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import include, re_path
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import RedirectView, TemplateView
@@ -14,12 +14,12 @@ def templ(regex, template):
 admin.autodiscover()
 
 urlpatterns = [
-    url(settings.ADMIN_REGEX, admin.site.urls),
-    url(settings.LOGIN_REGEX, LoginView.as_view(), name="login"),
-    url(settings.LOGOUT_REGEX, LogoutView.as_view()),
-    url(r"^blog/", include("blog.urls")),
-    url(r"^presentation/", include("presentation.urls")),
-    url(
+    re_path(settings.ADMIN_REGEX, admin.site.urls),
+    re_path(settings.LOGIN_REGEX, LoginView.as_view(), name="login"),
+    re_path(settings.LOGOUT_REGEX, LogoutView.as_view()),
+    re_path(r"^blog/", include("blog.urls")),
+    re_path(r"^presentation/", include("presentation.urls")),
+    re_path(
         r"^$",
         RedirectView.as_view(
             url="/blog/",

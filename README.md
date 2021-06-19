@@ -14,7 +14,7 @@ dev@w0rp.com and tell me about it.
 ## Installation
 
 * Install postgres and a database.
-* Install Python 3.6 with virtualenv and pip.
+* Install Python 3.7 with virtualenv and pip.
 * Run `tool/mkenv` to create the virtualenv with all required modules.
 * Create a `settings.py` file with a database configuration.
 * If you want to run JS tests and work on JS code, run `yarn`.
