@@ -3,7 +3,7 @@
 set -eu
 
 if ! [ -d env ]; then
-    python3.7 -m venv env
+    python3.9 -m venv env
 fi
 
 set +u
