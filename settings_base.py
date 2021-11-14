@@ -6,8 +6,9 @@ DEBUG = False
 
 PROJECT_ROOT = os.path.dirname(__file__)
 
-ADMINS = ()
-MANAGERS = ADMINS
+MANAGERS = ADMINS = (
+    ("w0rp", "dev@w0rp.com"),
+)
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -67,6 +68,14 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 EMAIL_SUBJECT_PREFIX = "w0rp.com: "
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = False
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
+DEFAULT_FROM_EMAIL = "w0rpzone <noreply@w0rp.com>"
+NO_REPLY_EMAIL = "noreply@w0rp.com"
 
 # Use the cached template loader for Django templates.
 TEMPLATES = [{
@@ -235,5 +244,4 @@ STATICFILES_FINDERS = (
     "pipeline.finders.CachedFileFinder",
 )
 
-NO_REPLY_EMAIL = "no-reply@w0rp.com"
 EXTERNAL_SITE_URL = "https://w0rp.com"
