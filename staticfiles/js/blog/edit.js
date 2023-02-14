@@ -131,29 +131,36 @@ $(() => {
     })
   }
 
-  /** @type {(urlList: string[]) => void} */
-  function addImages(urlList) {
+  /** @type {(urlList: [string, string][]) => void} */
+  function addFiles(urlList) {
     var selectionStart = textArea.prop('selectionStart')
     var selectionEnd = textArea.prop('selectionEnd')
 
     var textBefore = String(textArea.val()).slice(0, selectionStart)
     var textAfter = String(textArea.val()).slice(selectionEnd)
-    var insertText = urlList.map((url) => {
-      // The image will be pre-loaded here.
-      var image = new Image()
-      image.src = url
+    var insertText = '\n' + urlList.map(([type, url]) => {
+      if (type === 'audio/mpeg') {
+        const audio = new Audio()
+        audio.src = url
 
-      var anchor = document.createElement('a')
-      anchor.className = 'image-link'
-      anchor.href = url
-      anchor.target = '_blank'
-      anchor.appendChild(image)
+        return audio.outerHTML.replace('<audio', '<audio controls="controls"')
+      } else {
+        // The image will be pre-loaded here.
+        const image = new Image()
+        image.src = url
 
-      return '\n\n<figure>'
-        + '\n  ' + anchor.outerHTML
-        + '\n  <figcaption></figcaption>'
-        + '\n</figure>'
-    }).join('')
+        const anchor = document.createElement('a')
+        anchor.className = 'image-link'
+        anchor.href = url
+        anchor.target = '_blank'
+        anchor.appendChild(image)
+
+        return '<figure>'
+          + '\n  ' + anchor.outerHTML
+          + '\n  <figcaption></figcaption>'
+          + '\n</figure>'
+      }
+    }).join('\n')
 
     if (!textBefore) {
       insertText = insertText.slice(2)
@@ -195,19 +202,20 @@ $(() => {
         file.type === 'image/png'
         || file.type === 'image/jpeg'
         || file.type === 'image/gif'
+        || file.type === 'audio/mpeg'
       )
 
-    /** @type {string[]} */
+    /** @type {[string, string][]} */
     var urlList = Array(files.length)
-    urlList.fill('')
+    urlList.fill(['', ''])
 
     files.forEach((file, index) => {
       uploadFile(file, (url) => {
-        urlList[index] = url
+        urlList[index] = [file.type, url]
 
         // Add images after all files have been uploaded.
         if (urlList.every((x) => Boolean(x))) {
-          addImages(urlList)
+          addFiles(urlList)
         }
       })
     })

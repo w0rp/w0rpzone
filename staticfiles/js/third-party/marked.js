@@ -46,7 +46,7 @@ block.blockquote = replace(block.blockquote)
 block._tag = '(?!(?:'
   + 'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code'
   + '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo'
-  + '|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|[^\\w\\s@]*@)\\b';
+  + '|span|br|wbr|ins|del|img|audio|video)\\b)\\w+(?!:/|[^\\w\\s@]*@)\\b';
 
 block.html = replace(block.html)
   ('comment', /<!--[\s\S]*?-->/)
