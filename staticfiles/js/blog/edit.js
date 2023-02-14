@@ -12,6 +12,9 @@ $(() => {
   var $togglePreviewButton = $('.toggle_preview_button')
   var $main = $('#main')
   var $editNav = $main.children('nav')
+  const $title = $('#id_title')
+  const $slug = $('#id_slug')
+
   var editNavOffset = $editNav.offset()
   var originalNavTop = editNavOffset ? editNavOffset.top : 0
   var navFixed = false
@@ -208,5 +211,12 @@ $(() => {
         }
       })
     })
+  })
+
+  // Automatically set the slug based on the title changing.
+  $title.on('keyup change', () => {
+    const text = ($title.val() || '').toString()
+
+    $slug.val(text.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-'))
   })
 })
