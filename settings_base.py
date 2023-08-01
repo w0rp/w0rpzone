@@ -55,7 +55,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, "static/")
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = (
-    "staticfiles",
+    "src",
 )
 
 ADMIN_REGEX = r"^admin/"

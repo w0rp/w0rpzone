@@ -2,15 +2,18 @@
     "compilerOptions": {
         "target": "es6",
         "module": "none",
-        "lib": ["es6", "dom"],
+        "lib": [
+            "es6",
+            "dom"
+        ],
         "allowJs": true,
         "checkJs": true,
-        "strict": true,
+        "strict": true
     },
     "include": [
         "typings/**/*.ts",
-        "staticfiles/js/*.js",
-        "staticfiles/js/blog/**/*.js",
-        "staticfiles/js/project/**/*.js"
+        "src/js/*.js",
+        "src/js/blog/**/*.js",
+        "src/js/project/**/*.js"
     ]
 }
