@@ -1,92 +1,171 @@
-$(() => {
-  'use strict'
-
-  /* global HighlightCode */
-
+onDocumentReady(() => {
   // Markdown previews.
-  var $form = $('.comment_list form')
-  var $previewComment = $('.comment_list .comment.preview')
-  var $nameField = $previewComment.find('.post_metadata .name')
-  var $commentBody = $previewComment.children('.comment_body')
+  /** @type {HTMLFormElement | null} */
+  const formElem = document.querySelector('.comment_list form')
+  /** @type {HTMLElement | null} */
+  const previewCommentElem = document.querySelector('.comment_list .comment.preview')
+  /** @type {HTMLElement | null} */
+  const nameFieldElem = previewCommentElem
+    ? previewCommentElem.querySelector('.post_metadata .name')
+    : null
+  /** @type {HTMLElement | null} */
+  const commentBodyElem = previewCommentElem
+    ? previewCommentElem.querySelector('.comment_body')
+    : null
 
-  var $showPreviewButton = $form.find('button.show_preview')
-  var $hidePreviewButton = $previewComment.find('button.hide_preview')
+  /** @type {HTMLButtonElement | null} */
+  const showPreviewButton = formElem
+    ? formElem.querySelector('button.show_preview')
+    : null
+  /** @type {HTMLButtonElement | null} */
+  const hidePreviewButton = previewCommentElem
+    ? previewCommentElem.querySelector('button.hide_preview')
+    : null
 
-  function switchToPreview() {
-    $form.hide()
-    $previewComment.show()
+  const switchToPreview = () => {
+    if (formElem) {
+      formElem.style.display = 'none'
+    }
+
+    if (previewCommentElem) {
+      previewCommentElem.style.display = 'block'
+    }
   }
 
-  function switchToForm() {
-    $previewComment.hide()
-    $form.show()
+  const switchToForm = () => {
+    if (previewCommentElem) {
+      previewCommentElem.style.display = 'none'
+    }
+
+    if (formElem) {
+      formElem.style.display = 'block'
+    }
   }
 
-  function generatePreview() {
+  const generatePreview = () => {
+    /** @type {HTMLTextAreaElement | null} */
+    // @ts-ignore
+    const contentElem = document.getElementById('id_content')
+
+    /** @type {HTMLInputElement | null} */
+    // @ts-ignore
+    const posterNameElem = document.getElementById('id_poster_name')
+
     // Generate HTML with the JavaScript markdown parser.
-    var html = marked(String($('#id_content').val()), {
+    const html = marked(contentElem ? contentElem.value : '', {
       gfm: true,
       sanitize: true,
     })
 
-    $nameField.text(String($('#id_poster_name').val()))
+    if (nameFieldElem) {
+      nameFieldElem.textContent = posterNameElem ? posterNameElem.value : ''
+    }
 
-    $commentBody.html(html)
+    if (commentBodyElem) {
+      commentBodyElem.innerHTML = html
 
-    // Apply code highlighting to the generated text.
-    HighlightCode.scan($commentBody)
+      // Apply code highlighting to the generated text.
+      HighlightCode.scan(commentBodyElem)
+    }
 
     switchToPreview()
   }
 
-  $showPreviewButton.click(() => {
-    generatePreview()
-  })
+  if (showPreviewButton) {
+    showPreviewButton.addEventListener('click', () => {
+      generatePreview()
+    })
+  }
 
-  $hidePreviewButton.click(() => {
-    switchToForm()
-  })
+  if (hidePreviewButton) {
+    hidePreviewButton.addEventListener('click', () => {
+      switchToForm()
+    })
+  }
 
-  var $briefHelp = $('.markdown_help.brief')
-  var $fullHelp = $('.markdown_help.full')
+  /** @type {HTMLElement | null} */
+  const briefHelpElem = document.querySelector('.markdown_help.brief')
+  /** @type {HTMLElement | null} */
+  const fullHelpElem = document.querySelector('.markdown_help.full')
 
-  // Show and hide help information.
-  $briefHelp.find('.show_help').click((event) => {
-    event.preventDefault()
+  if (briefHelpElem && fullHelpElem) {
+    /** @type {HTMLElement | null} */
+    const showHelpElem = briefHelpElem.querySelector('.show_help')
+    /** @type {HTMLElement | null} */
+    const hideHelpElem = fullHelpElem.querySelector('.hide_help')
 
-    $fullHelp.addClass('active')
-    $briefHelp.removeClass('active')
-  })
+    // Show and hide help information.
+    if (showHelpElem) {
+      showHelpElem.addEventListener('click', event => {
+        event.preventDefault()
 
-  $fullHelp.find('.hide_help').click((event) => {
-    event.preventDefault()
+        fullHelpElem.classList.add('active')
+        briefHelpElem.classList.remove('active')
+      })
+    }
 
-    $briefHelp.addClass('active')
-    $fullHelp.removeClass('active')
-  })
+    if (hideHelpElem) {
+      hideHelpElem.addEventListener('click', event => {
+        event.preventDefault()
 
-  var $helpTabs = $fullHelp.find('.helpTabs > .tab')
-  var $helpTopics = $fullHelp.find('.help_topic')
+        briefHelpElem.classList.add('active')
+        fullHelpElem.classList.remove('active')
+      })
+    }
 
-  // Switch between help topics by clicking the tabs.
-  $helpTabs.click(function() {
-    var $lastTab = $helpTabs.filter('.active')
-    var $lastTopic = $helpTopics.filter('.' + $lastTab.data('topic'))
-    var $newTab = $(this)
-    var $newTopic = $helpTopics.filter('.' + $newTab.data('topic'))
+    /** @type {NodeListOf<HTMLButtonElement>} */
+    const helpTabElems = fullHelpElem.querySelectorAll('.help_tabs > .tab')
+    /** @type {NodeListOf<HTMLElement>} */
+    const helpTopicElems = fullHelpElem.querySelectorAll('.help_topic')
 
-    $lastTab.removeClass('active')
-    $lastTopic.removeClass('active')
-    $newTab.addClass('active')
-    $newTopic.addClass('active')
-  })
+    /** @type {(nodeList: NodeListOf<HTMLElement>, className: string) => HTMLElement | null} */
+    const findElemWithClass = (nodeList, className) => Array.from(nodeList)
+      .find(e => e.classList.contains(className)) || null
 
-  if ($form.hasClass('has_errors')) {
-    const offset = $form.closest('section').offset()
+    // Switch between help topics by clicking the tabs.
+    helpTabElems.forEach(newTabElem => {
+      newTabElem.addEventListener('click', () => {
+        const lastTabElem = findElemWithClass(helpTabElems, 'active')
 
-    // Scroll to the form when there are errors in it.
-    if (offset) {
-      $(window).scrollTop(offset.top)
+        if (!lastTabElem) {
+          throw new Error('last tab not found!')
+        }
+
+        const lastTopicElem = findElemWithClass(
+          helpTopicElems,
+          lastTabElem.getAttribute('data-topic') || ''
+        )
+        const newTopicElem = findElemWithClass(
+          helpTopicElems,
+          newTabElem.getAttribute('data-topic') || ''
+        )
+
+        lastTabElem.classList.remove('active')
+        newTabElem.classList.add('active')
+
+        if (lastTopicElem) {
+          lastTopicElem.classList.remove('active')
+        }
+
+        if (newTopicElem) {
+          newTopicElem.classList.add('active')
+        }
+      })
+    })
+  }
+
+  // Scroll to the form when there are errors in it.
+  if (formElem && formElem.classList.contains('has_errors')) {
+    const section = formElem.closest('section')
+    const rect = section
+      ? section.getBoundingClientRect()
+      : null
+    const top = rect
+      ? rect.top + window.pageYOffset - document.documentElement.clientTop
+      : 0
+
+    if (top) {
+      window.scrollTo({top})
     }
   }
 })

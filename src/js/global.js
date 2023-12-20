@@ -1,26 +1,22 @@
-(function() {
-  'use strict'
+/* Public domain, created by Andrew Wray */
 
-  // CSRF shimming, as from the Django docs.
-  /** @type {(method: string) => boolean} */
-  function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method))
+/** @type {(fn: () => void) => void} */
+// eslint-disable-next-line
+const onDocumentReady = fn => {
+  if (document.readyState !== 'loading') {
+    fn()
+  } else {
+    document.addEventListener('DOMContentLoaded', fn)
   }
+}
 
-  $.ajaxSetup({
-    crossDomain: false, // obviates need for sameOrigin test
-    beforeSend: function(xhr, settings) {
-      if (!csrfSafeMethod(settings.type || '')) {
-        xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'))
-      }
-    },
-  })
-}())
-
-$(() => {
-  'use strict'
-
+onDocumentReady(() => {
   // Add a class so CSS can do different things when JS is on.
-  $(document.body).addClass('js')
+  document.body.classList.add('js')
+
+  const verifyElem = document.getElementById('id_' + 'verify')
+
+  if (verifyElem instanceof HTMLInputElement) {
+    verifyElem.value = '' + (347 * 347)
+  }
 })

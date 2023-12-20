@@ -181,14 +181,10 @@ PIPELINE = {
     "JAVASCRIPT": {
         "main-site": {
             "source_filenames": (
-                "js/third-party/jquery-3.4.1.min.js",
-                "js/third-party/notify-combined.min.js",
-                "js/third-party/jquery.cookie.js",
+                "js/global.js",
                 "js/third-party/highlight.pack.js",
                 "js/highlight-code.js",
                 "js/third-party/marked.js",
-                "js/global.js",
-                "js/blog/main.js",
                 "js/blog/edit.js",
                 "js/blog/comment.js",
             ),
@@ -196,7 +192,7 @@ PIPELINE = {
         },
         "presentation": {
             "source_filenames": (
-                "js/third-party/jquery-3.4.1.min.js",
+                "js/global.js",
                 "js/third-party/reveal.js/reveal.js",
                 "js/third-party/marked.js",
                 "js/third-party/reveal.js/plugin/markdown.js",

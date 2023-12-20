@@ -6,8 +6,7 @@
 node_modules/.bin/eslint \
     typings/*.d.ts \
     src/js/*.js \
-    src/js/blog/**/*.js \
-    src/js/project/**/*.js
+    src/js/blog/**/*.js
 
 # Check for type errors with TypeScript
 node_modules/.bin/tsc --noEmit

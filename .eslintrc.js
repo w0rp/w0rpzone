@@ -10,11 +10,11 @@ module.exports = {
     ecmaVersion: 6,
   },
   globals: {
-    $: true,
     marked: true,
     Reveal: true,
     hljs: true,
     HighlightCode: true,
+    onDocumentReady: true,
   },
   // Handle type definition files.
   overrides: [
@@ -90,5 +90,11 @@ module.exports = {
     'arrow-body-style': ['warn', 'as-needed'],
     // Require parentheses to make arrow function bodies less confusing.
     'no-confusing-arrow': ['error', {allowParens: true}],
+    // Require const or let instead of var.
+    'no-var': 'error',
+    // Prefer const over let.
+    'prefer-const': 'error',
+    // Prefer expressions for functions.
+    'func-style': 'error',
   },
 }

@@ -23,27 +23,6 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@types/jquery.cookie@1.4.31":
-  version "1.4.31"
-  resolved "https://registry.yarnpkg.com/@types/jquery.cookie/-/jquery.cookie-1.4.31.tgz#860a82b9d7fcfe60305de06f811bf1d6708226ec"
-  integrity sha512-m0wfCAh9nrzZuFVhhxhyb6VwI8nLvM7bAY7VecXhmJ0krfVqWkWhy5wAdO41XfiMhRPDutIjHdT/UTuS8uzoKQ==
-  dependencies:
-    "@types/jquery" "*"
-
-"@types/jquery@*":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.1.tgz#cebb057acf5071c40e439f30e840c57a30d406c3"
-  integrity sha512-Tyctjh56U7eX2b9udu3wG853ASYP0uagChJcQJXLUXEU6C/JiW5qt5dl8ao01VRj1i5pgXPAf8f1mq4+FDLRQg==
-  dependencies:
-    "@types/sizzle" "*"
-
-"@types/jquery@3.3.29":
-  version "3.3.29"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.29.tgz#680a2219ce3c9250483722fccf5570d1e2d08abd"
-  integrity sha512-FhJvBninYD36v3k6c+bVk1DSZwh7B5Dpb/Pyk3HKVsiohn0nhbefZZ+3JXbWQhFyt0MxSl2jRDdGQPHeOHFXrQ==
-  dependencies:
-    "@types/sizzle" "*"
-
 "@types/marked@0.6.5":
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/@types/marked/-/marked-0.6.5.tgz#3cf2a56ef615dad24aaf99784ef90a9eba4e29d8"
@@ -53,11 +32,6 @@
   version "3.3.33"
   resolved "https://registry.yarnpkg.com/@types/reveal/-/reveal-3.3.33.tgz#e5448f6b4e6734ec3ea4ee85211bb9313a879044"
   integrity sha512-lKbezA9Oa5LfdSRwFDc/FHEGH4+FjiXh/a/PCSZAmN+KCeQJL/3ClOdAQwOxt3zdHc8XyioT+cNvIOletwRI7A==
-
-"@types/sizzle@*":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
-  integrity sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
 
 "@typescript-eslint/experimental-utils@1.8.0":
   version "1.8.0"

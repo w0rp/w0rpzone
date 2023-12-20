@@ -1,14 +1,10 @@
-/* Public domain, created by w0rp */
-// eslint-disable-next-line
-;(() => {
-  'use strict'
+/* Public domain, created by Andrew Wray */
 
+onDocumentReady(() => {
   /** @type {(list: string[]) => RegExp} */
-  function createOrRegex(list) {
-    return new RegExp('^(' + list.join('|') + ')$')
-  }
+  const createOrRegex = list => new RegExp('^(' + list.join('|') + ')$')
 
-  var keywordRegex = createOrRegex([
+  const keywordRegex = createOrRegex([
     '[$a-zA-Z_][a-zA-Z0-9_]*',
     '[a-zA-Z_][a-zA-Z0-9_]*<.*>',
     'v:true',
@@ -17,28 +13,26 @@
     '@nogc',
     '@disable',
   ])
-  var variableRegex = createOrRegex([
+  const variableRegex = createOrRegex([
     '[glasvbwt]:[a-zA-Z0-9_]*',
   ])
-  var numberRegex = /^([0-9]+|[0-9]+.[0-9]+)$/
+  const numberRegex = /^([0-9]+|[0-9]+.[0-9]+)$/
 
   window.HighlightCode = {
-    scan: function(selector) {
-      var $root = selector != null ? $(selector) : $(document.body)
-
-      $root.find('pre code:not(.highlight)').each(function() {
-        $(this).addClass('highlight')
+    scan(rootElem = document.body) {
+      rootElem.querySelectorAll('pre code:not(.highlight)').forEach(elem => {
+        elem.classList.add('highlight')
 
         // Now apply the highlight after attempting to set the language.
-        hljs.highlightBlock(this)
+        hljs.highlightBlock(elem)
       })
 
       // Look for code elements which look like keywords, and highlight them
       // with keywords.
-      $root.find('code:not(.highlight)').each(function() {
-        var elem = $(this)
-        var text = elem.text()
-        var specialClass
+      rootElem.querySelectorAll('code:not(.highlight)').forEach(elem => {
+        const text = elem.textContent || ''
+        /** @type {string | undefined} */
+        let specialClass
 
         if (text.match(keywordRegex)) {
           specialClass = 'hljs-keyword'
@@ -48,32 +42,31 @@
           specialClass = 'hljs-number'
         }
 
+        // Wrap text in a special span.
         if (specialClass) {
-          elem.addClass('highlight')
+          elem.classList.add('highlight')
 
-          var span = $(document.createElement('span'))
-          span.addClass(specialClass)
-          span.text(elem.text())
-          elem.html(span[0])
+          const span = document.createElement('span')
+          span.classList.add(specialClass)
+          span.textContent = text
+          elem.innerHTML = span.outerHTML
         }
       })
 
-      $root.find('td code:not(.highlight)').each(function() {
-        $(this).addClass('highlight')
-        hljs.highlightBlock(this)
-        $(this).removeClass('hljs')
+      rootElem.querySelectorAll('td code:not(.highlight)').forEach(elem => {
+        elem.classList.add('highlight')
+        hljs.highlightBlock(elem)
+        elem.classList.remove('hljs')
       })
 
-      $root.find('p code:not(.highlight)').each(function() {
-        $(this).addClass('highlight')
-        hljs.highlightBlock(this)
+      rootElem.querySelectorAll('p code:not(.highlight)').forEach(elem => {
+        elem.classList.add('highlight')
+        hljs.highlightBlock(elem)
       })
     },
   }
-})()
+})
 
-$(() => {
-  'use strict'
-
+onDocumentReady(() => {
   HighlightCode.scan()
 })

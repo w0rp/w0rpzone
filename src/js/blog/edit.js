@@ -1,35 +1,52 @@
-/* global HighlightCode, marked */
-$(() => {
-  'use strict'
-
-  if (!$(document.body).hasClass('article_edit')) {
-    // Only apply this script to article edit pages.
+onDocumentReady(() => {
+  // Only apply this script to article edit pages.
+  if (!document.body.classList.contains('article_edit')) {
     return
   }
 
-  var $form = $('.post_edit form:first')
-  var $article = $('.post_edit article.preview')
-  var $togglePreviewButton = $('.toggle_preview_button')
-  var $main = $('#main')
-  var $editNav = $main.children('nav')
-  const $title = $('#id_title')
-  const $slug = $('#id_slug')
+  /** @type {HTMLFormElement | null} */
+  const formElem = document.querySelector('.post_edit form[method="post"]')
+  /** @type {HTMLElement | null} */
+  const articleElem = document.querySelector('.post_edit article.preview')
+  /** @type {HTMLButtonElement | null} */
+  const togglePreviewButton = document.querySelector('.toggle_preview_button')
+  const mainElem = document.getElementById('main')
+  const editNavElem = mainElem ? mainElem.querySelector('nav') : null
+  /** @type {HTMLInputElement | null} */
+  // @ts-ignore
+  const titleElem = document.getElementById('id_title')
+  /** @type {HTMLTextAreaElement | null} */
+  // @ts-ignore
+  const contentElem = document.getElementById('id_content')
+  /** @type {HTMLInputElement | null} */
+  // @ts-ignore
+  const slugElem = document.getElementById('id_slug')
 
-  var editNavOffset = $editNav.offset()
-  var originalNavTop = editNavOffset ? editNavOffset.top : 0
-  var navFixed = false
+  const editNavRect = editNavElem ? editNavElem.getBoundingClientRect() : null
+  const originalNavTop = editNavRect
+    ? editNavRect.top + window.pageYOffset - document.documentElement.clientTop
+    : 0
+  let navFixed = false
   /** @type {number | undefined} */
-  var resizeTimeoutHandle
-  var formScrollTop = 0
-  var previewScrollTop = 0
+  let resizeTimeoutHandle
+  let formScrollTop = 0
+  let previewScrollTop = 0
 
-  function switchToPreview() {
+  const switchToPreview = () => {
     // Remember where we had scrolled to.
     formScrollTop = document.documentElement.scrollTop
 
-    $togglePreviewButton.addClass('toggled')
-    $form.hide()
-    $article.show()
+    if (togglePreviewButton) {
+      togglePreviewButton.classList.add('toggled')
+    }
+
+    if (formElem) {
+      formElem.style.display = 'none'
+    }
+
+    if (articleElem) {
+      articleElem.style.display = 'block'
+    }
 
     // Set back where we had scroll to.
     // We'll do this so we're looking at roughly the same thing
@@ -37,75 +54,98 @@ $(() => {
     document.documentElement.scrollTop = previewScrollTop
   }
 
-  function switchToForm() {
+  const switchToForm = () => {
     previewScrollTop = document.documentElement.scrollTop
 
-    $togglePreviewButton.removeClass('toggled')
-    $article.hide()
-    $form.show()
+    if (togglePreviewButton) {
+      togglePreviewButton.classList.remove('toggled')
+    }
+
+    if (articleElem) {
+      articleElem.style.display = 'none'
+    }
+
+    if (formElem) {
+      formElem.style.display = 'block'
+    }
 
     document.documentElement.scrollTop = formScrollTop
   }
 
-  function generatePreview() {
+  const generatePreview = () => {
+    if (!articleElem || !contentElem || !titleElem) {
+      return
+    }
+
     // Generate HTML with the JavaScript markdown parser.
-    var html = marked(String($('#id_content').val()), {
+    const html = marked(contentElem.value, {
       gfm: true,
       sanitize: false,
     })
 
-    var title = String($('#id_title').val() || '<no title>')
-    var $post = $article.children('.post')
+    const title = titleElem.value || '<no title>'
+    const postElem = articleElem.querySelector('.post')
+    const articleTitleElem = articleElem.querySelector('header > h1')
+
+    // Set the title of the article.
+    if (articleTitleElem) {
+      articleTitleElem.textContent = title
+    }
 
     // Set produced HTML in the preview article.
-    $article.find('header > h1').text(title)
-    $post.html(html)
+    if (postElem) {
+      postElem.innerHTML = html
 
-    // Apply code highlighting to the generated text.
-    HighlightCode.scan($post)
+      // Apply code highlighting to the generated text.
+      HighlightCode.scan(postElem)
+    }
 
     switchToPreview()
   }
 
-  function adjustFixedNavHorizontal() {
-    if (!navFixed) {
-      return
-    }
+  const adjustFixedNavHorizontal = () => {
+    if (navFixed && mainElem && editNavElem) {
+      const leftOffset = mainElem.getBoundingClientRect().left
+        + window.pageXOffset - document.documentElement.clientLeft
 
-    const mainOffset = $main.offset()
-
-    if (mainOffset) {
       // The left margin is the same size as the right margin.
-      $editNav.css('right', mainOffset.left)
+      editNavElem.style.right = leftOffset + 'px'
     }
   }
 
-  $togglePreviewButton.click(() => {
-    if ($togglePreviewButton.hasClass('toggled')) {
-      switchToForm()
-    } else {
-      generatePreview()
-    }
-  })
+  if (togglePreviewButton) {
+    togglePreviewButton.addEventListener('click', () => {
+      if (togglePreviewButton.classList.contains('toggled')) {
+        switchToForm()
+      } else {
+        generatePreview()
+      }
+    })
+  }
 
-  $(window).scroll(() => {
-    if (($(window).scrollTop() || 0) > originalNavTop - 10) {
+  document.addEventListener('scroll', () => {
+    if (window.pageYOffset > originalNavTop - 10) {
       if (!navFixed) {
         navFixed = true
 
-        $editNav.addClass('fixed_when_big')
+        if (editNavElem) {
+          editNavElem.classList.add('fixed_when_big')
+        }
+
         adjustFixedNavHorizontal()
       }
     } else {
       if (navFixed) {
         navFixed = false
 
-        $editNav.removeClass('fixed_when_big')
+        if (editNavElem) {
+          editNavElem.classList.remove('fixed_when_big')
+        }
       }
     }
   })
 
-  $(window).resize(() => {
+  addEventListener('resize', () => {
     clearTimeout(resizeTimeoutHandle)
 
     resizeTimeoutHandle = setTimeout(() => {
@@ -113,118 +153,131 @@ $(() => {
     }, 100)
   })
 
-  var textArea = $('textarea[name="content"]')
-
   /** @type {(file: File, callback: (url: string) => void) => void} */
-  function uploadFile(file, callback) {
-    var data = new FormData()
-    data.append('file', file, file.name)
+  const uploadFile = (file, callback) => {
+    const body = new FormData()
+    body.append('file', file, file.name)
 
-    $.ajax({
-      url: '/blog/upload/',
-      data: data,
-      type: 'POST',
-      contentType: false,
-      processData: false,
-    }).done((data) => {
-      callback(data.url)
+    const cookieMatch = document.cookie.match(/csrftoken=([^;]+)/)
+    const csrfToken = cookieMatch ? cookieMatch[1] : ''
+
+    fetch('/blog/upload/', {
+      method: 'POST',
+      headers: {'X-CSRFToken': csrfToken},
+      body,
     })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Upload failed')
+        }
+
+        return response.json()
+      })
+      .then(json => {
+        callback(json.url)
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }
 
-  /** @type {(urlList: [string, string][]) => void} */
-  function addFiles(urlList) {
-    var selectionStart = textArea.prop('selectionStart')
-    var selectionEnd = textArea.prop('selectionEnd')
+  if (contentElem) {
+    /** @type {(urlList: [string, string][]) => void} */
+    const addFiles = urlList => {
+      const selectionStart = contentElem.selectionStart
+      const selectionEnd = contentElem.selectionEnd
 
-    var textBefore = String(textArea.val()).slice(0, selectionStart)
-    var textAfter = String(textArea.val()).slice(selectionEnd)
-    var insertText = '\n' + urlList.map(([type, url]) => {
-      if (type === 'audio/mpeg') {
-        const audio = new Audio()
-        audio.src = url
+      const textBefore = contentElem.value.slice(0, selectionStart)
+      let textAfter = contentElem.value.slice(selectionEnd)
+      let insertText = '\n' + urlList.map(([type, url]) => {
+        if (type === 'audio/mpeg') {
+          const audio = new Audio()
+          audio.src = url
 
-        return audio.outerHTML.replace('<audio', '<audio controls="controls"')
-      } else {
+          return audio.outerHTML.replace('<audio', '<audio controls="controls"')
+        } else {
         // The image will be pre-loaded here.
-        const image = new Image()
-        image.src = url
+          const image = new Image()
+          image.src = url
 
-        const anchor = document.createElement('a')
-        anchor.className = 'image-link'
-        anchor.href = url
-        anchor.target = '_blank'
-        anchor.appendChild(image)
+          const anchor = document.createElement('a')
+          anchor.className = 'image-link'
+          anchor.href = url
+          anchor.target = '_blank'
+          anchor.appendChild(image)
 
-        return '<figure>'
+          return '<figure>'
           + '\n  ' + anchor.outerHTML
           + '\n  <figcaption></figcaption>'
           + '\n</figure>'
+        }
+      }).join('\n')
+
+      if (!textBefore) {
+        insertText = insertText.slice(2)
       }
-    }).join('\n')
 
-    if (!textBefore) {
-      insertText = insertText.slice(2)
+      textAfter = textAfter.trim()
+
+      if (textAfter) {
+        insertText += '\n\n'
+      }
+
+      contentElem.value = textBefore + insertText + textAfter
     }
 
-    textAfter = textAfter.trim()
+    // Highlight the content box on dragging.
+    for (const eventName of ['dragover', 'dragenter', 'dragleave']) {
+      contentElem.addEventListener(eventName, event => {
+        event.preventDefault()
+        event.stopPropagation()
 
-    if (textAfter) {
-      insertText += '\n\n'
-    }
-
-    textArea.val(textBefore + insertText + textAfter)
-  }
-
-  textArea.on('dragover dragenter', (event) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    textArea.addClass('drag-over')
-  })
-
-  textArea.on('dragleave', (event) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    textArea.removeClass('drag-over')
-  })
-
-  // @ts-ignore
-  textArea.on('drop', /** @type {(event: JQueryEventObject & {originalEvent: DragEvent}) => void} */ (event) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    textArea.removeClass('drag-over')
-
-    var data = event.originalEvent.dataTransfer
-    var files = Array.from(data && data.files ? data.files : [])
-      .filter(file =>
-        file.type === 'image/png'
-        || file.type === 'image/jpeg'
-        || file.type === 'image/gif'
-        || file.type === 'audio/mpeg'
-      )
-
-    /** @type {[string, string][]} */
-    var urlList = Array(files.length)
-    urlList.fill(['', ''])
-
-    files.forEach((file, index) => {
-      uploadFile(file, (url) => {
-        urlList[index] = [file.type, url]
-
-        // Add images after all files have been uploaded.
-        if (urlList.every((x) => Boolean(x))) {
-          addFiles(urlList)
+        if (eventName === 'dragleave') {
+          contentElem.classList.remove('drag-over')
+        } else {
+          contentElem.classList.add('drag-over')
         }
       })
+    }
+
+    contentElem.addEventListener('drop', event => {
+      event.preventDefault()
+      event.stopPropagation()
+
+      contentElem.classList.remove('drag-over')
+
+      const data = event.dataTransfer
+      const files = Array.from(data && data.files ? data.files : [])
+        .filter(file =>
+          file.type === 'image/png'
+          || file.type === 'image/jpeg'
+          || file.type === 'image/gif'
+          || file.type === 'audio/mpeg'
+        )
+
+      /** @type {[string, string][]} */
+      const urlList = Array(files.length)
+      urlList.fill(['', ''])
+
+      files.forEach((file, index) => {
+        uploadFile(file, (url) => {
+          urlList[index] = [file.type, url]
+
+          // Add images after all files have been uploaded.
+          if (urlList.every((x) => Boolean(x))) {
+            addFiles(urlList)
+          }
+        })
+      })
     })
-  })
+  }
 
   // Automatically set the slug based on the title changing.
-  $title.on('keyup change', () => {
-    const text = ($title.val() || '').toString()
-
-    $slug.val(text.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-'))
-  })
+  if (titleElem && slugElem) {
+    for (const event of ['keyup', 'change']) {
+      titleElem.addEventListener(event, () => {
+        slugElem.value = titleElem.value.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-')
+      })
+    }
+  }
 })

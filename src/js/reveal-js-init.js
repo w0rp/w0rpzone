@@ -7,9 +7,9 @@ Reveal.initialize({
   transition: 'convex',
 })
 
-/* Keep track of which slide we are on for refreshing the window. */
-$(document.body).on('slidechanged', () => {
-  var state = Reveal.getState()
+// Keep track of which slide we are on for refreshing the window.
+document.body.addEventListener('slidechanged', () => {
+  const state = Reveal.getState()
 
   window.location.hash = '#/' + state.indexh + '/' + state.indexv
 })

@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "@types/jquery": "3.3.29",
-    "@types/jquery.cookie": "1.4.31",
     "@types/marked": "0.6.5",
     "@types/reveal": "3.3.33",
     "@typescript-eslint/parser": "1.8.0",
